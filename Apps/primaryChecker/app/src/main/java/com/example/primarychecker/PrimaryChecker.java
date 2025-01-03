@@ -21,7 +21,7 @@ public class PrimaryChecker extends Activity {
 
         int n = i.getIntExtra("number", 0);
 
-        if (n > 0 && n < 50) { // Check if the number is between 1 and 49
+        if (n > 0 && n <= 50) { // Check if the number is between 1 and 49
             BigInteger number = new BigInteger(String.valueOf(n));
             Boolean result = number.isProbablePrime(10);
             Log.i(getString(R.string.app_name), "Result: " + result);
