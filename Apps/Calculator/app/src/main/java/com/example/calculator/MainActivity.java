@@ -30,13 +30,10 @@ public class MainActivity extends Activity {
         EditText number1 = findViewById(R.id.number1);
         EditText number2 = findViewById(R.id.number2);
 
-        // Get the RadioGroup reference
         RadioGroup operationsGroup = findViewById(R.id.operations);
 
-        // When you need to get the selected RadioButton
         int selectedId = operationsGroup.getCheckedRadioButtonId();
 
-        // Find the RadioButton by ID
         RadioButton selectedButton = findViewById(selectedId);
 
         Bundle b = new Bundle();
@@ -53,16 +50,12 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Check if the requestCode matches the one we sent
         if (requestCode == 0) {
-            // Check if the result was OK
             if (resultCode == RESULT_OK) {
-                // Retrieve the result from the returned Intent
-                int result = data.getIntExtra("result", 0);  // Default value is 0
+                int result = data.getIntExtra("result", 0);
                 Log.i("MainActivity", "Calculation result: " + result);
 
-                // Optionally, display the result in the UI
-                TextView resultView = findViewById(R.id.result);  // assuming you have an EditText to display the result
+                TextView resultView = findViewById(R.id.result);
                 resultView.setText(String.valueOf(result));
             } else {
                 Log.e("MainActivity", "Failed to get result from Calculator");
