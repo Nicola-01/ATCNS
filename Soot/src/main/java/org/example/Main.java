@@ -1,8 +1,6 @@
 package org.example;
 
 import soot.*;
-import soot.jimple.toolkits.callgraph.CallGraph;
-import soot.jimple.toolkits.callgraph.Edge;
 import soot.options.Options;
 import soot.toolkits.graph.*;
 import soot.util.*;
@@ -12,57 +10,113 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) {
-        // Ensure that a JAR file is provided as an argument
-        if (args.length != 1) {
-            System.out.println("Usage: java SootAnalyzer <path-to-jar>");
+        // Ensure that an APK file is provided as an argument
+        if (args.length < 2) {
+            System.out.println("Usage: java -jar ApkExecutionTree.jar <path-to-apk> <path-to-android-jar>");
             return;
         }
 
-        // The path to the JAR file to analyze
-        String jarPath = args[0];
+        String apkPath = args[0];
+        String androidJar = args[1];
 
-        // Set up Soot options
-        setupSoot(jarPath);
+        // Set up Soot options for analyzing APKs
+        setupSoot(apkPath, androidJar);
 
-        // Run Soot analysis to generate the call graph
-        generateCallGraph();
+        // Load all classes and print them
+//        printAllClasses();
+
+        // Generate intent analysis
+//        generateIntentAnalysis();
+        test();
     }
 
-    private static void setupSoot(String jarPath) {
-        // Set up Soot for analyzing a JAR file
-        Options.v().set_soot_classpath(jarPath);
+    private static void setupSoot(String apkPath, String androidJar) {
+        Options.v().set_src_prec(Options.src_prec_apk);
+        Options.v().set_android_jars(androidJar);
+        Options.v().set_soot_classpath(androidJar);
+        Options.v().set_process_dir(Collections.singletonList(apkPath));
         Options.v().set_allow_phantom_refs(true);
-        Options.v().set_process_dir(Collections.singletonList(jarPath));
+        Options.v().set_whole_program(true);
         Options.v().set_output_format(Options.output_format_none);
-        Options.v().set_output_dir("soot_output");
 
-        // Set Soot to analyze the classes and generate the call graph
-        Options.v().set_src_prec(Options.src_prec_class); // Analyzing class files
-        //Options.v().set_phantom_refs(true); // Enable phantom references for classes
-        Options.v().set_whole_program(true); // Perform whole program analysis
+        // Set up Dexpler to analyze DEX
+        Options.v().set_src_prec(Options.src_prec_apk);
+        Options.v().set_process_multiple_dex(true); // Handle multi-DEX APKs
 
-        // Enable the Call Graph generation
-        Options.v().set_include_all(true); // This includes all methods in the call graph
     }
 
-    private static void generateCallGraph() {
-        // Start the analysis
-        SootClass mainClass = Scene.v().loadClassAndSupport("MainActivity"); // Replace with actual entry point if needed
-        mainClass.setApplicationClass();
+    private static void printAllClasses() {
         Scene.v().loadNecessaryClasses();
 
-        // Generate the Call Graph
-        CallGraph cg = Scene.v().getCallGraph();
+        System.out.println("Loaded classes:");
+        for (SootClass sootClass : Scene.v().getClasses()) {
+            System.out.println(sootClass.getName());
+        }
+    }
 
-        // Display the call graph or execution tree
-        System.out.println("Call Graph:");
+    private static void generateIntentAnalysis() {
+        // Load the necessary classes
+        Scene.v().loadNecessaryClasses();
 
-        // Iterate through the call graph and print the nodes
-        for (Iterator<Edge> it = cg.iterator(); it.hasNext(); ) {
-            Edge edge = it.next();
-            SootMethod src = edge.getSrc().method();
-            SootMethod dest = edge.getTgt().method();
-            System.out.println("Call from " + src.getSignature() + " to " + dest.getSignature());
+        // Analyze all the loaded classes
+        for (SootClass sootClass : Scene.v().getClasses()) {
+            // Analyze only the classes that contain activities (Activity)
+            System.out.println(sootClass.getName());
+            if (sootClass.getName().startsWith("com.example.primarychecker.")) {
+                analyzeActivityForIntents(sootClass);
+            }
+        }
+    }
+
+    private static void test() {
+        Scene.v().loadNecessaryClasses();
+
+        // Retrieve the specified class
+        SootClass sootClass = Scene.v().getSootClass("com.example.primarychecker.PrimaryChecker");
+
+        // Print the class name
+        System.out.println("Class: " + sootClass.getName());
+
+        // Print details of the methods in the class
+        System.out.println("Methods:");
+        for (SootMethod method : sootClass.getMethods()) {
+            System.out.println(" - " + method.getName());
+            if (method.isConcrete()) {
+                // If the method is concrete, print its body
+                System.out.println("   Body: " + method.retrieveActiveBody());
+            } else {
+                // If the method is not concrete, indicate it
+                System.out.println("   Method is not concrete.");
+            }
+        }
+    }
+
+    private static void analyzeActivityForIntents(SootClass sootClass) {
+        // Analyze the methods of the class to find those that invoke getIntent() and getIntExtra()
+        for (SootMethod method : sootClass.getMethods()) {
+            // Ignore the constructor (<init>) and methods without an active body
+            if (method.getName().equals("<init>") || !method.hasActiveBody()) {
+                continue;
+            }
+
+            // Analyze the method body
+            for (Unit unit : method.getActiveBody().getUnits()) {
+                // Look for calls to the getIntent() method
+                if (unit.toString().contains("getIntent")) {
+                    System.out.println("Found getIntent() in: " + sootClass.getName() + " in method " + method.getName());
+                    analyzeIntentExtras(unit);
+                }
+            }
+        }
+    }
+
+    private static void analyzeIntentExtras(Unit unit) {
+        // Look for calls to getExtra() on Intent objects
+        if (unit.toString().contains("getIntExtra")) {
+            System.out.println("Found getIntExtra usage in: " + unit.toString());
+        }
+        if (unit.toString().contains("getExtras")) {
+            System.out.println("Found getExtras() usage in: " + unit.toString());
         }
     }
 }
