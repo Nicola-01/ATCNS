@@ -102,9 +102,9 @@ public class Main {
         System.out.println("\nClass: " + sootClass.getName());
 
         // Print details of the methods in the class
-        System.out.println("Methods:");
+//        System.out.println("Methods:");
         for (SootMethod method : sootClass.getMethods()) {
-            System.out.println(" - " + method.getName());
+//            System.out.println(" - " + method.getName());
             if (method.isConcrete()) {
                 String[] lines = method.retrieveActiveBody().toString().split("\n");
                 // If the method is concrete, print its body
