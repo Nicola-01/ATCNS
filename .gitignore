@@ -1,2 +1,8 @@
 
+*/target/
+
+*/.idea/
+
+Soot/out/
+
 Soot/target/
