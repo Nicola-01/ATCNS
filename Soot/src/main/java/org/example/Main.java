@@ -1,13 +1,21 @@
 package org.example;
 
+import jas.Pair;
 import soot.*;
 import soot.options.Options;
-import soot.toolkits.graph.*;
 import soot.util.*;
 
+import java.util.Set;
+
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
+
+    static Set<String> androidPackages = new HashSet<>();
+    static Set<String> appPackages = new HashSet<>();
+    static List<String> appClasses = new ArrayList<>();
 
     public static void main(String[] args) {
         // Ensure that an APK file is provided as an argument
@@ -22,12 +30,11 @@ public class Main {
         // Set up Soot options for analyzing APKs
         setupSoot(apkPath, androidJar);
 
-        // Load all classes and print them
-//        printAllClasses();
+        getAppClasses();
 
-        // Generate intent analysis
-//        generateIntentAnalysis();
-        test();
+        for (String appClass : appClasses)
+            printIntentExtras(appClass);
+
     }
 
     private static void setupSoot(String apkPath, String androidJar) {
@@ -42,81 +49,99 @@ public class Main {
         // Set up Dexpler to analyze DEX
         Options.v().set_src_prec(Options.src_prec_apk);
         Options.v().set_process_multiple_dex(true); // Handle multi-DEX APKs
-
     }
 
-    private static void printAllClasses() {
+    private static void getAppClasses() {
         Scene.v().loadNecessaryClasses();
+        // Ottieni tutte le classi caricate
+        Chain<SootClass> classes = Scene.v().getApplicationClasses();
 
-        System.out.println("Loaded classes:");
-        for (SootClass sootClass : Scene.v().getClasses()) {
-            System.out.println(sootClass.getName());
+        // Stampa il nome del package di ciascuna classe
+        for (SootClass sc : classes) {
+            String packageName = sc.getPackageName();
+//            System.out.println("Classe: " + sc.getName() + " - Package: " + packageName);
+            androidPackages.add(packageName);
         }
-    }
 
-    private static void generateIntentAnalysis() {
-        // Load the necessary classes
-        Scene.v().loadNecessaryClasses();
+        System.out.println("Packages:");
+        for (String pkg : androidPackages) {
+            if (!(pkg.contains("android") || pkg.contains("java") || pkg.contains("kotlin") || pkg.contains("google")
+                    || pkg.contains("jetbrains") || pkg.contains("intellij")
+                    || pkg.contains("_COROUTINE") || pkg.contains(".ui.theme"))) {
+                appPackages.add(pkg);
+                System.out.println(pkg);
+            }
+        }
 
-        // Analyze all the loaded classes
-        for (SootClass sootClass : Scene.v().getClasses()) {
-            // Analyze only the classes that contain activities (Activity)
-            System.out.println(sootClass.getName());
-            if (sootClass.getName().startsWith("com.example.primarychecker.")) {
-                analyzeActivityForIntents(sootClass);
+        System.out.println("\nClasses:");
+        for (SootClass sc : classes) {
+            String packageName = sc.getPackageName();
+            String[] parts = sc.getName().split("\\.");
+            String className = parts[parts.length - 1];
+            if (appPackages.contains(packageName)) {
+                if (!(className.startsWith("R$") || className.equals("R"))) {
+                    appClasses.add(packageName + "." + className);
+                    System.out.println(packageName + "." + className);
+                }
+
             }
         }
     }
 
-    private static void test() {
+    private static void printIntentExtras(String className) {
+        String regex = "get\\w*Extra\\(java\\.lang\\.String";
+        Pattern pattern = Pattern.compile(regex);
+        List<Pair<String, String>> intent = new ArrayList<>();
+
         Scene.v().loadNecessaryClasses();
 
         // Retrieve the specified class
-        SootClass sootClass = Scene.v().getSootClass("com.example.primarychecker.PrimaryChecker");
+        SootClass sootClass = Scene.v().getSootClass(className);
 
         // Print the class name
-        System.out.println("Class: " + sootClass.getName());
+        System.out.println("\nClass: " + sootClass.getName());
 
         // Print details of the methods in the class
         System.out.println("Methods:");
         for (SootMethod method : sootClass.getMethods()) {
             System.out.println(" - " + method.getName());
             if (method.isConcrete()) {
+                String[] lines = method.retrieveActiveBody().toString().split("\n");
                 // If the method is concrete, print its body
-                System.out.println("   Body: " + method.retrieveActiveBody());
+//                System.out.println("   Body: "  );
+                for (String line : lines) {
+                    if (line.contains("android.content.Intent") && pattern.matcher(line).find()) {
+//                        System.out.println(line);
+                        intent.add(extractIntentExtras(line));
+                    }
+                }
             } else {
                 // If the method is not concrete, indicate it
                 System.out.println("   Method is not concrete.");
             }
         }
-    }
 
-    private static void analyzeActivityForIntents(SootClass sootClass) {
-        // Analyze the methods of the class to find those that invoke getIntent() and getIntExtra()
-        for (SootMethod method : sootClass.getMethods()) {
-            // Ignore the constructor (<init>) and methods without an active body
-            if (method.getName().equals("<init>") || !method.hasActiveBody()) {
-                continue;
-            }
-
-            // Analyze the method body
-            for (Unit unit : method.getActiveBody().getUnits()) {
-                // Look for calls to the getIntent() method
-                if (unit.toString().contains("getIntent")) {
-                    System.out.println("Found getIntent() in: " + sootClass.getName() + " in method " + method.getName());
-                    analyzeIntentExtras(unit);
-                }
+        if (!intent.isEmpty()) {
+            System.out.println("Extras in the intent:");
+            for (Pair<String, String> pair : intent) {
+                System.out.println("Key: " + pair.getO1() + "; Type: " + pair.getO2());
             }
         }
     }
 
-    private static void analyzeIntentExtras(Unit unit) {
-        // Look for calls to getExtra() on Intent objects
-        if (unit.toString().contains("getIntExtra")) {
-            System.out.println("Found getIntExtra usage in: " + unit.toString());
+    public static Pair<String, String> extractIntentExtras(String line) {
+//        Matcher matcher = Pattern.compile("\\(\"([^\"]+)\".*?,\\s*(\\d+)\\)").matcher(line);
+
+        String regex = "virtualinvoke .*<.*: (\\w+) .*get\\w*Extra\\(.*\\)>.*\\(\"([^\"]+)\"";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(line);
+
+        if (matcher.find()) {
+            String type = matcher.group(1);
+            String key = matcher.group(2);
+            return new Pair<>(key, type);
         }
-        if (unit.toString().contains("getExtras")) {
-            System.out.println("Found getExtras() usage in: " + unit.toString());
-        }
+        return null;
     }
+
 }
