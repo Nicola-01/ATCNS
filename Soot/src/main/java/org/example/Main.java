@@ -53,10 +53,9 @@ public class Main {
 
     private static void getAppClasses() {
         Scene.v().loadNecessaryClasses();
-        // Ottieni tutte le classi caricate
         Chain<SootClass> classes = Scene.v().getApplicationClasses();
 
-        // Stampa il nome del package di ciascuna classe
+        // Prints the package names
         for (SootClass sc : classes) {
             String packageName = sc.getPackageName();
 //            System.out.println("Classe: " + sc.getName() + " - Package: " + packageName);
@@ -89,8 +88,13 @@ public class Main {
     }
 
     private static void printIntentExtras(String className) {
-        String regex = "get\\w*Extra\\(java\\.lang\\.String";
-        Pattern pattern = Pattern.compile(regex);
+        String regexIntentExtra = "get\\w*Extra\\(java\\.lang\\.String";
+        Pattern patternIntentExtra = Pattern.compile(regexIntentExtra);
+
+        String regexBundleExtra = "android.os.Bundle: ([\\w.]+) get\\w*\\(java\\.lang\\.String\\)";
+        Pattern patternBundleExtra = Pattern.compile(regexBundleExtra);
+
+
         List<Pair<String, String>> intent = new ArrayList<>();
 
         Scene.v().loadNecessaryClasses();
@@ -110,10 +114,10 @@ public class Main {
                 // If the method is concrete, print its body
 //                System.out.println("   Body: "  );
                 for (String line : lines) {
-                    if (line.contains("android.content.Intent") && pattern.matcher(line).find()) {
-//                        System.out.println(line);
-                        intent.add(extractIntentExtras(line));
-                    }
+                    if (line.contains("android.content.Intent") && patternIntentExtra.matcher(line).find()) {
+                        intent.add(extractExtras(line, false));
+                    } else if (patternBundleExtra.matcher(line).find())
+                        intent.add(extractExtras(line, true));
                 }
             } else {
                 // If the method is not concrete, indicate it
@@ -129,10 +133,10 @@ public class Main {
         }
     }
 
-    public static Pair<String, String> extractIntentExtras(String line) {
+    public static Pair<String, String> extractExtras(String line, Boolean bundle) {
 //        Matcher matcher = Pattern.compile("\\(\"([^\"]+)\".*?,\\s*(\\d+)\\)").matcher(line);
 
-        String regex = "virtualinvoke .*<.*: (\\w+) .*get\\w*Extra\\(.*\\)>.*\\(\"([^\"]+)\"";
+        String regex = (bundle)? "<[^:]+: [^ ]+ get(\\w+)\\([^)]*\\)>.*\\(\"([^\"]+)\"\\)" : "virtualinvoke .*<.*: \\w+ .*get(\\w*)Extra\\(.*\\)>.*\\(\"([^\"]+)\"";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(line);
 
@@ -143,5 +147,37 @@ public class Main {
         }
         return null;
     }
+
+    /**
+    public static Pair<String, String> extractIntentExtras(String line) {
+//        Matcher matcher = Pattern.compile("\\(\"([^\"]+)\".*?,\\s*(\\d+)\\)").matcher(line);
+
+        String regex = "virtualinvoke .*<.*: \\w+ .*get(\\w*)Extra\\(.*\\)>.*\\(\"([^\"]+)\"";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(line);
+
+        if (matcher.find()) {
+            String type = matcher.group(1);
+            String key = matcher.group(2);
+            return new Pair<>(key, type);
+        }
+        return null;
+    }
+
+    public static Pair<String, String> extractBundleExtras(String line) {
+//        Matcher matcher = Pattern.compile("\\(\"([^\"]+)\".*?,\\s*(\\d+)\\)").matcher(line);
+
+        String regex = "<[^:]+: [^ ]+ get(\\w+)\\([^)]*\\)>.*\\(\"([^\"]+)\"\\)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(line);
+
+        if (matcher.find()) {
+            String type = matcher.group(1);
+            String key = matcher.group(2);
+            return new Pair<>(key, type);
+        }
+        return null;
+    }
+     **/
 
 }

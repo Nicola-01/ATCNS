@@ -1,0 +1,3 @@
+../Apps/primaryChecker/app-primaryChecker.apk /home/nicola/Android/Sdk/platforms/android-33/android.jar
+
+../Apps/Calculator/app-calculator.apk /home/nicola/Android/Sdk/platforms/android-33/android.jar
