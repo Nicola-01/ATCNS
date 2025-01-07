@@ -136,7 +136,7 @@ public class Main {
     public static Pair<String, String> extractExtras(String line, Boolean bundle) {
 //        Matcher matcher = Pattern.compile("\\(\"([^\"]+)\".*?,\\s*(\\d+)\\)").matcher(line);
 
-        String regex = (bundle)? "<[^:]+: [^ ]+ get(\\w+)\\([^)]*\\)>.*\\(\"([^\"]+)\"\\)" : "virtualinvoke .*<.*: \\w+ .*get(\\w*)Extra\\(.*\\)>.*\\(\"([^\"]+)\"";
+        String regex = (bundle)? "<[^:]+:\\s*[^ ]+\\s*get(\\w+)\\s*\\([^)]*\\)>.*\\(\"([^\"]+)\"" : "<[^:]+:\\s*[^ ]+\\s*get(\\w+)Extra\\s*\\([^)]*\\)>.*\\(\"([^\"]+)\"";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(line);
 
