@@ -8,11 +8,24 @@ import soot.toolkits.scalar.ArraySparseSet;
 import soot.toolkits.scalar.FlowSet;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class IntentAnalysis {
+    
+    // Set to keep track of found packages and classes
+    //private static Set<String> customPackages = new HashSet<>();
+    private static Set<String> customClasses = new HashSet<>();
+    
     public static void main(String[] args) {
+
+        // Ensure that an APK file and the JAR file are provided as arguments
+        if (args.length < 2) {
+            System.out.println("Usage: java -jar Soot-1.0-SNAPSHOT.jar <path-to-apk> <path-to-android-jar>");
+            return;
+        }
 
         String apkPath = args[0];
         String androidJarPath = args[1];
@@ -24,6 +37,9 @@ public class IntentAnalysis {
         Options.v().set_process_dir(List.of(apkPath));
         Options.v().set_whole_program(true);
         Options.v().set_allow_phantom_refs(true);
+        // Set up Dexpler to analyze DEX --> otherwise custom classes are not analyzed
+        Options.v().set_src_prec(Options.src_prec_apk);
+        Options.v().set_process_multiple_dex(true);
 
         // Load classes and start Soot
         Scene.v().loadNecessaryClasses();
@@ -33,19 +49,47 @@ public class IntentAnalysis {
                 // Perform the analysis on each method body
                 SootMethod method = body.getMethod();
                 String className = method.getDeclaringClass().getName(); // Get the class name
-                new IntentFlowAnalysis(new ExceptionalUnitGraph(body), className);
+                
+                if (!isSystemClass(className)) {
+                    customClasses.add(className);
+                    //customPackages.add(className.substring(0, className.lastIndexOf(".")));
+                    new IntentFlowAnalysis(new ExceptionalUnitGraph(body), className, method);
+                }
+
             }
         }));
+
         PackManager.v().runPacks();
+
+        // Output packages and classes
+        //System.out.println("Packages:");
+        //customPackages.forEach(System.out::println);
+
+        //System.out.println("\nClasses:");
+        //customClasses.forEach(System.out::println);
+    }
+
+    private static boolean isSystemClass(String className) {
+        return className.contains("androidx") 
+                || className.contains("android") 
+                || className.contains("java")
+                || className.contains("kotlin")
+                || className.contains("google")
+                || className.contains("jetbrains")
+                || className.contains("intellij")
+                || className.contains(".ui.theme")
+                || className.contains("_COROUTINE");
     }
 
     // Custom ForwardFlowAnalysis
     static class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<String>> {
         private final String className; // Class name where the method belongs
+        private final SootMethod method;
 
-        public IntentFlowAnalysis(ExceptionalUnitGraph graph, String className) {
+        public IntentFlowAnalysis(ExceptionalUnitGraph graph, String className, SootMethod method) {
             super(graph);
             this.className = className;
+            this.method = method;
             doAnalysis();
         }
 
@@ -77,7 +121,9 @@ public class IntentAnalysis {
                         methodName.equals("sendBroadcast") ||
                         methodName.equals("startService") ||
                         invokeExpr.getMethod().getDeclaringClass().getName().equals("android.content.Intent")) {
-                        System.out.println("Found Intent-related call in class " + className + " at: " + stmt);
+                        
+                        // Print the desired output
+                        System.out.println("Found Intent-related call in class " + className + " at method " + method.getName() + ": " + stmt);
                     }
                 }
             }
