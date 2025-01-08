@@ -30,16 +30,11 @@ public class IntentAnalysis {
         String apkPath = args[0];
         String androidJarPath = args[1];
 
-        // Initialize Soot
-        Options.v().set_src_prec(Options.src_prec_apk);
-        Options.v().set_android_jars(androidJarPath);
-        Options.v().set_force_android_jar(androidJarPath + "/android.jar");
-        Options.v().set_process_dir(List.of(apkPath));
-        Options.v().set_whole_program(true);
-        Options.v().set_allow_phantom_refs(true);
-        // Set up Dexpler to analyze DEX --> otherwise custom classes are not analyzed
-        Options.v().set_src_prec(Options.src_prec_apk);
-        Options.v().set_process_multiple_dex(true);
+        setupSoot(apkPath, androidJarPath);
+
+        ManifestParsing manifest = new ManifestParsing(apkPath);
+
+
 
         // Load classes and start Soot
         Scene.v().loadNecessaryClasses();
@@ -67,6 +62,21 @@ public class IntentAnalysis {
 
         //System.out.println("\nClasses:");
         //customClasses.forEach(System.out::println);
+
+    }
+
+    private static void setupSoot(String apkPath, String androidJarPath) {
+        // Initialize Soot
+        Options.v().set_src_prec(Options.src_prec_apk);
+        Options.v().set_android_jars(androidJarPath);
+        Options.v().set_force_android_jar(androidJarPath + "/android.jar");
+        Options.v().set_process_dir(List.of(apkPath));
+        Options.v().set_whole_program(true);
+        Options.v().set_allow_phantom_refs(true);
+        // Set up Dexpler to analyze DEX --> otherwise custom classes are not analyzed
+        Options.v().set_src_prec(Options.src_prec_apk);
+        Options.v().set_process_multiple_dex(true);
+
     }
 
     private static boolean isSystemClass(String className) {
