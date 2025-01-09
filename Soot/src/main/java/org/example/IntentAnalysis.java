@@ -18,16 +18,8 @@ public class IntentAnalysis {
     // Set to keep track of found packages and classes
     //private static Set<String> customPackages = new HashSet<>();
     private static Set<String> customClasses = new HashSet<>();
-    
-    public static void main(String[] args) {
 
-        // Ensure that an APK file and the JAR file are provided as arguments
-        if (args.length < 1) {
-            System.out.println("Usage: java -jar Soot-1.0-SNAPSHOT.jar <path-to-apk>");
-            return;
-        }
-
-        String apkPath = args[0];
+    public IntentAnalysis(String apkPath){
 
         ManifestParsing manifest = new ManifestParsing(apkPath);
 
