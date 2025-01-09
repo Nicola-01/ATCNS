@@ -90,6 +90,9 @@ public class ManifestParsing {
 
         Document manifest = extractManifest(apkPath, appName);
         queryManifest(manifest);
+
+        // Delete the extracted directory after returning the Document
+        deleteDir(String.format("manifest/%s", appName));
     }
 
     /**
@@ -130,9 +133,6 @@ public class ManifestParsing {
                     Document manifest = builder.parse(new InputSource(new FileInputStream(manifestFile)));
 
                     System.out.println("AndroidManifest.xml successfully parsed.");
-
-                    // Delete the extracted directory after returning the Document
-                    deleteDir(String.format("manifest/%s", appName));
 
                     // Return the parsed Document object
                     return manifest;
@@ -220,8 +220,8 @@ public class ManifestParsing {
                 String activityName = activityElement.getAttribute("android:name");
 
                 // Skip activities that are not in the correct package
-                if (!activityName.contains(packageName))
-                    continue;
+//                if (!activityName.contains(packageName))
+//                    continue;
 
                 String exported = activityElement.getAttribute("android:exported");
 
