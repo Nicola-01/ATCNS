@@ -147,6 +147,7 @@ public class IntentAnalysis {
                     if (methodName.equals("startActivity") ||
                         methodName.equals("sendBroadcast") ||
                         methodName.equals("startService") ||
+                        methodName.equals("getIntent") ||
                         invokeExpr.getMethod().getDeclaringClass().getName().equals("android.content.Intent")) {
 
                         // Print the desired output
