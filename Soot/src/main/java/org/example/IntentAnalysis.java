@@ -31,8 +31,6 @@ public class IntentAnalysis {
 
         setupSoot(apkPath, androidJarPath);
 
-
-
         // Load classes and start Soot
         Scene.v().loadNecessaryClasses();
         PackManager.v().getPack("jtp").add(new Transform("jtp.intentAnalysis", new BodyTransformer() {

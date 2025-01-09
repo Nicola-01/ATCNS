@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,7 +18,7 @@ public class Main {
     public static void main(String[] args) {
 
         if (args.length == 1) {
-            new IntentAnalysis(args[0]); // apk dir from args
+            new IntentAnalysis(args[0]); // apk path from args
             return;
         }
 
@@ -37,7 +38,6 @@ public class Main {
         switch (choice) {
             case "r":
                 printAppsList();
-                userInput();
                 break;
 
             case "e":
@@ -55,6 +55,8 @@ public class Main {
                         String selectedApk = appsList.get(selectedIndex);
                         System.out.println("You selected: " + selectedApk);
                         new IntentAnalysis(APPS_DIR + "/" + selectedApk);
+                        scanner.close();
+                        System.exit(0);
                     } else {
                         System.out.println("Invalid number. Please select a valid APK.");
                     }
@@ -64,32 +66,31 @@ public class Main {
                 }
                 break;
         }
+        userInput();
     }
 
     private static void printAppsList() {
-        Path appsDirPath = Paths.get(APPS_DIR);
-
+        File appsDir = new File(APPS_DIR);
 
         System.out.println("[r]\tfor Reload");
         System.out.println("[e]\tfor Exit");
         System.out.println("\t- - - - -");
 
+        File[] apkFiles = appsDir.listFiles((dir, name) -> name.endsWith(".apk"));
 
-        AtomicInteger index = new AtomicInteger(1); // Start from 1 for the first file
-        try {
-            // Walk through the directory and filter for .apk files
-            Files.walk(appsDirPath)
-                    .filter(path -> path.toString().endsWith(".apk"))
-                    .forEach(path -> {
-                        // Get the file name (appName.apk)
-                        String appName = path.getFileName().toString();
-                        // Print in the specified format [index] \tab appName.apk
-                        System.out.println("[" + index + "]\t" + appName);
-                        index.getAndIncrement(); // Increment the index for the next file
-                        appsList.add(appName);
-                    });
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (apkFiles != null) {
+            int len = String.valueOf(apkFiles.length).length();
+
+            for (int i = 0; i < apkFiles.length; i++) {
+                String apkName = apkFiles[i].getName();
+                appsList.add(apkName);
+                // Format the index with leading zeros
+                String format = "%0" + len + "d";
+                String formattedIndex = String.format(format, i + 1);
+
+                // Print with tab distance adjusted
+                System.out.printf("[%s]  %s\n", formattedIndex, apkName);
+            }
         }
 
     }
