@@ -106,6 +106,7 @@ public class ManifestParsing {
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
         processBuilder.redirectErrorStream(true);
 
+        System.out.println("Starting execution of apktool...");
         try {
             Process process = processBuilder.start();
 //            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -190,10 +191,12 @@ public class ManifestParsing {
         ExportedActivities = getActivities(manifest, PackageName, true);
 
         // Print the extracted values
+        System.out.println();
         System.out.println("Package: " + PackageName);
         System.out.println("Compile SDK Version: " + SDK_Version);
         System.out.println("Activities: " + Activities);
         System.out.println("Exported Activities: " + ExportedActivities);
+        System.out.println();
     }
 
     /**
