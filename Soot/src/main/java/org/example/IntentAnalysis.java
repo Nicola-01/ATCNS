@@ -3,15 +3,14 @@ package org.example;
 import soot.*;
 import soot.jimple.*;
 import soot.options.Options;
+import soot.toolkits.graph.DominatorsFinder;
 import soot.toolkits.graph.ExceptionalUnitGraph;
+import soot.toolkits.graph.MHGDominatorsFinder;
 import soot.toolkits.scalar.ArraySparseSet;
 import soot.toolkits.scalar.FlowSet;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This class performs static analysis on an APK file to
@@ -98,73 +97,96 @@ public class IntentAnalysis {
         Options.v().set_process_multiple_dex(true);
 
     }
+}
+
+/**
+ * A custom forward flow analysis class to analyze Intent-related operations in a method.
+ */
+class IntentFlowAnalysis extends ForwardFlowAnalysis {
+    private final String className; // The class where the analyzed method belongs
+    private final SootMethod method; // The method being analyzed
+
+    FlowSet emptySet = new ArraySparseSet();
+    Map<Unit, FlowSet> unitToGenerateSet;
 
     /**
-     * A custom forward flow analysis class to analyze Intent-related operations in a method.
+     * Constructor for the IntentFlowAnalysis class.
+     *
+     * @param graph     The control flow graph of the method being analyzed.
+     * @param className The name of the class containing the method.
+     * @param method    The method being analyzed.
      */
-    static class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<String>> {
-        private final String className; // The class where the analyzed method belongs
-        private final SootMethod method; // The method being analyzed
+    public IntentFlowAnalysis(ExceptionalUnitGraph graph, String className, SootMethod method) {
+        super(graph);
+        this.className = className;
+        this.method = method;
 
-        /**
-         * Constructor for the IntentFlowAnalysis class.
-         *
-         * @param graph     The control flow graph of the method being analyzed.
-         * @param className The name of the class containing the method.
-         * @param method    The method being analyzed.
-         */
-        public IntentFlowAnalysis(ExceptionalUnitGraph graph, String className, SootMethod method) {
-            super(graph);
-            this.className = className;
-            this.method = method;
-            doAnalysis();
-        }
+        DominatorsFinder df = new MHGDominatorsFinder(graph);
+        unitToGenerateSet = new HashMap<Unit, FlowSet>(graph.size() * 2 + 1, 0.7f);
 
-        @Override
-        protected FlowSet<String> newInitialFlow() {
-            return new ArraySparseSet<>();
-        }
+        // pre-compute generate sets
+        for (Iterator unitIt = graph.iterator(); unitIt.hasNext(); ) {
+            Unit s = (Unit) unitIt.next();
+            FlowSet genSet = emptySet.clone();
 
-        @Override
-        protected FlowSet<String> entryInitialFlow() {
-            return new ArraySparseSet<>();
-        }
-
-        @Override
-        protected void flowThrough(FlowSet<String> in, Unit unit, FlowSet<String> out) {
-            // Copy the current flow set
-            in.copy(out);
-
-            // Check for Intent-related calls
-            if (unit instanceof Stmt) {
-                Stmt stmt = (Stmt) unit;
-
-                if (stmt.containsInvokeExpr()) {
-                    InvokeExpr invokeExpr = stmt.getInvokeExpr();
-                    String methodName = invokeExpr.getMethod().getName();
-
-                    // Check for methods related to Intents
-                    if (methodName.equals("startActivity") ||
-                        methodName.equals("sendBroadcast") ||
-                        methodName.equals("startService") ||
-                        methodName.equals("getIntent") ||
-                        invokeExpr.getMethod().getDeclaringClass().getName().equals("android.content.Intent")) {
-
-                        // Print the desired output
-                        System.out.println("Found Intent-related call in class " + className + " at method " + method.getName() + ": " + stmt);
-                    }
+            for (Iterator domsIt = df.getDominators(s).iterator(); domsIt.hasNext(); ) {
+                Unit dom = (Unit) domsIt.next();
+                for (Iterator boxIt = dom.getDefBoxes().iterator(); boxIt.hasNext(); ) {
+                    ValueBox box = (ValueBox) boxIt.next();
+                    if (box.getValue() instanceof Local)
+                        genSet.add(box.getValue(), genSet);
                 }
             }
+
+            unitToGenerateSet.put(s, genSet);
         }
 
-        @Override
-        protected void merge(FlowSet<String> in1, FlowSet<String> in2, FlowSet<String> out) {
-            in1.union(in2, out);
-        }
+        doAnalysis();
+    }
 
-        @Override
-        protected void copy(FlowSet<String> source, FlowSet<String> dest) {
-            source.copy(dest);
-        }
+    /**
+     * All INs are initialized to the empty set.
+     **/
+    protected Object newInitialFlow() {
+        return emptySet.clone();
+    }
+
+    /**
+     * IN(Start) is the empty set
+     **/
+    protected Object entryInitialFlow() {
+        return emptySet.clone();
+    }
+
+    /**
+     * OUT is the same as IN plus the genSet.
+     **/
+    protected void flowThrough(Object inValue, Object unit, Object outValue) {
+        FlowSet
+                in = (FlowSet) inValue,
+                out = (FlowSet) outValue;
+
+        // perform generation (kill set is empty)
+        in.union(unitToGenerateSet.get(unit), out);
+    }
+
+    /**
+     * All paths == Intersection.
+     **/
+    protected void merge(Object in1, Object in2, Object out) {
+        FlowSet
+                inSet1 = (FlowSet) in1,
+                inSet2 = (FlowSet) in2,
+                outSet = (FlowSet) out;
+
+        inSet1.intersection(inSet2, outSet);
+    }
+
+    protected void copy(Object source, Object dest) {
+        FlowSet
+                sourceSet = (FlowSet) source,
+                destSet = (FlowSet) dest;
+
+        sourceSet.copy(destSet);
     }
 }
