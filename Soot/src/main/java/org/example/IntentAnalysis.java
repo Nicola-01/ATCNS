@@ -13,26 +13,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * This class performs static analysis on an APK file to
+ * analyze Intent-related operations in their methods.
+ */
 public class IntentAnalysis {
-    
-    // Set to keep track of found packages and classes
-    //private static Set<String> customPackages = new HashSet<>();
-    private static Set<String> customClasses = new HashSet<>();
 
-    public IntentAnalysis(String apkPath){
+    /**
+     * A set to keep track of classes analyzed during the process.
+     */
+    private static final Set<String> customClasses = new HashSet<>();
 
+    /**
+     * Constructor that initializes the analysis for a given APK file.
+     *
+     * @param apkPath The path to the APK file to be analyzed.
+     */
+    public IntentAnalysis(String apkPath) {
+        // Parse the APK's AndroidManifest.xml to retrieve metadata
         ManifestParsing manifest = new ManifestParsing(apkPath);
 
+        // Retrieve necessary data from the manifest
         int SDK_Version = manifest.getSDK_Version();
         List<String> exportedActivities = manifest.getExportedActivities();
         String packageName = manifest.getPackageName();
 
+        // Download the corresponding Android SDK JAR and get its path
         String androidJarPath = (new AndroidJarDownloader(SDK_Version)).getAndroidJarsPath();
 
+        // Set up Soot for analyzing the APK, and load classes
         setupSoot(apkPath, androidJarPath);
-
-        // Load classes and start Soot
         Scene.v().loadNecessaryClasses();
+
+        // Add a custom transformation to analyze methods for Intent-related operations
         PackManager.v().getPack("jtp").add(new Transform("jtp.intentAnalysis", new BodyTransformer() {
             @Override
             protected void internalTransform(Body body, String phase, Map<String, String> options) {
@@ -40,16 +53,20 @@ public class IntentAnalysis {
                 SootMethod method = body.getMethod();
                 String className = method.getDeclaringClass().getName(); // Get the class name
 
+                // Check if the class is an exported activity
                 if (exportedActivities.contains(className)) {
                     System.out.println(className + "." + method.getName());
                     customClasses.add(className);
                     //customPackages.add(className.substring(0, className.lastIndexOf(".")));
+
+                    // Perform Intent flow analysis on the method's body
                     new IntentFlowAnalysis(new ExceptionalUnitGraph(body), className, method);
                 }
 
             }
         }));
 
+        // Run all Soot transformations
         PackManager.v().runPacks();
 
         // Output packages and classes
@@ -61,6 +78,12 @@ public class IntentAnalysis {
 
     }
 
+    /**
+     * Configures Soot options for analyzing the given APK file.
+     *
+     * @param apkPath        The path to the APK file to be analyzed.
+     * @param androidJarPath The path to the Android SDK JAR file corresponding to the APK's SDK version.
+     */
     private static void setupSoot(String apkPath, String androidJarPath) {
         // Initialize Soot
         Options.v().set_src_prec(Options.src_prec_apk);
@@ -69,17 +92,27 @@ public class IntentAnalysis {
         Options.v().set_process_dir(List.of(apkPath));
         Options.v().set_whole_program(true);
         Options.v().set_allow_phantom_refs(true);
+
         // Set up Dexpler to analyze DEX --> otherwise custom classes are not analyzed
         Options.v().set_src_prec(Options.src_prec_apk);
         Options.v().set_process_multiple_dex(true);
 
     }
 
-    // Custom ForwardFlowAnalysis
+    /**
+     * A custom forward flow analysis class to analyze Intent-related operations in a method.
+     */
     static class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<String>> {
-        private final String className; // Class name where the method belongs
-        private final SootMethod method;
+        private final String className; // The class where the analyzed method belongs
+        private final SootMethod method; // The method being analyzed
 
+        /**
+         * Constructor for the IntentFlowAnalysis class.
+         *
+         * @param graph     The control flow graph of the method being analyzed.
+         * @param className The name of the class containing the method.
+         * @param method    The method being analyzed.
+         */
         public IntentFlowAnalysis(ExceptionalUnitGraph graph, String className, SootMethod method) {
             super(graph);
             this.className = className;
@@ -115,7 +148,7 @@ public class IntentAnalysis {
                         methodName.equals("sendBroadcast") ||
                         methodName.equals("startService") ||
                         invokeExpr.getMethod().getDeclaringClass().getName().equals("android.content.Intent")) {
-                        
+
                         // Print the desired output
                         System.out.println("Found Intent-related call in class " + className + " at method " + method.getName() + ": " + stmt);
                     }

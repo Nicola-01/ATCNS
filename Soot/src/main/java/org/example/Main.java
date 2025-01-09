@@ -8,26 +8,56 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Main class for the Intent Symbolic Execution tool.
+ * <p>
+ * This class allows users to select an APK file from a specified directory for analysis.
+ */
 public class Main {
 
+    /**
+     * Directory containing the APK files to be analyzed.
+     */
     private static final String APPS_DIR = "Applications_to_analise";
-    static List<String> appsList = new ArrayList<>();
 
+    /**
+     * List to store the names of APK files found in the {@link #APPS_DIR}.
+     */
+    private static final List<String> appsList = new ArrayList<>();
+
+    /**
+     * The entry point of the application.
+     * <p>
+     * This method checks for command-line arguments to directly analyze an APK.
+     * If no arguments are provided, it initializes the application by:
+     * - Ensuring the applications directory exists.
+     * - Printing the list of APKs available for analysis.
+     * - Waiting for user input to select an APK, reload the list, or exit.
+     *
+     * @param args Command-line arguments, where the first argument can be the path to an APK for immediate analysis.
+     */
     public static void main(String[] args) {
-
+        // If an APK path is provided via command-line arguments, analyze it directly
         if (args.length == 1) {
             new IntentAnalysis(args[0]); // apk path from args
             return;
         }
 
-        createFolderIfNotExists();
+        try {
+            Files.createDirectories(Paths.get(APPS_DIR));
+        } catch (IOException e) {
+            System.err.println("Failed to create directory: " + e.getMessage());
+        }
+
         printAppsList();
         userInput();
 
     }
 
+    /**
+     * Handles user input for selecting APK files, reloading the list, or exiting the application.
+     */
     private static void userInput() {
         // Wait for user input
         System.out.print("Choose an option: ");
@@ -36,21 +66,22 @@ public class Main {
 
         // Handle user input
         switch (choice) {
-            case "r":
+            case "r": // Reload the APK list
                 printAppsList();
                 break;
 
-            case "e":
+            case "e": // Exit the application
                 System.out.println("Exiting...");
                 scanner.close();
                 System.exit(0);
                 break;
 
-            default:
-                // Check if the choice is a valid number
+            default: // Handle APK selection by number
                 try {
+                    // Parse the user input as an integer
                     int selectedIndex = Integer.parseInt(choice) - 1;
 
+                    // Ensure the selection is within the valid range
                     if (selectedIndex >= 0 && selectedIndex < appsList.size()) {
                         String selectedApk = appsList.get(selectedIndex);
                         System.out.println("You selected: " + selectedApk);
@@ -66,9 +97,13 @@ public class Main {
                 }
                 break;
         }
+        // Recursively prompt for input
         userInput();
     }
 
+    /**
+     * Prints the list of APK files in the specified directory.
+     */
     private static void printAppsList() {
         File appsDir = new File(APPS_DIR);
 
@@ -93,19 +128,5 @@ public class Main {
             }
         }
 
-    }
-
-    public static void createFolderIfNotExists() {
-        Path destinationPath = Paths.get(APPS_DIR);
-        // Check if the file already exists
-        if (!Files.exists(destinationPath)) {
-            try {
-                // Create the directory if it doesn't exist
-                Files.createDirectories(destinationPath);
-                System.out.println("Directory created: " + destinationPath);
-            } catch (IOException e) {
-                System.err.println("Failed to create directory: " + e.getMessage());
-            }
-        }
     }
 }

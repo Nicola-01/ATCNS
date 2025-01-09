@@ -14,29 +14,77 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A utility class for parsing the AndroidManifest.xml file of an APK.
+ * <p>
+ * This class:
+ * - Extracts the AndroidManifest.xml from an APK using apktool.
+ * - Parses the manifest to extract package details, SDK version, and activities.
+ * - Provides methods to query the manifest for specific details, such as exported activities.
+ */
 public class ManifestParsing {
 
+    /**
+     * The compile SDK version specified in the AndroidManifest.xml.
+     */
     private static int SDK_Version;
+
+    /**
+     * The package name of the application, as defined in the AndroidManifest.xml.
+     */
     private static String PackageName;
+
+    /**
+     * A list of all activities defined in the AndroidManifest.xml.
+     */
     private static List<String> Activities;
+
+    /**
+     * A list of exported activities (android:exported="true") in the AndroidManifest.xml.
+     */
     private static List<String> ExportedActivities;
 
+    /**
+     * Gets the compile SDK version of the application.
+     *
+     * @return the compile SDK version.
+     */
     public int getSDK_Version() {
         return SDK_Version;
     }
 
+    /**
+     * Gets the package name of the application.
+     *
+     * @return the package name.
+     */
     public String getPackageName() {
         return PackageName;
     }
 
+    /**
+     * Gets the list of all activities in the AndroidManifest.xml.
+     *
+     * @return a list of activity names.
+     */
     public List<String> getActivities() {
         return Activities;
     }
 
+    /**
+     * Gets the list of exported activities (android:exported="true") in the AndroidManifest.xml.
+     *
+     * @return a list of exported activity names.
+     */
     public List<String> getExportedActivities() {
         return ExportedActivities;
     }
 
+    /**
+     * Constructor for the ManifestParsing class.
+     *
+     * @param apkPath the path to the APK file.
+     */
     public ManifestParsing(String apkPath) {
         String appName = apkPath.substring(apkPath.lastIndexOf('/') + 1).split("\\.")[0];
 
@@ -44,8 +92,14 @@ public class ManifestParsing {
         queryManifest(manifest);
     }
 
+    /**
+     * Extracts the AndroidManifest.xml from the specified APK using apktool.
+     *
+     * @param apkPath the path to the APK file.
+     * @param appName the name of the application, derived from the APK file name.
+     * @return a Document object representing the parsed AndroidManifest.xml, or null if extraction fails.
+     */
     public static Document extractManifest(String apkPath, String appName) {
-        // Define the command to execute apktool and extract the APK
         String command = String.format("apktool d %s -o manifest/%s -f", apkPath, appName);
 
         // Use ProcessBuilder to execute the command
@@ -53,15 +107,12 @@ public class ManifestParsing {
         processBuilder.redirectErrorStream(true);
 
         try {
-            // Start the process to decode the APK
             Process process = processBuilder.start();
-
-            // Read the output of the command
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                System.out.println(line);
+//            }
 
             // Wait for the process to finish
             int exitCode = process.waitFor();
@@ -79,7 +130,7 @@ public class ManifestParsing {
 
                     System.out.println("AndroidManifest.xml successfully parsed.");
 
-                    // Optionally, delete the extracted directory after returning the Document
+                    // Delete the extracted directory after returning the Document
                     deleteDir(String.format("manifest/%s", appName));
 
                     // Return the parsed Document object
@@ -92,45 +143,37 @@ public class ManifestParsing {
                 System.out.println("apktool command failed with exit code: " + exitCode);
             }
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
-        } catch (SAXException e) {
-            throw new RuntimeException(e);
         }
 
         // Return null if there's an error or manifest is not found
         return null;
     }
 
-    // Simple method to delete a directory and its contents
+    /**
+     * Deletes a directory and its contents using a system command.
+     *
+     * @param path the path to the directory to be deleted.
+     */
     public static void deleteDir(String path) {
         String command = String.format("rm -rf %s", path);
-
-        // Use ProcessBuilder to execute the command
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
-
         processBuilder.redirectErrorStream(true);
 
         try {
-            // Start the process
             Process process = processBuilder.start();
-            int exitCode = process.waitFor();
-            if (exitCode == 0) {
-                System.out.println("deleteDir executed successfully.");
-            } else {
-                System.out.println("deleteDir failed with exit code: " + exitCode);
-            }
-
-        } catch (IOException e) {
+            process.waitFor();
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
     }
 
-    // Method to extract specific values from the parsed manifest
+    /**
+     * Queries the provided AndroidManifest.xml document and extracts relevant details.
+     *
+     * @param manifest the Document object representing the AndroidManifest.xml.
+     */
     public static void queryManifest(Document manifest) {
         if (manifest == null) {
             System.out.println("Manifest is null.");
@@ -146,7 +189,6 @@ public class ManifestParsing {
         Activities = getActivities(manifest, PackageName, false);
         ExportedActivities = getActivities(manifest, PackageName, true);
 
-
         // Print the extracted values
         System.out.println("Package: " + PackageName);
         System.out.println("Compile SDK Version: " + SDK_Version);
@@ -154,7 +196,14 @@ public class ManifestParsing {
         System.out.println("Exported Activities: " + ExportedActivities);
     }
 
-    // Method to get a list of all activities from the manifest
+    /**
+     * Extracts activities from the AndroidManifest.xml.
+     *
+     * @param manifest               the Document object representing the AndroidManifest.xml.
+     * @param packageName            the package name of the application.
+     * @param onlyExportedActivities if true, filters only exported activities.
+     * @return a list of activity names.
+     */
     public static List<String> getActivities(Document manifest, String packageName, Boolean onlyExportedActivities) {
         List<String> activities = new ArrayList<>();
 
@@ -168,13 +217,13 @@ public class ManifestParsing {
                 String activityName = activityElement.getAttribute("android:name");
 
                 // Skip activities that are not in the correct package
-                if(!activityName.contains(packageName))
+                if (!activityName.contains(packageName))
                     continue;
 
                 String exported = activityElement.getAttribute("android:exported");
 
-                // If android:exported="true", add it to the list
                 if (onlyExportedActivities) {
+                    // If android:exported="true", add it to the list
                     if (exported.equals("true"))
                         activities.add(activityName);
                 } else
