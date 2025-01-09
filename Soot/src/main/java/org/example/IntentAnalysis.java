@@ -22,17 +22,22 @@ public class IntentAnalysis {
     public static void main(String[] args) {
 
         // Ensure that an APK file and the JAR file are provided as arguments
-        if (args.length < 2) {
-            System.out.println("Usage: java -jar Soot-1.0-SNAPSHOT.jar <path-to-apk> <path-to-android-jar>");
+        if (args.length < 1) {
+            System.out.println("Usage: java -jar Soot-1.0-SNAPSHOT.jar <path-to-apk>");
             return;
         }
 
         String apkPath = args[0];
-        String androidJarPath = args[1];
-
-        setupSoot(apkPath, androidJarPath);
 
         ManifestParsing manifest = new ManifestParsing(apkPath);
+
+        int SDK_Version = manifest.getSDK_Version();
+        List<String> exportedActivities = manifest.getExportedActivities();
+        String packageName = manifest.getPackageName();
+
+        String androidJarPath = (new AndroidJarDownloader(SDK_Version)).getAndroidJarsPath();
+
+        setupSoot(apkPath, androidJarPath);
 
 
 
@@ -44,8 +49,9 @@ public class IntentAnalysis {
                 // Perform the analysis on each method body
                 SootMethod method = body.getMethod();
                 String className = method.getDeclaringClass().getName(); // Get the class name
-                
-                if (!isSystemClass(className)) {
+
+                if (exportedActivities.contains(className)) {
+                    System.out.println(className + "." + method.getName());
                     customClasses.add(className);
                     //customPackages.add(className.substring(0, className.lastIndexOf(".")));
                     new IntentFlowAnalysis(new ExceptionalUnitGraph(body), className, method);
@@ -69,7 +75,7 @@ public class IntentAnalysis {
         // Initialize Soot
         Options.v().set_src_prec(Options.src_prec_apk);
         Options.v().set_android_jars(androidJarPath);
-        Options.v().set_force_android_jar(androidJarPath + "/android.jar");
+        Options.v().set_force_android_jar(androidJarPath);
         Options.v().set_process_dir(List.of(apkPath));
         Options.v().set_whole_program(true);
         Options.v().set_allow_phantom_refs(true);
@@ -77,18 +83,6 @@ public class IntentAnalysis {
         Options.v().set_src_prec(Options.src_prec_apk);
         Options.v().set_process_multiple_dex(true);
 
-    }
-
-    private static boolean isSystemClass(String className) {
-        return className.contains("androidx") 
-                || className.contains("android") 
-                || className.contains("java")
-                || className.contains("kotlin")
-                || className.contains("google")
-                || className.contains("jetbrains")
-                || className.contains("intellij")
-                || className.contains(".ui.theme")
-                || className.contains("_COROUTINE");
     }
 
     // Custom ForwardFlowAnalysis

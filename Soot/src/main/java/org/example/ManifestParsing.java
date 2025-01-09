@@ -21,19 +21,19 @@ public class ManifestParsing {
     private static List<String> Activities;
     private static List<String> ExportedActivities;
 
-    public static int getSDK_Version() {
+    public int getSDK_Version() {
         return SDK_Version;
     }
 
-    public static String getPackageName() {
+    public String getPackageName() {
         return PackageName;
     }
 
-    public static List<String> getActivities() {
+    public List<String> getActivities() {
         return Activities;
     }
 
-    public static List<String> getExportedActivities() {
+    public List<String> getExportedActivities() {
         return ExportedActivities;
     }
 

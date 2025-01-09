@@ -8,3 +8,5 @@ Soot/out/
 Soot/target/
 
 *.class
+
+Soot/android_jars/
