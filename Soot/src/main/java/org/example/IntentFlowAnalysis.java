@@ -7,21 +7,22 @@ import soot.ValueBox;
 import soot.toolkits.graph.DominatorsFinder;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 import soot.toolkits.graph.MHGDominatorsFinder;
-import soot.toolkits.graph.UnitGraph;
 import soot.toolkits.scalar.ArraySparseSet;
 import soot.toolkits.scalar.FlowSet;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map; /**
+import java.util.Map;
+
+/**
  * A custom forward flow analysis class to analyze Intent-related operations in a method.
  */
-public class IntentFlowAnalysis extends ForwardFlowAnalysis {
+public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>> {
     private final String className;
     private final SootMethod method;
-    private FlowSet emptySet = new ArraySparseSet();
-    private Map<Unit, FlowSet> unitToGenerateSet;
+    private final FlowSet<Local> emptySet = new ArraySparseSet<>();
+    private final Map<Unit, FlowSet<Local>> unitToGenerateSet = new HashMap<>();
 
     public IntentFlowAnalysis(ExceptionalUnitGraph graph, String className, SootMethod method) {
         super(graph);
@@ -29,82 +30,74 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis {
         this.method = method;
 
         // Dominator analysis setup
-        DominatorsFinder df = new MHGDominatorsFinder(graph);
-        unitToGenerateSet = new HashMap<Unit, FlowSet>(graph.size() * 2 + 1, 0.7f);
+        DominatorsFinder<Unit> dominatorsFinder = new MHGDominatorsFinder<>(graph);
 
         // Precompute generate sets
-        for (Iterator unitIt = graph.iterator(); unitIt.hasNext(); ) {
-            Unit s = (Unit) unitIt.next();
-            FlowSet genSet = emptySet.clone();
+        for (Unit unit : graph) {
+            FlowSet<Local> genSet = emptySet.clone();
 
-            for (Iterator domsIt = df.getDominators(s).iterator(); domsIt.hasNext(); ) {
-                Unit dom = (Unit) domsIt.next();
-                for (Iterator boxIt = dom.getDefBoxes().iterator(); boxIt.hasNext(); ) {
-                    ValueBox box = (ValueBox) boxIt.next();
-                    if (box.getValue() instanceof Local)
-                        genSet.add(box.getValue(), genSet);
+            for (Unit dominator : dominatorsFinder.getDominators(unit)) {
+                for (ValueBox valueBox : dominator.getDefBoxes()) {
+                    if (valueBox.getValue() instanceof Local) {
+                        genSet.add((Local) valueBox.getValue());
+                    }
                 }
             }
-
-            unitToGenerateSet.put(s, genSet);
+            unitToGenerateSet.put(unit, genSet);
         }
 
+        // Perform the analysis
         doAnalysis();
+
+        // Generate the control flow graph in DOT format
         generateGraph(graph);
     }
 
-    protected Object newInitialFlow() {
+    @Override
+    protected FlowSet<Local> newInitialFlow() {
         return emptySet.clone();
     }
 
-    protected Object entryInitialFlow() {
+    @Override
+    protected FlowSet<Local> entryInitialFlow() {
         return emptySet.clone();
     }
 
-    protected void flowThrough(Object inValue, Object unit, Object outValue) {
-        FlowSet in = (FlowSet) inValue;
-        FlowSet out = (FlowSet) outValue;
-
+    @Override
+    protected void flowThrough(FlowSet<Local> in, Unit unit, FlowSet<Local> out) {
         // Perform flow generation (kill set is empty)
-        in.union(unitToGenerateSet.get(unit), out);
+        in.union(unitToGenerateSet.getOrDefault(unit, emptySet), out);
     }
 
-    protected void merge(Object in1, Object in2, Object out) {
-        FlowSet inSet1 = (FlowSet) in1;
-        FlowSet inSet2 = (FlowSet) in2;
-        FlowSet outSet = (FlowSet) out;
-
-        inSet1.intersection(inSet2, outSet);
+    @Override
+    protected void merge(FlowSet<Local> in1, FlowSet<Local> in2, FlowSet<Local> out) {
+        in1.intersection(in2, out);
     }
 
-    protected void copy(Object source, Object dest) {
-        FlowSet sourceSet = (FlowSet) source;
-        FlowSet destSet = (FlowSet) dest;
-        sourceSet.copy(destSet);
+    @Override
+    protected void copy(FlowSet<Local> source, FlowSet<Local> dest) {
+        source.copy(dest);
     }
 
     /**
      * Method to generate the control flow graph in DOT format.
      */
-    private void generateGraph(UnitGraph graph) {
+    private void generateGraph(ExceptionalUnitGraph graph) {
         StringBuilder dotGraph = new StringBuilder();
-        dotGraph.append("digraph " + className + "." + method.getName() + " {\n");
+        dotGraph.append(String.format("digraph %s_%s {\n", className.replace(".","_"), method.getName()));
 
-        // Add nodes (statements)
+        // Add nodes and edges
         for (Unit unit : graph) {
             String nodeName = "node" + unit.hashCode();
-            dotGraph.append(nodeName + " [label=\"" + unit.toString() + "\"];\n");
+            dotGraph.append(String.format("%s [label=\"%s\"];\n", nodeName.replace("\"","\\\""), unit));
 
-            // Add edges (control flow)
-            for (Unit succ : graph.getSuccsOf(unit)) {
-                String succNodeName = "node" + succ.hashCode();
-                dotGraph.append(nodeName + " -> " + succNodeName + ";\n");
+            for (Unit successor : graph.getSuccsOf(unit)) {
+                String succNodeName = "node" + successor.hashCode();
+                dotGraph.append(String.format("%s -> %s;\n", nodeName, succNodeName));
             }
         }
 
         dotGraph.append("}\n");
-
-        // Output the DOT representation
-        System.out.println(dotGraph.toString());
+        System.out.println(dotGraph);
     }
 }

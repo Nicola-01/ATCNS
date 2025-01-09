@@ -220,8 +220,8 @@ public class ManifestParsing {
                 String activityName = activityElement.getAttribute("android:name");
 
                 // Skip activities that are not in the correct package
-//                if (!activityName.contains(packageName))
-//                    continue;
+                if (!activityName.contains(packageName))
+                    continue;
 
                 String exported = activityElement.getAttribute("android:exported");
 

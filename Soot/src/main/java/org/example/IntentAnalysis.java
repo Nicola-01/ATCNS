@@ -55,7 +55,7 @@ public class IntentAnalysis {
 
                 // Check if the class is an exported activity
                 if (exportedActivities.contains(className)) {
-                    System.out.println(className + "." + method.getName());
+//                    System.out.println(className + "." + method.getName());
                     customClasses.add(className);
                     //customPackages.add(className.substring(0, className.lastIndexOf(".")));
 
@@ -68,14 +68,6 @@ public class IntentAnalysis {
 
         // Run all Soot transformations
         PackManager.v().runPacks();
-
-        // Output packages and classes
-        //System.out.println("Packages:");
-        //customPackages.forEach(System.out::println);
-
-        //System.out.println("\nClasses:");
-        //customClasses.forEach(System.out::println);
-
     }
 
     /**
@@ -88,15 +80,14 @@ public class IntentAnalysis {
         // Initialize Soot
         Options.v().set_src_prec(Options.src_prec_apk);
         Options.v().set_android_jars(androidJarPath);
-        Options.v().set_force_android_jar(androidJarPath);
         Options.v().set_process_dir(List.of(apkPath));
         Options.v().set_whole_program(true);
         Options.v().set_allow_phantom_refs(true);
-
-        // Set up Dexpler to analyze DEX --> otherwise custom classes are not analyzed
-        Options.v().set_src_prec(Options.src_prec_apk);
         Options.v().set_process_multiple_dex(true);
+        Options.v().set_force_android_jar(androidJarPath);
 
+        // Enable Dexpler for analyzing DEX files
+        Options.v().set_src_prec(Options.src_prec_apk);
     }
 }
 
