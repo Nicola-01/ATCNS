@@ -10,3 +10,5 @@ Soot/target/
 *.class
 
 Soot/android_jars/
+
+Soot/dotFiles/

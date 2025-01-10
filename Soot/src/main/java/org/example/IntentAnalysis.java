@@ -1,16 +1,16 @@
 package org.example;
 
 import soot.*;
-import soot.jimple.*;
+//import soot.jimple.*;
 import soot.options.Options;
-import soot.toolkits.graph.DominatorsFinder;
+//import soot.toolkits.graph.DominatorsFinder;
 import soot.toolkits.graph.ExceptionalUnitGraph;
-import soot.toolkits.graph.MHGDominatorsFinder;
+/**import soot.toolkits.graph.MHGDominatorsFinder;
 import soot.toolkits.graph.UnitGraph;
 import soot.toolkits.scalar.ArraySparseSet;
 import soot.toolkits.scalar.FlowSet;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
-
+*/
 import java.util.*;
 
 /**
@@ -36,7 +36,7 @@ public class IntentAnalysis {
         // Retrieve necessary data from the manifest
         int SDK_Version = manifest.getSDK_Version();
         List<String> exportedActivities = manifest.getExportedActivities();
-        String packageName = manifest.getPackageName();
+        //String packageName = manifest.getPackageName();
 
         // Download the corresponding Android SDK JAR and get its path
         String androidJarPath = (new AndroidJarDownloader(SDK_Version)).getAndroidJarsPath();

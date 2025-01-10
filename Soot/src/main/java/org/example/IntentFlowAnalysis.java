@@ -11,8 +11,10 @@ import soot.toolkits.scalar.ArraySparseSet;
 import soot.toolkits.scalar.FlowSet;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -98,6 +100,19 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
         }
 
         dotGraph.append("}\n");
-        System.out.println(dotGraph);
+        //System.out.println(dotGraph);
+
+        String simpleClassName = className.substring(className.lastIndexOf('.') + 1);
+        String methodName = method.getName();
+        String fileName = simpleClassName + "_" + methodName + ".dot";
+        
+        try (FileWriter writer = new FileWriter("dotFiles/" + fileName)) {
+
+            writer.write(dotGraph.toString());
+            System.out.println("Graph saved to /Soot/dotFiles/" + fileName);
+
+        } catch (IOException e) {
+            System.err.println("Error writing graph to file: " + e.getMessage());
+        }
     }
 }
