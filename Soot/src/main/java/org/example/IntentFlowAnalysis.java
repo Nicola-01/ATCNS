@@ -11,11 +11,10 @@ import soot.toolkits.scalar.ArraySparseSet;
 import soot.toolkits.scalar.FlowSet;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
-//import java.util.Iterator;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A custom forward flow analysis class to analyze Intent-related operations in a method.
@@ -102,17 +101,21 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
         dotGraph.append("}\n");
         //System.out.println(dotGraph);
 
-        String simpleClassName = className.substring(className.lastIndexOf('.') + 1);
-        String methodName = method.getName();
-        String fileName = simpleClassName + "_" + methodName + ".dot";
-        
-        try (FileWriter writer = new FileWriter("dotFiles/" + fileName)) {
+        String dotContent = dotGraph.toString();
 
-            writer.write(dotGraph.toString());
-            System.out.println("Graph saved to /Soot/dotFiles/" + fileName);
+        Pattern intentClassPattern = Pattern.compile(".*android\\.content\\.Intent.*");
+        Pattern getIntentPattern = Pattern.compile(".*getIntent\\(\\).*");
 
-        } catch (IOException e) {
-            System.err.println("Error writing graph to file: " + e.getMessage());
-        }
+        Matcher intentClassMatcher = intentClassPattern.matcher(dotContent);
+        Matcher getIntentMatcher = getIntentPattern.matcher(dotContent);
+
+        System.out.println("Intent class calls inside " + className + "_" + method.getName() + ":");
+        while (intentClassMatcher.find())
+            System.out.println(intentClassMatcher.group());
+
+        System.out.println("getIntent() calls inside " + className + "_" + method.getName() + ":");
+        while (getIntentMatcher.find())
+            System.out.println(getIntentMatcher.group());
+
     }
 }
