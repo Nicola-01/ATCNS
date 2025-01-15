@@ -115,15 +115,12 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
                 String nodeName = "node" + unit.hashCode();
                 String line = unit.toString();
 
-                if (line.contains("android.os.Bundle getExtras()")) {
-                    myExecutionGraph.addVertex(Map.entry(nodeName, unit.toString())); // root
-                    startAdding = true;
-                }
-                if (!startAdding) continue;
-
                 if (line.contains("android.content.Intent") && patternIntentExtra.matcher(line).find()) {// TODO remove .contains, use the regex
                     //                intent.add(extractExtras(line, false)); // TODO
                 } else if (patternBundleExtra.matcher(line).find()) { // extract a parameter from a bundle
+                    startAdding = true;
+
+
                     Map.Entry<String, String> stringStringPair = extractExtras(line, true);
                     System.out.println("Key: " + stringStringPair.getKey() + "; Type: " + stringStringPair.getValue());
 
@@ -134,26 +131,25 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
                     intentParameters.put(parameterName, stringStringPair.getKey());
                 }
 
+                if (!startAdding) continue;
+
                 // check if in the line there is the name of a saved parameter
-                else if (intentParameters.keySet().stream().anyMatch(line::contains)) {
+                if (intentParameters.keySet().stream().anyMatch(line::contains)) {
                     addToGraph(graph, myExecutionGraph, unit, Map.entry(nodeName, unit.toString()));
                     String newParameterName = unit.toString().split(" = ")[0];
                     // start tracking the new parameter (that depends on a saved parameter)
                     if (newParameterName.split(" ").length == 1)
                         intentParameters.put(newParameterName, newParameterName);
+
+                    // if is a switch, save the parameter used
+                    if (line.startsWith("lookupswitch")) {
+                        Pattern pattern = Pattern.compile("\\(([^)]+)\\)");
+                        Matcher matcher = pattern.matcher(line);
+
+                        if (matcher.find())
+                            intentParameters.put(matcher.group(1), matcher.group(1));
+                    }
                 }
-
-                // check the switch
-                else if (line.startsWith("lookupswitch")) {
-                    Pattern pattern = Pattern.compile("\\(([^)]+)\\)");
-                    Matcher matcher = pattern.matcher(line);
-
-                    if (matcher.find())
-                        intentParameters.put(matcher.group(1), matcher.group(1));
-                }
-
-                if (!myExecutionGraph.vertexSet().isEmpty() && unit.toString().equals("return"))
-                    addToGraph(graph, myExecutionGraph, unit, Map.entry(nodeName, unit.toString()));
             }
         }
         while (startParametersCount < intentParameters.size());
