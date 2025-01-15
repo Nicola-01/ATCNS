@@ -39,20 +39,25 @@ public class Main {
      */
     public static void main(String[] args) {
         // If an APK path is provided via command-line arguments, analyze it directly
+        if (args.length == 0) {
+            try {
+                Files.createDirectories(Paths.get(APPS_DIR));
+            } catch (IOException e) {
+                System.err.println("Failed to create directory: " + e.getMessage());
+            }
+
+            printAppsList();
+            userInput();
+        }
         if (args.length == 1) {
-            new IntentAnalysis(args[0]); // apk path from args
-            return;
+            new IntentAnalysis(args[0], null); // apk path from args
         }
-
-        try {
-            Files.createDirectories(Paths.get(APPS_DIR));
-        } catch (IOException e) {
-            System.err.println("Failed to create directory: " + e.getMessage());
+        else if (args.length == 2) {
+            new IntentAnalysis(args[0], args[1]); // apk path from args
         }
-
-        printAppsList();
-        userInput();
-
+        else {
+            System.err.println("Invalid number of arguments: " + args.length);
+        }
     }
 
     /**
@@ -85,7 +90,7 @@ public class Main {
                     if (selectedIndex >= 0 && selectedIndex < appsList.size()) {
                         String selectedApk = appsList.get(selectedIndex);
                         System.out.println("You selected: " + selectedApk);
-                        new IntentAnalysis(APPS_DIR + "/" + selectedApk);
+                        new IntentAnalysis(APPS_DIR + "/" + selectedApk, null);
                         scanner.close();
                         System.exit(0);
                     } else {
