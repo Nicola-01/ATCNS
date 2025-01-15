@@ -39,7 +39,7 @@ public class IntentAnalysis {
         //String packageName = manifest.getPackageName();
 
         // Download the corresponding Android SDK JAR and get its path
-        if (androidJarPath != null)
+        if (androidJarPath == null)
             androidJarPath = (new AndroidJarDownloader(SDK_Version)).getAndroidJarsPath();
 
         // Set up Soot for analyzing the APK, and load classes
