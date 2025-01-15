@@ -14,7 +14,9 @@ import soot.toolkits.scalar.FlowSet;
 import soot.toolkits.scalar.ForwardFlowAnalysis;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -122,7 +124,7 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
 
 
                     Map.Entry<String, String> stringStringPair = extractExtras(line, true);
-                    System.out.println("Key: " + stringStringPair.getKey() + "; Type: " + stringStringPair.getValue());
+//                    System.out.println("Key: " + stringStringPair.getKey() + "; Type: " + stringStringPair.getValue());
 
 //                    addToGraph(graph, myExecutionGraph, unit, Map.entry(nodeName, "get" + stringStringPair.getValue() + "()"));
                     addToGraph(graph, myExecutionGraph, unit, Map.entry(nodeName, unit.toString()));
@@ -154,10 +156,44 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
         }
         while (startParametersCount < intentParameters.size());
 
+        // TODO: maybe to remove
+        // remove "goto" vertex
+        removeGoToVertex(myExecutionGraph);
+
 
 //        System.out.println(myExecutionGraph);
 
         printGraph(myExecutionGraph);
+    }
+
+    private void removeGoToVertex(Graph<Map.Entry<String, String>, DefaultEdge> myExecutionGraph) {
+
+        Map<String, String> nodesToRemove = new HashMap<>();
+
+        for (Map.Entry<String, String> vertex : myExecutionGraph.vertexSet())
+            if (vertex.getValue().startsWith("goto"))
+                nodesToRemove.put(vertex.getKey(), vertex.getValue());
+
+        for (Map.Entry<String, String> node : nodesToRemove.entrySet()) {
+            // Find predecessors and successors
+            Set<Map.Entry<String, String>> predecessors = new HashSet<>();
+            for (DefaultEdge incomingEdge : myExecutionGraph.incomingEdgesOf(node))
+                predecessors.add(myExecutionGraph.getEdgeSource(incomingEdge));
+
+            Set<Map.Entry<String, String>> successors = new HashSet<>();
+            for (DefaultEdge outgoingEdge : myExecutionGraph.outgoingEdgesOf(node))
+                successors.add(myExecutionGraph.getEdgeTarget(outgoingEdge));
+
+            // Connect predecessors to successors
+            for (Map.Entry<String, String> predecessor : predecessors)
+                for (Map.Entry<String, String> successor : successors)
+                    if (!predecessor.equals(successor))  // Avoid adding loops
+                        myExecutionGraph.addEdge(predecessor, successor);
+
+
+            // Remove the node
+            myExecutionGraph.removeVertex(node);
+        }
     }
 
     private void printGraph(Graph<Map.Entry<String, String>, DefaultEdge> graph) {
