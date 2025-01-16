@@ -153,7 +153,7 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
 
                 // check if in the line there is the name of a saved parameter
                 if (intentParameters.keySet().stream().anyMatch(line::contains)) {
-                    addToGraph(graph, myExecutionGraph, unit, Map.entry(nodeName, unit.toString()));
+                    addToGraph(graph, myExecutionGraph, unit, Map.entry(nodeName, line));
                     
                     // start tracking the new parameter (that depends on a saved parameter)
                     String newParameterName = unit.toString().split(" = ")[0];
@@ -187,7 +187,9 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
 
 
 //        System.out.println(myExecutionGraph);
-
+        //System.out.print("Parameters: ");
+        //for (Map.Entry<String, String> entry : intentParameters.entrySet())
+        //    System.out.print(entry.getKey() + " ");
         printGraph(myExecutionGraph);
     }
 
