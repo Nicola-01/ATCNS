@@ -31,6 +31,16 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
     private final FlowSet<Local> emptySet = new ArraySparseSet<>();
     private final Map<Unit, FlowSet<Local>> unitToGenerateSet = new HashMap<>();
 
+
+    private final String regexIntentExtra = "android.content.Intent: ([\\w.]+) get\\w*Extra\\(java\\.lang\\.String";
+    private final Pattern patternIntentExtra = Pattern.compile(regexIntentExtra);
+
+    private final String regexBundleExtra = "android.os.Bundle: ([\\w.]+) get\\w*\\(java\\.lang\\.String\\)";
+    private final Pattern patternBundleExtra = Pattern.compile(regexBundleExtra);
+
+    private final String regexGetAction = "getAction\\(\\)";
+    private final Pattern patterGetAction = Pattern.compile(regexGetAction);
+
     public IntentFlowAnalysis(ExceptionalUnitGraph graph, String className, SootMethod method) {
         super(graph);
         this.className = className;
@@ -43,13 +53,11 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
         for (Unit unit : graph) {
             FlowSet<Local> genSet = emptySet.clone();
 
-            for (Unit dominator : dominatorsFinder.getDominators(unit)) {
-                for (ValueBox valueBox : dominator.getDefBoxes()) {
-                    if (valueBox.getValue() instanceof Local) {
+            for (Unit dominator : dominatorsFinder.getDominators(unit))
+                for (ValueBox valueBox : dominator.getDefBoxes())
+                    if (valueBox.getValue() instanceof Local)
                         genSet.add((Local) valueBox.getValue());
-                    }
-                }
-            }
+
             unitToGenerateSet.put(unit, genSet);
         }
 
@@ -57,7 +65,9 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
         doAnalysis();
 
         // Generate the control flow graph with filter for showing only intent related edges
-        getIntentGraph(graph, null);
+        FilteredControlFlowGraph filteredControlFlowGraph = getIntentGraph(graph);
+
+        System.out.println(filteredControlFlowGraph);
 
         // For printing the no filtered control flow graph
         //generateGraph(graph);
@@ -89,60 +99,30 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
         source.copy(dest);
     }
 
+    private FilteredControlFlowGraph getIntentGraph(ExceptionalUnitGraph graph) {
 
-    private final String regexIntentExtra = "android.content.Intent: ([\\w.]+) get\\w*Extra\\(java\\.lang\\.String";
-    private final Pattern patternIntentExtra = Pattern.compile(regexIntentExtra);
+        FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(graph, className, method);
 
-    private final String regexBundleExtra = "android.os.Bundle: ([\\w.]+) get\\w*\\(java\\.lang\\.String\\)";
-    private final Pattern patternBundleExtra = Pattern.compile(regexBundleExtra);
-
-    private final String regexGetAction = "getAction\\(\\)";
-    private final Pattern patterGetAction = Pattern.compile(regexGetAction);
-
-    private void getIntentGraph(ExceptionalUnitGraph graph, Map<String, String> intentParameters) {
-        int startParametersCount = 0;
-        // Filtered graph with only intent related edges
-        Graph<Map.Entry<String, String>, DefaultEdge> myExecutionGraph;
-
+        Map<String, String> intentParameters = new HashMap<>();
+        int startParametersCount;
         boolean startAdding = false; // start adding vertex only after the root
 
         do {
-            startAdding = false;
-            if (intentParameters == null)
-                intentParameters = new HashMap<>();
-            else
-                startParametersCount = intentParameters.size();
+            startParametersCount = intentParameters.size();
+            filteredControlFlowGraph.resetGraphContent();
 
-//            System.out.println(intentParameters);
-
-
-            myExecutionGraph = new SimpleGraph<>(DefaultEdge.class);
             for (Unit unit : graph) {
                 String nodeName = "node" + unit.hashCode();
                 String line = unit.toString();
 
-                if (patternIntentExtra.matcher(line).find()) {
-                    
+                if (patternIntentExtra.matcher(line).find() || patternBundleExtra.matcher(line).find()) {
                     startAdding = true;
+                    boolean isBundle = patternBundleExtra.matcher(line).find();
 
-                    Map.Entry<String, String> stringStringPair = extractExtras(line, false);
-//                    System.out.println("Key: " + stringStringPair.getKey() + "; Type: " + stringStringPair.getValue());
+                    Map.Entry<String, String> stringStringPair = extractExtras(line, isBundle);
 
-//                    addToGraph(graph, myExecutionGraph, unit, Map.entry(nodeName, "get" + stringStringPair.getValue() + "()"));
-                    addToGraph(graph, myExecutionGraph, unit, Map.entry(nodeName, line));
-
-                    String parameterName = unit.toString().split(" ")[0];
-                    intentParameters.put(parameterName, stringStringPair.getKey());
-
-                } else if (patternBundleExtra.matcher(line).find()) { // extract a parameter from a bundle
-                    
-                    startAdding = true;
-
-                    Map.Entry<String, String> stringStringPair = extractExtras(line, true);
-//                    System.out.println("Key: " + stringStringPair.getKey() + "; Type: " + stringStringPair.getValue());
-
-//                    addToGraph(graph, myExecutionGraph, unit, Map.entry(nodeName, "get" + stringStringPair.getValue() + "()"));
-                    addToGraph(graph, myExecutionGraph, unit, Map.entry(nodeName, line));
+//                    filteredControlFlowGraph.addToGraph(unit, Map.entry(nodeName, "get" + stringStringPair.getValue() + "()"));
+                    filteredControlFlowGraph.addToGraph(unit, Map.entry(nodeName, line));
 
                     String parameterName = unit.toString().split(" ")[0];
                     intentParameters.put(parameterName, stringStringPair.getKey());
@@ -153,8 +133,8 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
 
                 // check if in the line there is the name of a saved parameter
                 if (intentParameters.keySet().stream().anyMatch(line::contains)) {
-                    addToGraph(graph, myExecutionGraph, unit, Map.entry(nodeName, line));
-                    
+                    filteredControlFlowGraph.addToGraph(unit, Map.entry(nodeName, line));
+
                     // start tracking the new parameter (that depends on a saved parameter)
                     String newParameterName = unit.toString().split(" = ")[0];
                     // Case: $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>(i0)
@@ -165,7 +145,7 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
                     String[] newParametersName = unit.toString().split(".<")[0].split(" ");
                     // Case: specialinvoke $r9.<java.math.BigInteger: void <init>(java.lang.String)>($r2)
                     // It stores $r9 in intentParameters
-                    if (newParametersName.length == 2) 
+                    if (newParametersName.length == 2)
                         intentParameters.put(newParametersName[1], newParametersName[1]);
 
                     // if is a switch, save the parameter used
@@ -181,74 +161,12 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
         }
         while (startParametersCount < intentParameters.size());
 
-        // TODO: maybe to remove
-        // remove "goto" vertex
-        removeGoToVertex(myExecutionGraph);
-
-
-//        System.out.println(myExecutionGraph);
-        //System.out.print("Parameters: ");
-        //for (Map.Entry<String, String> entry : intentParameters.entrySet())
-        //    System.out.print(entry.getKey() + " ");
-        printGraph(myExecutionGraph);
-    }
-
-    private void removeGoToVertex(Graph<Map.Entry<String, String>, DefaultEdge> myExecutionGraph) {
-
-        Map<String, String> nodesToRemove = new HashMap<>();
-
-        for (Map.Entry<String, String> vertex : myExecutionGraph.vertexSet())
-            if (vertex.getValue().startsWith("goto"))
-                nodesToRemove.put(vertex.getKey(), vertex.getValue());
-
-        for (Map.Entry<String, String> node : nodesToRemove.entrySet()) {
-            // Find predecessors and successors
-            Set<Map.Entry<String, String>> predecessors = new HashSet<>();
-            for (DefaultEdge incomingEdge : myExecutionGraph.incomingEdgesOf(node))
-                predecessors.add(myExecutionGraph.getEdgeSource(incomingEdge));
-
-            Set<Map.Entry<String, String>> successors = new HashSet<>();
-            for (DefaultEdge outgoingEdge : myExecutionGraph.outgoingEdgesOf(node))
-                successors.add(myExecutionGraph.getEdgeTarget(outgoingEdge));
-
-            // Connect predecessors to successors
-            for (Map.Entry<String, String> predecessor : predecessors)
-                for (Map.Entry<String, String> successor : successors)
-                    if (!predecessor.equals(successor))  // Avoid adding loops
-                        myExecutionGraph.addEdge(predecessor, successor);
-
-
-            // Remove the node
-            myExecutionGraph.removeVertex(node);
-        }
-    }
-
-    private void printGraph(Graph<Map.Entry<String, String>, DefaultEdge> graph) {
-
-        StringBuilder dotGraph = new StringBuilder();
-        dotGraph.append(String.format("digraph %s_%s {\n", className.replace(".", "_"), method.getName()));
-
-        // Add nodes and edges
-        for (Map.Entry<String, String> v : graph.vertexSet()) {
-            String nodeName = v.getKey();
-            dotGraph.append(String.format("%s [label=\"%s\"];\n", nodeName, v.getValue().replace("\"", "\\\"")));
-        }
-
-        for (DefaultEdge e : graph.edgeSet()) {
-            String[] edge = e.toString().split(" : ");
-            String target = edge[0].substring(1, edge[0].indexOf('='));
-            String source = edge[1].substring(0, edge[1].indexOf('='));
-            dotGraph.append(String.format("%s -> %s ;\n", source, target));
-        }
-
-
-        dotGraph.append("}\n");
-        System.out.println(dotGraph);
+        return filteredControlFlowGraph;
     }
 
     /**
      * Method to generate the control flow graph in DOT format.
-    */
+     */
     private void generateGraph(ExceptionalUnitGraph graph) {
 
         StringBuilder dotGraph = new StringBuilder();
@@ -288,28 +206,6 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
 
     }
 
-    private void addToGraph(ExceptionalUnitGraph graph, Graph<Map.Entry<String, String>, DefaultEdge> myExecutionGraph, Unit unit, Map.Entry<String, String> entry) {
-        myExecutionGraph.addVertex(entry);
-
-        Map<String, Map.Entry<String, String>> elements = new HashMap<>();
-
-        for (Map.Entry<String, String> e : myExecutionGraph.vertexSet())
-            elements.put(e.getKey(), e);
-
-        resolveEdges(unit, elements, entry, myExecutionGraph);
-    }
-
-    public void resolveEdges(Unit unit, Map<String, Map.Entry<String, String>> elements, Map.Entry<String, String> entry, Graph<Map.Entry<String, String>, DefaultEdge> myExecutionGraph) {
-        for (Unit pred : graph.getPredsOf(unit)) {
-            if (elements.containsKey("node" + pred.hashCode())) {
-                myExecutionGraph.addEdge(entry, elements.get("node" + pred.hashCode()));
-                continue;
-            }
-            if (graph.getPredsOf(pred).isEmpty())
-                continue;
-            resolveEdges(pred, elements, entry, myExecutionGraph);
-        }
-    }
 
     public static Map.Entry<String, String> extractExtras(String line, Boolean bundle) {
 //        Matcher matcher = Pattern.compile("\\(\"([^\"]+)\".*?,\\s*(\\d+)\\)").matcher(line);
