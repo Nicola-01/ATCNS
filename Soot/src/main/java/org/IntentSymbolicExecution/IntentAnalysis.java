@@ -1,16 +1,9 @@
 package org.IntentSymbolicExecution;
 
 import soot.*;
-//import soot.jimple.*;
 import soot.options.Options;
-//import soot.toolkits.graph.DominatorsFinder;
 import soot.toolkits.graph.ExceptionalUnitGraph;
-/**import soot.toolkits.graph.MHGDominatorsFinder;
- import soot.toolkits.graph.UnitGraph;
- import soot.toolkits.scalar.ArraySparseSet;
- import soot.toolkits.scalar.FlowSet;
- import soot.toolkits.scalar.ForwardFlowAnalysis;
- */
+
 import java.util.*;
 
 /**
@@ -71,7 +64,7 @@ public class IntentAnalysis {
 
     /**
      * Generates a mapping of method names to filtered control flow graphs (CFGs) for exported activities.
-     *     *
+     *
      * @param exportedActivities A list exported activities from the APK.
      * @return A map where the keys are method identifiers in the format "ClassName.MethodName",
      *         and the values are {@link FilteredControlFlowGraph} objects representing the control flow of the corresponding method.
