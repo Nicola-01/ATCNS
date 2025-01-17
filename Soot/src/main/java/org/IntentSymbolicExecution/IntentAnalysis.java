@@ -18,12 +18,6 @@ import java.util.*;
  * analyze Intent-related operations in their methods.
  */
 public class IntentAnalysis {
-
-    /**
-     * A set to keep track of classes analyzed during the process.
-     */
-    private static final Set<String> customClasses = new HashSet<>();
-
     /**
      * Constructor that initializes the analysis for a given APK file.
      *
@@ -47,6 +41,8 @@ public class IntentAnalysis {
         Scene.v().loadNecessaryClasses();
 
         Map<String, FilteredControlFlowGraph> graphs = getCFGs(exportedActivities);
+
+        System.out.println();
 
         for (FilteredControlFlowGraph graph : graphs.values())
             if (!graph.isEmpty())
@@ -73,6 +69,13 @@ public class IntentAnalysis {
         Options.v().set_src_prec(Options.src_prec_apk);
     }
 
+    /**
+     * Generates a mapping of method names to filtered control flow graphs (CFGs) for exported activities.
+     *     *
+     * @param exportedActivities A list exported activities from the APK.
+     * @return A map where the keys are method identifiers in the format "ClassName.MethodName",
+     *         and the values are {@link FilteredControlFlowGraph} objects representing the control flow of the corresponding method.
+     */
     private static Map<String, FilteredControlFlowGraph> getCFGs(List<String> exportedActivities) {
         Map<String, FilteredControlFlowGraph> graphs = new HashMap<>();
 
@@ -85,20 +88,8 @@ public class IntentAnalysis {
                 String className = method.getDeclaringClass().getName(); // Get the class name
 
                 // Check if the class is an exported activity
-                if (exportedActivities.contains(className)) {
-//                    System.out.println(className + "." + method.getName());
-                    customClasses.add(className);
-                    //customPackages.add(className.substring(0, className.lastIndexOf(".")));
-
-                    // Perform Intent flow analysis on the method's body
-                    FilteredControlFlowGraph filteredControlFlowGraph =
-                            (new IntentFlowAnalysis(
-                                    new ExceptionalUnitGraph(body), className, method)
-                            ).getFilteredControlFlowGraph();
-
-                    graphs.put(className + "." + method.getName(), filteredControlFlowGraph);
-                }
-
+                if (exportedActivities.contains(className))
+                    graphs.put(className + "." + method.getName(), new FilteredControlFlowGraph(new ExceptionalUnitGraph(body), className, method.getName()));
             }
         }));
 

@@ -3,7 +3,6 @@ package org.IntentSymbolicExecution;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
-import soot.SootMethod;
 import soot.Unit;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
@@ -11,6 +10,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class constructs a graph based on the control flow graph provided by the ExceptionalUnitGraph.
@@ -35,22 +36,120 @@ public class FilteredControlFlowGraph {
     private final String className;
 
     /**
-     * The Soot method for which the control flow graph is constructed.
+     * The name of the method analyzed.
      */
-    private final SootMethod method;
+    private final String method;
 
     /**
      * Constructor to initialize the filtered control flow graph.
      *
      * @param fullGraph The complete control flow graph for the method.
      * @param className The name of the class containing the method.
-     * @param method    The Soot method being analyzed.
+     * @param method    The name method being analyzed.
      */
-    public FilteredControlFlowGraph(ExceptionalUnitGraph fullGraph, String className, SootMethod method) {
+    public FilteredControlFlowGraph(ExceptionalUnitGraph fullGraph, String className, String method) {
         this.fullGraph = fullGraph;
         this.className = className;
         this.method = method;
         this.filteredCFG = new SimpleGraph<>(DefaultEdge.class);
+
+        startFiltering();
+    }
+
+    /**
+     * Filter control flow graph that only contains edges related to Intent operations (e.g., getExtra calls).
+     */
+    private void startFiltering() {
+
+        // Initialize a map to keep track of parameters that we need to monitor during the analysis.
+        // The map's key represents the parameter's name, and the value represents its associated type.
+        Map<String, String> parametersToTrack = new HashMap<>();
+
+        // Store the count of parameters to track at the beginning of the loop.
+        // This helps in detecting when we've finished processing all relevant parameters.
+        int startParametersCount;
+
+        // A flag to determine when we should start adding vertices to the filtered control flow graph.
+        // Initially, we don't add any vertices until we've encountered the first relevant Intent or Bundle operation.
+        boolean startAdding; // Start adding vertices after the root node
+
+        do {
+            startParametersCount = parametersToTrack.size();
+            resetGraphContent();
+            startAdding = false;
+
+            // Iterate through the units in the graph
+            for (Unit unit : fullGraph) {
+                String line = unit.toString();
+
+                // Match lines containing getExtra methods in Intent or Bundle objects
+                if (RegexUtils.patternIntentExtra.matcher(line).find() || RegexUtils.patternBundleExtra.matcher(line).find()) {
+                    startAdding = true;
+                    boolean isBundle = RegexUtils.patternBundleExtra.matcher(line).find();
+
+                    // Extract the extra and add the corresponding node to the graph
+                    Map.Entry<String, String> stringStringPair = extractExtras(line, isBundle);
+                    addToGraph(unit);
+
+                    String parameterName = unit.toString().split(" ")[0];
+                    parametersToTrack.put(parameterName, stringStringPair.getKey());
+
+                }
+
+                // Continue adding nodes and edges after the first relevant extra is found
+                if (!startAdding) continue;
+
+                // Check if any saved parameters are used in the current unit
+                if (parametersToTrack.keySet().stream().anyMatch(line::contains)) {
+                    addToGraph(unit);
+
+                    // start tracking the new parameter (that depends on a saved parameter)
+                    String newParameterName = unit.toString().split(" = ")[0];
+                    // Case: $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>(i0)
+                    // It stores $r2 in parametersToTrack
+                    if (newParameterName.split(" ").length == 1)
+                        parametersToTrack.put(newParameterName, newParameterName);
+
+                    String[] newParametersName = unit.toString().split(".<")[0].split(" ");
+                    // Case: specialinvoke $r9.<java.math.BigInteger: void <init>(java.lang.String)>($r2)
+                    // It stores $r9 in parametersToTrack
+                    if (newParametersName.length == 2)
+                        parametersToTrack.put(newParametersName[1], newParametersName[1]);
+
+                    // If the line is a lookup switch, track the parameter used
+                    if (line.startsWith("lookupswitch")) {
+                        Pattern pattern = Pattern.compile("\\(([^)]+)\\)");
+                        Matcher matcher = pattern.matcher(line);
+
+                        if (matcher.find())
+                            parametersToTrack.put(matcher.group(1), matcher.group(1));
+                    }
+                }
+            }
+        }
+        // Continue the loop until no new parameters are tracked, meaning we have processed all relevant parameters.
+        while (startParametersCount < parametersToTrack.size());
+    }
+
+
+    /**
+     * Extracts the key and type of extra parameter from a line of code.
+     *
+     * @param line The line of code to analyze.
+     * @param bundle Whether the line refers to a Bundle object.
+     * @return A Map.Entry containing the key and type of the extra.
+     */
+    public static Map.Entry<String, String> extractExtras(String line, Boolean bundle) {
+        String regex = (bundle) ? "<[^:]+:\\s*[^ ]+\\s*get(\\w+)\\s*\\([^)]*\\)>.*\\(\"([^\"]+)\"" : "<[^:]+:\\s*[^ ]+\\s*get(\\w+)Extra\\s*\\([^)]*\\)>.*\\(\"([^\"]+)\"";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(line);
+
+        if (matcher.find()) {
+            String type = matcher.group(1);
+            String key = matcher.group(2);
+            return Map.entry(key, type);
+        }
+        return null;
     }
 
     /**
@@ -109,7 +208,7 @@ public class FilteredControlFlowGraph {
         removeGoToVertex();
 
         StringBuilder dotGraph = new StringBuilder();
-        dotGraph.append(String.format("digraph %s_%s {\n", className.replace(".", "_"), method.getName()));
+        dotGraph.append(String.format("digraph %s_%s {\n", className.replace(".", "_"), method));
 
         // Add nodes and their labels.
         for (Map.Entry<String, String> v : filteredCFG.vertexSet()) {
