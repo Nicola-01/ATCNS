@@ -64,9 +64,10 @@ public class FilteredControlFlowGraph {
      * Adds a unit and its corresponding entry to the filtered control flow graph.
      *
      * @param unit  The control flow unit from the original graph.
-     * @param entry The corresponding entry (node identifier and code snippet) to add to the graph.
      */
-    public void addToGraph(Unit unit, Map.Entry<String, String> entry) {
+    public void addToGraph(Unit unit) {
+        Map.Entry<String, String> entry = Map.entry("node" + unit.hashCode(), unit.toString());
+
         filteredCFG.addVertex(entry);
 
         // Map of existing vertices for quick lookup, the key is the node name.
@@ -161,5 +162,15 @@ public class FilteredControlFlowGraph {
             // Remove the current node.
             filteredCFG.removeVertex(node);
         }
+    }
+
+    /**
+     * Checks if the filtered control flow graph is empty.
+     *
+     * @return true if the filtered control flow graph contains no vertices,
+     *         otherwise false.
+     */
+    public boolean isEmpty() {
+        return filteredCFG.vertexSet().isEmpty();
     }
 }
