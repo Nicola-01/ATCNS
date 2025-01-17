@@ -169,16 +169,16 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
 
         // A flag to determine when we should start adding vertices to the filtered control flow graph.
         // Initially, we don't add any vertices until we've encountered the first relevant Intent or Bundle operation.
-        boolean startAdding = false; // Start adding vertices after the root node
+        boolean startAdding; // Start adding vertices after the root node
 
 
         do {
             startParametersCount = parametersToTrack.size();
             filteredControlFlowGraph.resetGraphContent();
+            startAdding = false;
 
             // Iterate through the units in the graph
             for (Unit unit : graph) {
-                String nodeName = "node" + unit.hashCode();
                 String line = unit.toString();
 
                 // Match lines containing getExtra methods in Intent or Bundle objects
