@@ -1,4 +1,4 @@
-package org.example;
+package org.IntentSymbolicExecution;
 
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
