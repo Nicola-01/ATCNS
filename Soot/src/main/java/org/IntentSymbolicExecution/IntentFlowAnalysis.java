@@ -47,6 +47,12 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
      */
     private final Map<Unit, FlowSet<Local>> unitToGenerateSet = new HashMap<>();
 
+    /**
+     * Represents a filtered version of the control flow graph for the current method.
+     */
+    FilteredControlFlowGraph filteredControlFlowGraph;
+
+
     // Regex
 
     /**
@@ -88,6 +94,8 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
         this.className = className;
         this.method = method;
 
+        filteredControlFlowGraph = new FilteredControlFlowGraph(graph, className, method);
+
         // Dominator analysis setup
         DominatorsFinder<Unit> dominatorsFinder = new MHGDominatorsFinder<>(graph);
 
@@ -109,12 +117,13 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
         // Generate the filtered control flow graph with only intent-related edges
         FilteredControlFlowGraph filteredControlFlowGraph = getIntentGraph(graph);
 
-        if (!filteredControlFlowGraph.isEmpty())
-            System.out.println(filteredControlFlowGraph);
+//        if (!filteredControlFlowGraph.isEmpty())
+//            System.out.println(filteredControlFlowGraph);
 
-        // For printing the no filtered control flow graph
-        //generateGraph(graph);
+//        generateGraph(graph);
     }
+
+
 
     @Override
     protected FlowSet<Local> newInitialFlow() {
@@ -149,8 +158,6 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
      * @return A FilteredControlFlowGraph containing only Intent-related edges.
      */
     private FilteredControlFlowGraph getIntentGraph(ExceptionalUnitGraph graph) {
-
-        FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(graph, className, method);
 
         // Initialize a map to keep track of parameters that we need to monitor during the analysis.
         // The map's key represents the parameter's name, and the value represents its associated type.
@@ -248,25 +255,6 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
 
         dotGraph.append("}\n");
         System.out.println(dotGraph);
-
-//        System.out.println(dotGraph);
-
-//        String dotContent = dotGraph.toString();
-//
-//        Pattern intentClassPattern = Pattern.compile(".*android\\.content\\.Intent.*");
-//        Pattern getIntentPattern = Pattern.compile(".*getIntent\\(\\).*");
-//
-//        Matcher intentClassMatcher = intentClassPattern.matcher(dotContent);
-//        Matcher getIntentMatcher = getIntentPattern.matcher(dotContent);
-//
-//        System.out.println("Intent class calls inside " + className + "_" + method.getName() + ":");
-//        while (intentClassMatcher.find())
-//            System.out.println(intentClassMatcher.group());
-//
-//        System.out.println("getIntent() calls inside " + className + "_" + method.getName() + ":");
-//        while (getIntentMatcher.find())
-//            System.out.println(getIntentMatcher.group());
-
     }
 
     /**
@@ -290,4 +278,14 @@ public class IntentFlowAnalysis extends ForwardFlowAnalysis<Unit, FlowSet<Local>
         }
         return null;
     }
+
+    /**
+     * Retrieves the filtered control flow graph
+     *
+     * @return The {@link FilteredControlFlowGraph} object associated with the current method.
+     */
+    public FilteredControlFlowGraph getFilteredControlFlowGraph() {
+        return filteredControlFlowGraph;
+    }
+
 }

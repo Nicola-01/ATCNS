@@ -46,29 +46,11 @@ public class IntentAnalysis {
         setupSoot(apkPath, androidJarPath);
         Scene.v().loadNecessaryClasses();
 
-        // Add a custom transformation to analyze methods for Intent-related operations
-        PackManager.v().getPack("jtp").add(new Transform("jtp.intentAnalysis", new BodyTransformer() {
-            @Override
-            protected void internalTransform(Body body, String phase, Map<String, String> options) {
-                // Perform the analysis on each method body
-                SootMethod method = body.getMethod();
-                String className = method.getDeclaringClass().getName(); // Get the class name
+        Map<String, FilteredControlFlowGraph> graphs = getCFGs(exportedActivities);
 
-                // Check if the class is an exported activity
-                if (exportedActivities.contains(className)) {
-//                    System.out.println(className + "." + method.getName());
-                    customClasses.add(className);
-                    //customPackages.add(className.substring(0, className.lastIndexOf(".")));
-
-                    // Perform Intent flow analysis on the method's body
-                    new IntentFlowAnalysis(new ExceptionalUnitGraph(body), className, method);
-                }
-
-            }
-        }));
-
-        // Run all Soot transformations
-        PackManager.v().runPacks();
+        for (FilteredControlFlowGraph graph : graphs.values())
+            if (!graph.isEmpty())
+                System.out.println(graph);
     }
 
     /**
@@ -89,6 +71,41 @@ public class IntentAnalysis {
 
         // Enable Dexpler for analyzing DEX files
         Options.v().set_src_prec(Options.src_prec_apk);
+    }
+
+    private static Map<String, FilteredControlFlowGraph> getCFGs(List<String> exportedActivities) {
+        Map<String, FilteredControlFlowGraph> graphs = new HashMap<>();
+
+        // Add a custom transformation to analyze methods for Intent-related operations
+        PackManager.v().getPack("jtp").add(new Transform("jtp.intentAnalysis", new BodyTransformer() {
+            @Override
+            protected void internalTransform(Body body, String phase, Map<String, String> options) {
+                // Perform the analysis on each method body
+                SootMethod method = body.getMethod();
+                String className = method.getDeclaringClass().getName(); // Get the class name
+
+                // Check if the class is an exported activity
+                if (exportedActivities.contains(className)) {
+//                    System.out.println(className + "." + method.getName());
+                    customClasses.add(className);
+                    //customPackages.add(className.substring(0, className.lastIndexOf(".")));
+
+                    // Perform Intent flow analysis on the method's body
+                    FilteredControlFlowGraph filteredControlFlowGraph =
+                            (new IntentFlowAnalysis(
+                                    new ExceptionalUnitGraph(body), className, method)
+                            ).getFilteredControlFlowGraph();
+
+                    graphs.put(className + "." + method.getName(), filteredControlFlowGraph);
+                }
+
+            }
+        }));
+
+        // Run all Soot transformations
+        PackManager.v().runPacks();
+
+        return graphs;
     }
 }
 
