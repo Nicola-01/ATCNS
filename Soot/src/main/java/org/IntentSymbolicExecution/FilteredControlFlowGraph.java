@@ -196,6 +196,9 @@ public class FilteredControlFlowGraph {
                 addToGraph(unit, preds);
             if (unit.toString().startsWith("return"))
                 addToGraph(target, unit);
+
+            // TODO recursive method usage: to test; add recursive module() function in complexCalculator
+            expandMethodCall(unit);
         }
     }
 
