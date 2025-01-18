@@ -29,6 +29,7 @@ public class MainActivity extends Activity {
         EditText number = findViewById(R.id.number);
 
         i.putExtra("number", Integer.parseInt(number.getText().toString()));
+        i.putExtra("string", "test");
 
         startActivityForResult(i, 0);
     }

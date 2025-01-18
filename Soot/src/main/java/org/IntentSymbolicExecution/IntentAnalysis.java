@@ -1,7 +1,11 @@
 package org.IntentSymbolicExecution;
 
 import soot.*;
+import soot.jimple.AssignStmt;
+import soot.jimple.StaticFieldRef;
 import soot.options.Options;
+import soot.tagkit.ConstantValueTag;
+import soot.tagkit.Tag;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
 import java.util.*;
@@ -23,7 +27,7 @@ public class IntentAnalysis {
         // Retrieve necessary data from the manifest
         int SDK_Version = manifest.getSDK_Version();
         List<String> exportedActivities = manifest.getExportedActivities();
-        //String packageName = manifest.getPackageName();
+        String packageName = manifest.getPackageName();
 
         // Download the corresponding Android SDK JAR and get its path
         if (androidJarPath == null)
@@ -33,6 +37,14 @@ public class IntentAnalysis {
         setupSoot(apkPath, androidJarPath);
         Scene.v().loadNecessaryClasses();
 
+        Map<String, String> globalVariables = getGlobalVariables(packageName);
+        System.out.println("\nGLOBAL VARIABLES:");
+        for (Map.Entry<String, String> entry : globalVariables.entrySet())
+            System.out.println("Variable: " + entry.getKey() + " | Value: " + entry.getValue());
+
+        System.out.println();
+        
+        // Compute the Control Flow Graph
         Map<String, FilteredControlFlowGraph> graphs = getCFGs(exportedActivities);
 
         System.out.println();
@@ -91,5 +103,68 @@ public class IntentAnalysis {
 
         return graphs;
     }
+
+    private static Map<String, String> getGlobalVariables(String packageName) {
+        
+        Map<String, String> globalVariables = new HashMap<>();
+
+        for (SootClass sc : Scene.v().getClasses()) {
+            if (sc.getName().startsWith(packageName)) { // Filter by package name
+                for (SootField field : sc.getFields()) {
+                    if (field.isStatic() || !field.isFinal()) { // Example heuristic for global variables
+                        String fieldName = field.getName();
+                        String fieldValue = resolveFieldValue(field); // Placeholder for the value
+                        //System.out.println(fieldName + " " + fieldValue);
+                        globalVariables.put(fieldName, fieldValue);
+                    }
+                }
+            }
+        }
+        
+        return globalVariables;
+
+    }
+
+    /**
+     * Resolves the value of a field, if available.
+     */
+    private static String resolveFieldValue(SootField field) {
+        
+        // Check if the field has a constant value
+        for (Tag tag : field.getTags()) {
+            if (tag instanceof ConstantValueTag) {
+                ConstantValueTag constantTag = (ConstantValueTag) tag;
+                return constantTag.getConstant().toString();
+            }
+        }
+
+        // If no ConstantValueTag, attempt to analyze the `<clinit>` method
+        SootClass declaringClass = field.getDeclaringClass();
+        if (declaringClass.declaresMethodByName("<clinit>")) {
+            SootMethod clinit = declaringClass.getMethodByName("<clinit>");
+            Body body = clinit.retrieveActiveBody();
+
+            // Look for statements assigning a value to this field
+            for (Unit unit : body.getUnits()) {
+                if (unit instanceof AssignStmt) {
+                    AssignStmt assignStmt = (AssignStmt) unit;
+
+                    // Check if this statement assigns a value to the field
+                    if (assignStmt.getLeftOp() instanceof StaticFieldRef) {
+                        StaticFieldRef fieldRef = (StaticFieldRef) assignStmt.getLeftOp();
+                        if (fieldRef.getField().equals(field)) {
+                            // Retrieve the right-hand side value
+                            Value rhs = assignStmt.getRightOp();
+                            return rhs.toString(); // Return the right-hand side value
+                        }
+                    }
+                }
+            }
+        }
+
+        // Fallback: return the field's signature
+        return field.getSignature();
+    }
+
 }
 
