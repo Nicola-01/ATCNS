@@ -6,10 +6,7 @@ import org.jgrapht.graph.SimpleGraph;
 import soot.Unit;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,26 +28,27 @@ public class FilteredControlFlowGraph {
     private final ExceptionalUnitGraph fullGraph;
 
     /**
-     * The name of the class containing the method being analyzed.
+     * The name of the class and the method analyzed.
      */
-    private final String className;
+    private final String completeMethod;
 
     /**
-     * The name of the method analyzed.
+     * TODO
      */
-    private final String method;
+    private final Map<String, ExceptionalUnitGraph> otherMethods;
 
     /**
      * Constructor to initialize the filtered control flow graph.
      *
-     * @param fullGraph The complete control flow graph for the method.
-     * @param className The name of the class containing the method.
-     * @param method    The name method being analyzed.
+     * @param fullGraph      The complete control flow graph for the method.
+     * @param completeMethod The name of the class and the method analyzed.
+     * @param otherMethods   A map of other methods and their corresponding control flow graphs,
+     *                       used for expanding method calls during filtering.
      */
-    public FilteredControlFlowGraph(ExceptionalUnitGraph fullGraph, String className, String method) {
+    public FilteredControlFlowGraph(ExceptionalUnitGraph fullGraph, String completeMethod, Map<String, ExceptionalUnitGraph> otherMethods) {
         this.fullGraph = fullGraph;
-        this.className = className;
-        this.method = method;
+        this.completeMethod = completeMethod;
+        this.otherMethods = otherMethods;
         this.filteredCFG = new SimpleGraph<>(DefaultEdge.class);
 
         startFiltering();
@@ -89,7 +87,7 @@ public class FilteredControlFlowGraph {
 
                     // Extract the extra and add the corresponding node to the graph
                     Map.Entry<String, String> stringStringPair = extractExtras(line, isBundle);
-                    addToGraph(unit);
+                    addToGraph(unit, null);
 
                     String parameterName = unit.toString().split(" ")[0];
                     parametersToTrack.put(parameterName, stringStringPair.getKey());
@@ -101,20 +99,29 @@ public class FilteredControlFlowGraph {
 
                 // Check if any saved parameters are used in the current unit
                 if (parametersToTrack.keySet().stream().anyMatch(line::contains)) {
-                    addToGraph(unit);
+                    addToGraph(unit, null);
 
                     // start tracking the new parameter (that depends on a saved parameter)
                     String newParameterName = unit.toString().split(" = ")[0];
                     // Case: $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>(i0)
                     // It stores $r2 in parametersToTrack
-                    if (newParameterName.split(" ").length == 1)
-                        parametersToTrack.put(newParameterName, newParameterName);
+                    if (newParameterName.split(" ").length == 1) {
+                        if (!parametersToTrack.containsKey(newParameterName))
+                            parametersToTrack.put(newParameterName, newParameterName);
+                        expandMethodCall(unit);
+                        continue;
+                    }
 
-                    String[] newParametersName = unit.toString().split(".<")[0].split(" ");
+                    String[] newParametersName = unit.toString().split("\\.<")[0].split(" ");
                     // Case: specialinvoke $r9.<java.math.BigInteger: void <init>(java.lang.String)>($r2)
                     // It stores $r9 in parametersToTrack
-                    if (newParametersName.length == 2)
-                        parametersToTrack.put(newParametersName[1], newParametersName[1]);
+                    if (newParametersName.length == 2) {
+                        newParameterName = newParametersName[1];
+                        if (!parametersToTrack.containsKey(newParameterName))
+                            parametersToTrack.put(newParameterName, newParameterName);
+                        expandMethodCall(unit);
+                        continue;
+                    }
 
                     // If the line is a lookup switch, track the parameter used
                     if (line.startsWith("lookupswitch")) {
@@ -123,7 +130,10 @@ public class FilteredControlFlowGraph {
 
                         if (matcher.find())
                             parametersToTrack.put(matcher.group(1), matcher.group(1));
+                        continue;
                     }
+
+
                 }
             }
         }
@@ -131,6 +141,63 @@ public class FilteredControlFlowGraph {
         while (startParametersCount < parametersToTrack.size());
     }
 
+    /**
+     * Expands a method call by identifying its class, method name, and parameters,
+     * and then integrates the corresponding control flow graph into the filtered graph.
+     *
+     * @param unit The unit representing the method call in the control flow graph.
+     */
+    private void expandMethodCall(Unit unit) {
+
+        String regex = "<(?<class>[^:]+):\\s[^ ]+\\s(?<method>[^()]+)\\((?<parameters>[^)]*)\\)>\\((?<arguments>[^)]*)\\)";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(unit.toString());
+
+        if (!matcher.find()) return;
+
+
+        String className = matcher.group("class");
+        String methodName = matcher.group("method");
+        String parameters = matcher.group("parameters");
+        String arguments = matcher.group("arguments");
+
+        List<String> parameterList = Arrays.asList(parameters.split(",\\s*"));
+        List<String> argumentList = Arrays.asList(arguments.split(",\\s*"));
+
+//        System.out.println("class = \"" + className + "\"");
+//        System.out.println("method = \"" + methodName + "\"");
+//        System.out.println("parameters = " + parameterList);
+//        System.out.println("arguments = " + argumentList);
+//        System.out.println("");
+
+        if (otherMethods.containsKey(className + "." + methodName)) {
+//            System.out.println(className + "." + methodName);
+            addMethodGraphToGraph(otherMethods.get(className + "." + methodName), unit);
+        }
+    }
+
+    /**
+     * Incorporates the control flow graph of a method into the filtered control flow graph.
+     * It connects the entry point of the method to the target unit in the caller's control flow graph.
+     *
+     * @param graph  The control flow graph of the method to be incorporated.
+     * @param target The target unit in the caller's graph where the method's graph will be attached.
+     */
+    private void addMethodGraphToGraph(ExceptionalUnitGraph graph, Unit target) {
+        boolean first = true;
+        for (Unit unit : graph) {
+            if (first) {
+                addToGraph(unit, target);
+                first = false;
+                continue;
+            }
+            for (Unit preds : graph.getPredsOf(unit))
+                addToGraph(unit, preds);
+            if (unit.toString().startsWith("return"))
+                addToGraph(target, unit);
+        }
+    }
 
     /**
      * Extracts the key and type of extra parameter from a line of code.
@@ -139,7 +206,7 @@ public class FilteredControlFlowGraph {
      * @param bundle Whether the line refers to a Bundle object.
      * @return A Map.Entry containing the key and type of the extra.
      */
-    public static Map.Entry<String, String> extractExtras(String line, Boolean bundle) {
+    private static Map.Entry<String, String> extractExtras(String line, Boolean bundle) {
         String regex = (bundle) ? "<[^:]+:\\s*[^ ]+\\s*get(\\w+)\\s*\\([^)]*\\)>.*\\(\"([^\"]+)\"" : "<[^:]+:\\s*[^ ]+\\s*get(\\w+)Extra\\s*\\([^)]*\\)>.*\\(\"([^\"]+)\"";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(line);
@@ -162,10 +229,13 @@ public class FilteredControlFlowGraph {
     /**
      * Adds a unit and its corresponding entry to the filtered control flow graph.
      *
-     * @param unit  The control flow unit from the original graph.
+     * @param source The control flow unit from the original graph.
+     * @param target The target unit to which this unit should be connected. If {@code null},
+     *               predecessors are automatically searched in the full control flow graph
+     *               to establish connections.
      */
-    public void addToGraph(Unit unit) {
-        Map.Entry<String, String> entry = Map.entry("node" + unit.hashCode(), unit.toString());
+    private void addToGraph(Unit source, Unit target) {
+        Map.Entry<String, String> entry = Map.entry("node" + source.hashCode(), source.toString());
 
         filteredCFG.addVertex(entry);
 
@@ -174,7 +244,10 @@ public class FilteredControlFlowGraph {
         for (Map.Entry<String, String> e : filteredCFG.vertexSet())
             elements.put(e.getKey(), e);
 
-        resolveEdges(unit, elements, entry);
+        if (target == null)
+            resolveEdges(source, elements, entry);
+        else
+            filteredCFG.addEdge(entry, Map.entry("node" + target.hashCode(), target.toString()));
     }
 
     /**
@@ -208,7 +281,7 @@ public class FilteredControlFlowGraph {
         removeGoToVertex();
 
         StringBuilder dotGraph = new StringBuilder();
-        dotGraph.append(String.format("digraph %s_%s {\n", className.replace(".", "_"), method));
+        dotGraph.append(String.format("digraph %s {\n", completeMethod.replace(".", "_")));
 
         // Add nodes and their labels.
         for (Map.Entry<String, String> v : filteredCFG.vertexSet()) {

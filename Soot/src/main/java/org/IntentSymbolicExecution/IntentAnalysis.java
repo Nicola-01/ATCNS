@@ -50,13 +50,16 @@ public class IntentAnalysis {
         System.out.println();
         
         // Compute the Control Flow Graph
-        Map<String, FilteredControlFlowGraph> graphs = getCFGs(exportedActivities);
+        Map<String, ExceptionalUnitGraph> graphs = getCFGs(exportedActivities);
 
         System.out.println();
 
-        for (FilteredControlFlowGraph graph : graphs.values())
-            if (!graph.isEmpty())
-                System.out.println(graph);
+        for (Map.Entry<String, ExceptionalUnitGraph> entry : graphs.entrySet()) {
+            FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), entry.getKey(), graphs);
+
+            if (!filteredControlFlowGraph.isEmpty())
+                System.out.println(filteredControlFlowGraph);
+        }
     }
 
     /**
@@ -86,8 +89,8 @@ public class IntentAnalysis {
      * @return A map where the keys are method identifiers in the format "ClassName.MethodName",
      *         and the values are {@link FilteredControlFlowGraph} objects representing the control flow of the corresponding method.
      */
-    private static Map<String, FilteredControlFlowGraph> getCFGs(List<String> exportedActivities) {
-        Map<String, FilteredControlFlowGraph> graphs = new HashMap<>();
+    private static Map<String, ExceptionalUnitGraph> getCFGs(List<String> exportedActivities) {
+        Map<String, ExceptionalUnitGraph> graphs = new HashMap<>();
 
         // Add a custom transformation to analyze methods for Intent-related operations
         PackManager.v().getPack("jtp").add(new Transform("jtp.intentAnalysis", new BodyTransformer() {
@@ -99,7 +102,7 @@ public class IntentAnalysis {
 
                 // Check if the class is an exported activity
                 if (exportedActivities.contains(className))
-                    graphs.put(className + "." + method.getName(), new FilteredControlFlowGraph(new ExceptionalUnitGraph(body), className, method.getName()));
+                    graphs.put(className + "." + method.getName(), new ExceptionalUnitGraph(body));
             }
         }));
 
