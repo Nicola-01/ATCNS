@@ -13,6 +13,8 @@ public class PrimaryChecker extends Activity {
 
     private static final int MIN = 0;
     private static final int MAX = 50;
+    private static int NEGATIVE = -2;
+    private static final int MIDDLE = 25;
     public final String PROVA = "prova";
     public static String TEST = "test";
     private static final char CHAR = 'x';

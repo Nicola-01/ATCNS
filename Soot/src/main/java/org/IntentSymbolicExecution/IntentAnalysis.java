@@ -2,7 +2,12 @@ package org.IntentSymbolicExecution;
 
 import soot.*;
 import soot.jimple.AssignStmt;
+import soot.jimple.DoubleConstant;
+import soot.jimple.FloatConstant;
+import soot.jimple.IntConstant;
+import soot.jimple.LongConstant;
 import soot.jimple.StaticFieldRef;
+import soot.jimple.StringConstant;
 import soot.options.Options;
 import soot.tagkit.ConstantValueTag;
 import soot.tagkit.Tag;
@@ -104,6 +109,14 @@ public class IntentAnalysis {
         return graphs;
     }
 
+    /**
+     * Retrieves the global variables (static final, static non-final fields) in the specified package from the APK.
+     * The method filters classes by the given package name and then checks for static final, static non-final fields
+     * in those classes. For each global variable, the value is resolved (if possible) and added to a map.
+     * 
+     * @param packageName The name of the package to filter classes by.
+     * @return A map where the key is the name of the global variable and the value is its resolved value as a string.
+     */
     private static Map<String, String> getGlobalVariables(String packageName) {
         
         Map<String, String> globalVariables = new HashMap<>();
@@ -126,7 +139,15 @@ public class IntentAnalysis {
     }
 
     /**
-     * Resolves the value of a field, if available.
+     * Resolves the value of a given field, if possible. This method first checks if the field has
+     * a constant value (for static final variables) using a `ConstantValueTag`. 
+     * If no constant is found, it attempts to analyze the `<clinit>` (class initializer) method of 
+     * the field's declaring class to find where the field is assigned a value (e.g. for static variables). 
+     * The resolved value can be a constant or the string representation of the assigned value.
+     * 
+     * @param field The field whose value is to be resolved.
+     * @return A string representing the resolved value of the field. If the value can't be determined, 
+     *         returns the field's signature.
      */
     private static String resolveFieldValue(SootField field) {
         
@@ -143,19 +164,32 @@ public class IntentAnalysis {
         if (declaringClass.declaresMethodByName("<clinit>")) {
             SootMethod clinit = declaringClass.getMethodByName("<clinit>");
             Body body = clinit.retrieveActiveBody();
-
+            //System.out.println(body);
             // Look for statements assigning a value to this field
             for (Unit unit : body.getUnits()) {
                 if (unit instanceof AssignStmt) {
                     AssignStmt assignStmt = (AssignStmt) unit;
-
                     // Check if this statement assigns a value to the field
                     if (assignStmt.getLeftOp() instanceof StaticFieldRef) {
                         StaticFieldRef fieldRef = (StaticFieldRef) assignStmt.getLeftOp();
                         if (fieldRef.getField().equals(field)) {
                             // Retrieve the right-hand side value
                             Value rhs = assignStmt.getRightOp();
-                            return rhs.toString(); // Return the right-hand side value
+                            // If the value is a constant, return it
+                            if (rhs instanceof IntConstant) {
+                                return String.valueOf(((IntConstant) rhs).value);
+                            } else if (rhs instanceof StringConstant) {
+                                return ((StringConstant) rhs).value;
+                            } else if (rhs instanceof FloatConstant) {
+                                return String.valueOf(((FloatConstant) rhs).value);
+                            } else if (rhs instanceof DoubleConstant) {
+                                return String.valueOf(((DoubleConstant) rhs).value);
+                            } else if (rhs instanceof LongConstant) {
+                                return String.valueOf(((LongConstant) rhs).value);
+                            } else {
+                                // For complex RHS, return its string representation
+                                return rhs.toString();
+                            }
                         }
                     }
                 }
