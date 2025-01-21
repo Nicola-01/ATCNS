@@ -61,7 +61,7 @@ public class FilteredControlFlowGraph {
 
         // Initialize a map to keep track of parameters that we need to monitor during the analysis.
         // The map's key represents the parameter's name, and the value represents its associated type.
-        Map<String, String> parametersToTrack = new HashMap<>();
+        ParametersList parametersList = new ParametersList();
 
         // Store the count of parameters to track at the beginning of the loop.
         // This helps in detecting when we've finished processing all relevant parameters.
@@ -72,8 +72,9 @@ public class FilteredControlFlowGraph {
         boolean startAdding; // Start adding vertices after the root node
 
         do {
-            startParametersCount = parametersToTrack.size();
-            resetGraphContent();
+            startParametersCount = parametersList.size();
+            parametersList.resetStartAndFinish();
+            filteredCFG = new SimpleGraph<>(DefaultEdge.class); // reset graph content
             startAdding = false;
 
             // Iterate through the units in the graph
@@ -90,24 +91,25 @@ public class FilteredControlFlowGraph {
                     addToGraph(unit, null);
 
                     String parameterName = unit.toString().split(" ")[0];
-                    parametersToTrack.put(parameterName, stringStringPair.getKey());
 
+                    parametersList.addParameter(parameterName, stringStringPair.getKey(), unit);
+                    continue;
                 }
 
                 // Continue adding nodes and edges after the first relevant extra is found
                 if (!startAdding) continue;
 
                 // Check if any saved parameters are used in the current unit
-                if (parametersToTrack.keySet().stream().anyMatch(line::contains)) {
-                    addToGraph(unit, null);
+                if (parametersList.containInLine(unit)) {
 
                     // start tracking the new parameter (that depends on a saved parameter)
                     String newParameterName = unit.toString().split(" = ")[0];
                     // Case: $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>(i0)
                     // It stores $r2 in parametersToTrack
                     if (newParameterName.split(" ").length == 1) {
-                        if (!parametersToTrack.containsKey(newParameterName))
-                            parametersToTrack.put(newParameterName, newParameterName);
+                                                
+                        parametersList.addParameter(newParameterName, newParameterName, unit);
+                        addToGraph(unit, null);
                         expandMethodCall(unit);
                         continue;
                     }
@@ -117,8 +119,7 @@ public class FilteredControlFlowGraph {
                     // It stores $r9 in parametersToTrack
                     if (newParametersName.length == 2) {
                         newParameterName = newParametersName[1];
-                        if (!parametersToTrack.containsKey(newParameterName))
-                            parametersToTrack.put(newParameterName, newParameterName);
+                        parametersList.addParameter(newParameterName, newParameterName, unit);
                         expandMethodCall(unit);
                         continue;
                     }
@@ -128,8 +129,7 @@ public class FilteredControlFlowGraph {
                         Pattern pattern = Pattern.compile("\\(([^)]+)\\)");
                         Matcher matcher = pattern.matcher(line);
 
-                        if (matcher.find())
-                            parametersToTrack.put(matcher.group(1), matcher.group(1));
+                        parametersList.addParameter(newParameterName, newParameterName, unit);
                         continue;
                     }
 
@@ -138,7 +138,7 @@ public class FilteredControlFlowGraph {
             }
         }
         // Continue the loop until no new parameters are tracked, meaning we have processed all relevant parameters.
-        while (startParametersCount < parametersToTrack.size());
+        while (startParametersCount < parametersList.size());
     }
 
     /**
@@ -220,13 +220,6 @@ public class FilteredControlFlowGraph {
             return Map.entry(key, type);
         }
         return null;
-    }
-
-    /**
-     * Resets the content of the filtered control flow graph, clearing all nodes and edges.
-     */
-    public void resetGraphContent() {
-        filteredCFG = new SimpleGraph<>(DefaultEdge.class);
     }
 
     /**

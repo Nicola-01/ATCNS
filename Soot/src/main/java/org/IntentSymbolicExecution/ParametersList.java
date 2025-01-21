@@ -34,6 +34,41 @@ public class ParametersList {
     }
 
     /**
+     * Adds a new Parameter to the list.
+     *
+     * @param registerName The register name associated with the parameter.
+     * @param customName   The custom name associated with the parameter.
+     */
+    public void addParameter(String registerName, String customName, Unit startUnit) {
+        for (Parameter parameter : parameters) {
+            if (parameter.getRegisterName().equals(registerName)) {
+                if (parameter.getStart().equals(startUnit)) {
+                    parameter.setFinished(true);
+                    return;
+                }
+            }
+        }
+
+        for (Parameter parameter : parameters) {
+            if (parameter.getRegisterName().equals(registerName)) {
+                if (parameter.getStart().equals(startUnit)) {
+                    parameter.setStarted(true);
+                    return;
+                } else {
+                    if (parameter.isStarted()) {
+                        parameter.setFinished(true);
+                        parameter.setFinish(startUnit);
+                    }
+                    break;
+                }
+            }
+
+
+        }
+        parameters.add(new Parameter(registerName, customName, startUnit));
+    }
+
+    /**
      * Retrieves a Parameter from the list based on the register name.
      *
      * @param registerName The register name associated with the parameter.
@@ -53,24 +88,51 @@ public class ParametersList {
      * @param registerName The register name to check for in the list of parameters.
      * @return {@code True} if the parameter exists in the list, {@code False} otherwise.
      */
-    public boolean containsParameter(String registerName) {
+    public boolean contains(String registerName) {
         return getParameter(registerName) != null;
+    }
+
+
+    public int size() {
+        return parameters.size();
+    }
+
+    public boolean containInLine(Unit unit) {
+        for (Parameter p : parameters)
+            if (unit.toString().contains(p.getRegisterName())) {
+                if (p.getStart().equals(unit)) {
+                    p.setStarted(true);
+                    return true;
+                } else if (p.isStarted() && !p.isFinished())
+                    return true;
+            }
+
+        return false;
+    }
+
+    public void updateFinish(String newParameterName, Unit unit) {
+        getParameter(newParameterName).setFinish(unit);
+    }
+
+    public void resetStartAndFinish() {
+        for (Parameter p : parameters)
+            p.resetStartAndFinish();
     }
 
     /**
      * This class represents a single parameter with a register name and custom name.
      * It also contains fields related to the execution state of the parameter.
      */
-    public static class Parameter {
+    public class Parameter {
         private final String registerName;
         private final String customName;
 
         // Fields for execution state tracking
-        private static Unit start;
-        private static Unit finish;
+        private Unit start;
+        private Unit finish;
 
-        private static boolean started = false;
-        private static boolean finished = false;
+        private boolean started = false;
+        private boolean finished = false;
 
         /**
          * Constructor to initialize a Parameter object with a register and custom name.
@@ -81,6 +143,13 @@ public class ParametersList {
         public Parameter(String registerName, String customName) {
             this.registerName = registerName;
             this.customName = customName;
+        }
+
+        public Parameter(String registerName, String customName, Unit startUnit) {
+            this.registerName = registerName;
+            this.customName = customName;
+            start = startUnit;
+            started = true;
         }
 
         /**
@@ -106,7 +175,7 @@ public class ParametersList {
          *
          * @return The start unit of type soot.Unit.
          */
-        public static Unit getStart() {
+        public Unit getStart() {
             return start;
         }
 
@@ -115,8 +184,8 @@ public class ParametersList {
          *
          * @param start The start unit of type soot.Unit.
          */
-        public static void setStart(Unit start) {
-            Parameter.start = start;
+        private void setStart(Unit start) {
+            this.start = start;
         }
 
         /**
@@ -124,7 +193,7 @@ public class ParametersList {
          *
          * @return The finish unit of type soot.Unit.
          */
-        public static Unit getFinish() {
+        public Unit getFinish() {
             return finish;
         }
 
@@ -133,8 +202,9 @@ public class ParametersList {
          *
          * @param finish The finish unit of type soot.Unit.
          */
-        public void setFinish(Unit finish) {
-            Parameter.finish = finish;
+        private void setFinish(Unit finish) {
+            this.finish = finish;
+            finished = true;
         }
 
         /**
@@ -151,8 +221,8 @@ public class ParametersList {
          *
          * @param started The state to set for started (true/false).
          */
-        public void setStarted(boolean started) {
-            Parameter.started = started;
+        private void setStarted(boolean started) {
+            this.started = started;
         }
 
         /**
@@ -160,7 +230,7 @@ public class ParametersList {
          *
          * @return True if finished, false otherwise.
          */
-        public static boolean isFinished() {
+        public boolean isFinished() {
             return finished;
         }
 
@@ -169,8 +239,13 @@ public class ParametersList {
          *
          * @param finished The state to set for finished (true/false).
          */
-        public void setFinished(boolean finished) {
-            Parameter.finished = finished;
+        private void setFinished(boolean finished) {
+            this.finished = finished;
+        }
+
+        private void resetStartAndFinish() {
+            started = false;
+            finished = false;
         }
     }
 }
