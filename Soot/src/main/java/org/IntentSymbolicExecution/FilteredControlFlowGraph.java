@@ -110,7 +110,7 @@ public class FilteredControlFlowGraph {
                                                 
                         parametersList.addParameter(newParameterName, newParameterName, unit);
                         addToGraph(unit, null);
-                        expandMethodCall(unit);
+                        expandMethodCall(unit, 0);
                         continue;
                     }
 
@@ -120,7 +120,7 @@ public class FilteredControlFlowGraph {
                     if (newParametersName.length == 2) {
                         newParameterName = newParametersName[1];
                         parametersList.addParameter(newParameterName, newParameterName, unit);
-                        expandMethodCall(unit);
+                        expandMethodCall(unit, 0);
                         continue;
                     }
 
@@ -147,7 +147,9 @@ public class FilteredControlFlowGraph {
      *
      * @param unit The unit representing the method call in the control flow graph.
      */
-    private void expandMethodCall(Unit unit) {
+    private void expandMethodCall(Unit unit, int depth) {
+
+        if (depth == 5) return;
 
         String regex = "<(?<class>[^:]+):\\s[^ ]+\\s(?<method>[^()]+)\\((?<parameters>[^)]*)\\)>\\((?<arguments>[^)]*)\\)";
 
@@ -173,7 +175,7 @@ public class FilteredControlFlowGraph {
 
         if (otherMethods.containsKey(className + "." + methodName)) {
 //            System.out.println(className + "." + methodName);
-            addMethodGraphToGraph(otherMethods.get(className + "." + methodName), unit);
+            addMethodGraphToGraph(otherMethods.get(className + "." + methodName), unit, depth);
         }
     }
 
@@ -184,7 +186,7 @@ public class FilteredControlFlowGraph {
      * @param graph  The control flow graph of the method to be incorporated.
      * @param target The target unit in the caller's graph where the method's graph will be attached.
      */
-    private void addMethodGraphToGraph(ExceptionalUnitGraph graph, Unit target) {
+    private void addMethodGraphToGraph(ExceptionalUnitGraph graph, Unit target, int depth) {
         boolean first = true;
         for (Unit unit : graph) {
             if (first) {
@@ -198,7 +200,7 @@ public class FilteredControlFlowGraph {
                 addToGraph(target, unit);
 
             // TODO recursive method usage: to test; add recursive module() function in complexCalculator
-            expandMethodCall(unit);
+            expandMethodCall(unit, depth + 1);
         }
     }
 
