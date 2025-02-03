@@ -266,7 +266,7 @@ public class FilteredControlFlowGraph {
             elements.put(e.getKey(), e);
 
         if (target == null)
-            resolveEdges(source, elements, entry);
+            resolveEdges(source, elements, entry, 0);
         else
             filteredCFG.addEdge(entry, Map.entry("node" + target.hashCode(), target.toString()));
     }
@@ -296,8 +296,9 @@ public class FilteredControlFlowGraph {
      * @param elements Map of existing vertices in the filtered graph.
      * @param entry    The current entry to connect.
      */
-    private void resolveEdges(Unit unit, Map<String, Map.Entry<String, String>> elements, Map.Entry<String, String> entry) {
+    private void resolveEdges(Unit unit, Map<String, Map.Entry<String, String>> elements, Map.Entry<String, String> entry, int depth) {
         for (Unit pred : fullGraph.getPredsOf(unit)) {
+            if (depth == 5) return;
             if (elements.containsKey("node" + pred.hashCode())) {
                 filteredCFG.addEdge(entry, elements.get("node" + pred.hashCode()));
                 continue;
@@ -305,7 +306,7 @@ public class FilteredControlFlowGraph {
 
             // Recursively resolve edges for predecessors.
             if (!fullGraph.getPredsOf(pred).isEmpty()) {
-                resolveEdges(pred, elements, entry);
+                resolveEdges(pred, elements, entry, depth + 1);
             }
         }
     }
