@@ -430,13 +430,11 @@ public class FilteredControlFlowGraph {
                 List<Map.Entry<String, String>> succEntryList = new ArrayList<>();
                 int defaultNodeIndex = 0;
                 for (int i = 0; i < succsList.size(); i++) {
-
-
                     Unit pred = succsList.get(i);
-                    if (!containsNode("node"+pred.hashCode())) continue;
+                    if (!containsNode("node" + pred.hashCode())) continue;
 
-                    nodesToRemove.add("node"+pred.hashCode());
-                    if (pred.toString().startsWith("goto")){
+                    nodesToRemove.add("node" + pred.hashCode());
+                    if (pred.toString().startsWith("goto")) {
                         defaultNodeIndex = i;
                         continue;
                     }
@@ -446,7 +444,7 @@ public class FilteredControlFlowGraph {
                     do {
                         succ = filteredCFG.getEdgeSource(getEdgeWithSource(currentNode).get(0));
                         currentNode = succ;
-                        if(succ.getValue().contains("goto"))
+                        if (succ.getValue().contains("goto"))
                             nodesToRemove.add(succ.getKey());
                     } while (succ.getValue().contains("goto"));
 
@@ -454,17 +452,18 @@ public class FilteredControlFlowGraph {
                     Map.Entry<String, String> vertex = Map.entry("node" + pred.hashCode(), nodeText);
                     succEntryList.add(vertex);
                     if (succEntryList.size() == 1) {
-                        DefaultEdge de = getEdgeWithTarget(Map.entry("node" + unit.hashCode(), line)).get(0);
-                        Map.Entry<String, String> predNode = filteredCFG.getEdgeTarget(de);
-                        switchCFG.addToGraph(vertex, predNode);
+                        List<DefaultEdge> defaultEdges = getEdgeWithTarget(Map.entry("node" + unit.hashCode(), line));
+                        for (DefaultEdge defaultEdge : defaultEdges) {
+                            Map.Entry<String, String> predNode = filteredCFG.getEdgeTarget(defaultEdge);
+                            switchCFG.addToGraph(vertex, predNode);
+                        }
                     } else
                         switchCFG.addToGraph(vertex, succEntryList.get(succEntryList.size() - 2));
                 }
 
-                // todo doesn't work property
                 Unit defaultNode = succsList.get(defaultNodeIndex);
                 Map.Entry<String, String> vertex = Map.entry("node" + defaultNode.hashCode(), defaultNode.toString());
-                switchCFG.addToGraph(vertex, succEntryList.get(succEntryList.size() - 2));
+                switchCFG.addToGraph(vertex, succEntryList.get(succEntryList.size() - 1));
 
             } else if (containsNode("node" + unit.hashCode())) {
                 if (!nodesToRemove.contains("node" + unit.hashCode()))

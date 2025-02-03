@@ -57,8 +57,8 @@ public class IntentAnalysis {
         for (Map.Entry<String, ExceptionalUnitGraph> entry : graphs.entrySet()) {
             FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), entry.getKey(), graphs);
 
-            if (!filteredControlFlowGraph.isEmpty())
-                System.out.println(filteredControlFlowGraph);
+            filteredControlFlowGraph.switchResolver();
+
         }
     }
 
