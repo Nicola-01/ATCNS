@@ -1,6 +1,7 @@
 package org.IntentSymbolicExecution;
 
 import org.jgrapht.Graph;
+import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 import soot.Unit;
@@ -9,6 +10,9 @@ import soot.toolkits.graph.ExceptionalUnitGraph;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static org.IntentSymbolicExecution.RegexUtils.*;
 
 /**
  * This class constructs a graph based on the control flow graph provided by the ExceptionalUnitGraph.
@@ -54,6 +58,13 @@ public class FilteredControlFlowGraph {
         startFiltering();
     }
 
+    public FilteredControlFlowGraph(FilteredControlFlowGraph filteredControlFlowGraph) {
+        this.fullGraph = filteredControlFlowGraph.fullGraph;
+        this.completeMethod = filteredControlFlowGraph.completeMethod;
+        this.otherMethods = filteredControlFlowGraph.otherMethods;
+        this.filteredCFG = new SimpleGraph<>(DefaultEdge.class);
+    }
+
     /**
      * Filter control flow graph that only contains edges related to Intent operations (e.g., getExtra calls).
      */
@@ -82,13 +93,13 @@ public class FilteredControlFlowGraph {
                 String line = unit.toString();
 
                 // Match lines containing getExtra methods in Intent or Bundle objects
-                if (RegexUtils.patternIntentExtra.matcher(line).find() || RegexUtils.patternBundleExtra.matcher(line).find()) {
+                if (patternIntentExtra.matcher(line).find() || patternBundleExtra.matcher(line).find()) {
                     startAdding = true;
-                    boolean isBundle = RegexUtils.patternBundleExtra.matcher(line).find();
+                    boolean isBundle = patternBundleExtra.matcher(line).find();
 
                     // Extract the extra and add the corresponding node to the graph
                     Map.Entry<String, String> stringStringPair = extractExtras(line, isBundle);
-                    addToGraph(unit, null);
+                    addToGraph(unit);
 
                     String parameterName = unit.toString().split(" ")[0];
 
@@ -148,16 +159,10 @@ public class FilteredControlFlowGraph {
      * @param unit The unit representing the method call in the control flow graph.
      */
     private void expandMethodCall(Unit unit, int depth) {
+        Matcher matcher = patternCallClass.matcher(unit.toString());
 
         if (depth == 5) return;
-
-        String regex = "<(?<class>[^:]+):\\s[^ ]+\\s(?<method>[^()]+)\\((?<parameters>[^)]*)\\)>\\((?<arguments>[^)]*)\\)";
-
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(unit.toString());
-
         if (!matcher.find()) return;
-
 
         String className = matcher.group("class");
         String methodName = matcher.group("method");
@@ -207,7 +212,7 @@ public class FilteredControlFlowGraph {
     /**
      * Extracts the key and type of extra parameter from a line of code.
      *
-     * @param line The line of code to analyze.
+     * @param line   The line of code to analyze.
      * @param bundle Whether the line refers to a Bundle object.
      * @return A Map.Entry containing the key and type of the extra.
      */
@@ -222,6 +227,15 @@ public class FilteredControlFlowGraph {
             return Map.entry(key, type);
         }
         return null;
+    }
+
+    /**
+     * Adds a unit and its corresponding entry to the filtered control flow graph.
+     *
+     * @param source The control flow unit from the original graph.
+     */
+    private void addToGraph(Unit source) {
+        addToGraph(source, null);
     }
 
     /**
@@ -246,6 +260,24 @@ public class FilteredControlFlowGraph {
             resolveEdges(source, elements, entry);
         else
             filteredCFG.addEdge(entry, Map.entry("node" + target.hashCode(), target.toString()));
+    }
+
+    private void addToGraph(Map.Entry<String, String> vertex, Unit target) {
+        filteredCFG.addVertex(vertex);
+        filteredCFG.addEdge(vertex, Map.entry("node" + target.hashCode(), target.toString()));
+    }
+
+    private void addToGraph(Map.Entry<String, String> vertex, Map.Entry<String, String> target) {
+        filteredCFG.addVertex(vertex);
+        filteredCFG.addEdge(vertex, target);
+    }
+
+    public List<Map.Entry<String, String>> getPredecessors(String destKey) {
+        return filteredCFG.vertexSet().stream()
+                .filter(entry -> entry.getKey().equals(destKey)) // Find the destination node
+                .flatMap(dest -> filteredCFG.incomingEdgesOf(dest).stream() // Get incoming edges
+                        .map(filteredCFG::getEdgeSource)) // Get source vertices (predecessors)
+                .collect(Collectors.toList()); // Collect the results in a list
     }
 
     /**
@@ -335,12 +367,134 @@ public class FilteredControlFlowGraph {
     }
 
     /**
+     * TODO
+     *
+     * @param nodeHash
+     * @return
+     */
+    public boolean containsNode(String nodeHash) {
+        for (Map.Entry<String, String> entry : filteredCFG.vertexSet())
+            if (entry.getKey().equals(nodeHash)) return true;
+        return false;
+    }
+
+    /**
      * Checks if the filtered control flow graph is empty.
      *
      * @return true if the filtered control flow graph contains no vertices,
-     *         otherwise false.
+     * otherwise false.
      */
     public boolean isEmpty() {
         return filteredCFG.vertexSet().isEmpty();
+    }
+
+    private List<DefaultEdge> getEdgeWithTarget(Map.Entry<String, String> node) {
+        List<DefaultEdge> edges = new ArrayList<>();
+        for (DefaultEdge edge : filteredCFG.edgeSet()) {
+            if (filteredCFG.getEdgeSource(edge).equals(node)) {
+                edges.add(edge);
+            }
+        }
+        return edges; // Return null if no such edge is found
+    }
+
+    private List<DefaultEdge> getEdgeWithSource(Map.Entry<String, String> node) {
+        List<DefaultEdge> edges = new ArrayList<>();
+        for (DefaultEdge edge : filteredCFG.edgeSet()) {
+            if (filteredCFG.getEdgeTarget(edge).equals(node)) {
+                edges.add(edge);
+            }
+        }
+        return edges; // Return null if no such edge is found
+    }
+
+
+    public void switchResolver() {
+
+        FilteredControlFlowGraph switchCFG = new FilteredControlFlowGraph(this);
+        List<String> nodesToRemove = new ArrayList<>();
+
+        Map.Entry<String, String> firstSwitchNode = null;
+        Map.Entry<String, String> lastSwitchNode = null;
+
+        for (Unit unit : fullGraph) {
+            String line = unit.toString();
+
+            if (!containsNode("node" + unit.hashCode())) continue;
+
+            if (line.startsWith("lookupswitch(")) {
+                String variableName = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
+
+                Pattern pattern = Pattern.compile("case (\\d+): (.*?);");
+                Matcher matcher = pattern.matcher(line);
+
+                List<Map.Entry<Integer, String>> extractedCases = new ArrayList<>();
+                while (matcher.find())
+                    extractedCases.add(Map.entry(Integer.parseInt(matcher.group(1)), matcher.group(2).trim()));
+
+                List<Unit> succsList = fullGraph.getSuccsOf(unit);
+                List<Map.Entry<String, String>> succEntryList = new ArrayList<>();
+                Unit defaultNode = null;
+
+                for (Map.Entry<Integer, String> caseEntry : extractedCases) {
+                    Unit caseNode = null;
+                    for (Unit succ : succsList) {
+                        String caseText = caseEntry.getValue().replace("goto ", "");
+                        if (succ.toString().contains(caseText)) {
+                            caseNode = succ;
+                            break;
+                        }
+                    }
+
+                    if (caseNode == null) continue;
+                    if (caseNode.toString().startsWith("goto")) {
+                        defaultNode = caseNode;
+                        nodesToRemove.add("node" + caseNode.hashCode());
+                        continue;
+                    }
+
+                    String nodeText = "if " + variableName + "==" + caseEntry.getKey() + " " + caseEntry.getValue();
+                    if (succEntryList.isEmpty()) {
+                        Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), nodeText);
+                        succEntryList.add(vertex);
+                        List<DefaultEdge> defaultEdges = getEdgeWithTarget(Map.entry("node" + unit.hashCode(), line));
+                        for (DefaultEdge defaultEdge : defaultEdges) {
+                            Map.Entry<String, String> predNode = filteredCFG.getEdgeTarget(defaultEdge);
+                            switchCFG.addToGraph(vertex, predNode);
+                        }
+                        firstSwitchNode = vertex;
+                        lastSwitchNode = vertex;
+                    } else {
+                        Map.Entry<String, String> vertex = Map.entry("node" + Math.abs(nodeText.hashCode()), nodeText);
+                        succEntryList.add(vertex);
+                        switchCFG.addToGraph(vertex, succEntryList.get(succEntryList.size() - 2));
+                        lastSwitchNode = vertex;
+                    }
+                    switchCFG.addToGraph(Map.entry("node"+caseNode.hashCode(), caseNode.toString()), succEntryList.get(succEntryList.size() - 1));
+                    nodesToRemove.add("node" + caseNode.hashCode());
+                }
+
+                if (defaultNode == null) continue;
+                Map.Entry<String, String> vertex = Map.entry("node" + defaultNode.hashCode(), defaultNode.toString());
+                switchCFG.addToGraph(vertex, succEntryList.get(succEntryList.size() - 1));
+
+            } else if (!nodesToRemove.contains("node" + unit.hashCode())){
+                switchCFG.addToGraph(unit);
+
+                Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), unit.toString());
+
+                List<DefaultEdge> defaultEdges = switchCFG.getEdgeWithTarget(vertex);
+                for (DefaultEdge defaultEdge : defaultEdges) {
+                    Map.Entry<String, String> predNode = switchCFG.filteredCFG.getEdgeTarget(defaultEdge);
+                    if (firstSwitchNode != null && predNode.getKey().equals(firstSwitchNode.getKey())){
+                        switchCFG.filteredCFG.removeEdge(defaultEdge);
+                        switchCFG.filteredCFG.addEdge(vertex, lastSwitchNode);
+                    }
+                }
+            }
+
+        }
+        if (!switchCFG.isEmpty())
+            System.out.println(switchCFG);
     }
 }
