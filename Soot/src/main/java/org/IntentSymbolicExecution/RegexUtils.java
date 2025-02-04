@@ -19,6 +19,9 @@ public class RegexUtils {
     private static final String regexGetAction = "getAction\\(\\)";
     public static final Pattern patterGetAction = Pattern.compile(regexGetAction);
 
+    private static final String regexCallClass = "<(?<class>[^:]+):\\s[^ ]+\\s(?<method>[^()]+)\\((?<parameters>[^)]*)\\)>\\((?<arguments>[^)]*)\\)";
+    public static final Pattern patternCallClass = Pattern.compile(regexCallClass);
+
     // Private constructor to prevent instantiation
     private RegexUtils() {
     }
