@@ -120,9 +120,7 @@ public class FilteredControlFlowGraph {
                     if (newParameterName.split(" ").length == 1) {
                                                 
                         parametersList.addParameter(newParameterName, newParameterName, unit);
-                        addToGraph(unit, null);
-                        expandMethodCall(unit, 0);
-                        continue;
+//                        expandMethodCall(unit, 0); TODO to re-enable
                     }
 
                     String[] newParametersName = unit.toString().split("\\.<")[0].split(" ");
@@ -131,8 +129,7 @@ public class FilteredControlFlowGraph {
                     if (newParametersName.length == 2) {
                         newParameterName = newParametersName[1];
                         parametersList.addParameter(newParameterName, newParameterName, unit);
-                        expandMethodCall(unit, 0);
-                        continue;
+                        //                        expandMethodCall(unit, 0); TODO to re-enable
                     }
 
                     // If the line is a lookup switch, track the parameter used
@@ -141,8 +138,9 @@ public class FilteredControlFlowGraph {
                         Matcher matcher = pattern.matcher(line);
 
                         parametersList.addParameter(newParameterName, newParameterName, unit);
-                        continue;
                     }
+
+                    addToGraph(unit);
 
 
                 }

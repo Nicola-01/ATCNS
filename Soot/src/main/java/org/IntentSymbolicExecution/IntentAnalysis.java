@@ -48,7 +48,7 @@ public class IntentAnalysis {
             System.out.println("Variable: " + entry.getKey() + " | Value: " + entry.getValue());
 
         System.out.println();
-        
+
         // Compute the Control Flow Graph
         Map<String, ExceptionalUnitGraph> graphs = getCFGs(exportedActivities);
 
@@ -56,7 +56,10 @@ public class IntentAnalysis {
 
         for (Map.Entry<String, ExceptionalUnitGraph> entry : graphs.entrySet()) {
             FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), entry.getKey(), graphs);
-            filteredControlFlowGraph.switchResolver();
+//            filteredControlFlowGraph.switchResolver(); TODO
+
+            if (!filteredControlFlowGraph.isEmpty())
+                System.out.println(filteredControlFlowGraph);
         }
     }
 
@@ -85,7 +88,7 @@ public class IntentAnalysis {
      *
      * @param exportedActivities A list exported activities from the APK.
      * @return A map where the keys are method identifiers in the format "ClassName.MethodName",
-     *         and the values are {@link FilteredControlFlowGraph} objects representing the control flow of the corresponding method.
+     * and the values are {@link FilteredControlFlowGraph} objects representing the control flow of the corresponding method.
      */
     private static Map<String, ExceptionalUnitGraph> getCFGs(List<String> exportedActivities) {
         Map<String, ExceptionalUnitGraph> graphs = new HashMap<>();
@@ -114,12 +117,12 @@ public class IntentAnalysis {
      * Retrieves the global variables (static final, static non-final fields) in the specified package from the APK.
      * The method filters classes by the given package name and then checks for static final, static non-final fields
      * in those classes. For each global variable, the value is resolved (if possible) and added to a map.
-     * 
+     *
      * @param packageName The name of the package to filter classes by.
      * @return A map where the key is the name of the global variable and the value is its resolved value as a string.
      */
     private static Map<String, String> getGlobalVariables(String packageName) {
-        
+
         Map<String, String> globalVariables = new HashMap<>();
 
         for (SootClass sc : Scene.v().getClasses()) {
@@ -134,24 +137,24 @@ public class IntentAnalysis {
                 }
             }
         }
-        
+
         return globalVariables;
 
     }
 
     /**
      * Resolves the value of a given field, if possible. This method first checks if the field has
-     * a constant value (for static final variables) using a `ConstantValueTag`. 
-     * If no constant is found, it attempts to analyze the `<clinit>` (class initializer) method of 
-     * the field's declaring class to find where the field is assigned a value (e.g. for static variables). 
+     * a constant value (for static final variables) using a `ConstantValueTag`.
+     * If no constant is found, it attempts to analyze the `<clinit>` (class initializer) method of
+     * the field's declaring class to find where the field is assigned a value (e.g. for static variables).
      * The resolved value can be a constant or the string representation of the assigned value.
-     * 
+     *
      * @param field The field whose value is to be resolved.
-     * @return A string representing the resolved value of the field. If the value can't be determined, 
-     *         returns the field's signature.
+     * @return A string representing the resolved value of the field. If the value can't be determined,
+     * returns the field's signature.
      */
     private static String resolveFieldValue(SootField field) {
-        
+
         // Check if the field has a constant value
         for (Tag tag : field.getTags()) {
             if (tag instanceof ConstantValueTag) {

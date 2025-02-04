@@ -22,48 +22,27 @@ public class ParametersList {
     public ParametersList() {
     }
 
-
     /**
      * Adds a new Parameter to the list.
      *
      * @param registerName The register name associated with the parameter.
      * @param customName   The custom name associated with the parameter.
-     */
-    public void addParameter(String registerName, String customName) {
-        parameters.add(new Parameter(registerName, customName));
-    }
-
-    /**
-     * Adds a new Parameter to the list.
-     *
-     * @param registerName The register name associated with the parameter.
-     * @param customName   The custom name associated with the parameter.
+     * @param startUnit    The current node
      */
     public void addParameter(String registerName, String customName, Unit startUnit) {
+        // check if the parameter already exist
         for (Parameter parameter : parameters) {
-            if (parameter.getRegisterName().equals(registerName)) {
-                if (parameter.getStart().equals(startUnit)) {
-                    parameter.setFinished(true);
-                    return;
-                }
-            }
-        }
-
-        for (Parameter parameter : parameters) {
-            if (parameter.getRegisterName().equals(registerName)) {
-                if (parameter.getStart().equals(startUnit)) {
+            if (parameter.getRegisterName().equals(registerName)) { // already tracked
+                if (parameter.getFirstNode().equals(startUnit)) { // if it has same start, restart tracking
                     parameter.setStarted(true);
                     return;
-                } else {
-                    if (parameter.isStarted()) {
+                } else { // have a different start, i.e. reuse of register
+                    if (parameter.isStarted() && !parameter.isFinished()) { // if started but not finished, stop tracking
                         parameter.setFinished(true);
-                        parameter.setFinish(startUnit);
+                        parameter.setLastNode(startUnit);
                     }
-                    break;
                 }
             }
-
-
         }
         parameters.add(new Parameter(registerName, customName, startUnit));
     }
@@ -72,25 +51,26 @@ public class ParametersList {
      * Retrieves a Parameter from the list based on the register name.
      *
      * @param registerName The register name associated with the parameter.
-     * @return The Parameter object if found, or null if not found.
+     * @return A list of Parameters object.
      */
-    public Parameter getParameter(String registerName) {
+    public List<Parameter> getParameters(String registerName) {
+        List<Parameter> result = new ArrayList<>();
         for (Parameter p : parameters)
             if (p.getRegisterName().equals(registerName))
-                return p;
+                result.add(p);
 
-        return null;
+        return result;
     }
 
-    /**
-     * Checks whether a parameter with the specified register name exists in the list of parameters.
-     *
-     * @param registerName The register name to check for in the list of parameters.
-     * @return {@code True} if the parameter exists in the list, {@code False} otherwise.
-     */
-    public boolean contains(String registerName) {
-        return getParameter(registerName) != null;
-    }
+//    /**
+//     * Checks whether a parameter with the specified register name exists in the list of parameters.
+//     *
+//     * @param registerName The register name to check for in the list of parameters.
+//     * @return {@code True} if the parameter exists in the list, {@code False} otherwise.
+//     */
+//    public boolean contains(String registerName) {
+//        return !getParameters(registerName).isEmpty();
+//    }
 
 
     public int size() {
@@ -100,7 +80,7 @@ public class ParametersList {
     public boolean containInLine(Unit unit) {
         for (Parameter p : parameters)
             if (unit.toString().contains(p.getRegisterName())) {
-                if (p.getStart().equals(unit)) {
+                if (p.getFirstNode().equals(unit)) {
                     p.setStarted(true);
                     return true;
                 } else if (p.isStarted() && !p.isFinished())
@@ -110,9 +90,9 @@ public class ParametersList {
         return false;
     }
 
-    public void updateFinish(String newParameterName, Unit unit) {
-        getParameter(newParameterName).setFinish(unit);
-    }
+//    public void updateFinish(String newParameterName, Unit unit) {
+//        getParameters(newParameterName).setLastNode(unit);
+//    }
 
     public void resetStartAndFinish() {
         for (Parameter p : parameters)
@@ -128,8 +108,8 @@ public class ParametersList {
         private final String customName;
 
         // Fields for execution state tracking
-        private Unit start;
-        private Unit finish;
+        private Unit firstNode;
+        private Unit lastNode;
 
         private boolean started = false;
         private boolean finished = false;
@@ -138,7 +118,7 @@ public class ParametersList {
          * Constructor to initialize a Parameter object with a register and custom name.
          *
          * @param registerName The register name of the parameter.
-         * @param customName The custom name of the parameter.
+         * @param customName   The custom name of the parameter.
          */
         public Parameter(String registerName, String customName) {
             this.registerName = registerName;
@@ -148,7 +128,7 @@ public class ParametersList {
         public Parameter(String registerName, String customName, Unit startUnit) {
             this.registerName = registerName;
             this.customName = customName;
-            start = startUnit;
+            firstNode = startUnit;
             started = true;
         }
 
@@ -175,17 +155,17 @@ public class ParametersList {
          *
          * @return The start unit of type soot.Unit.
          */
-        public Unit getStart() {
-            return start;
+        public Unit getFirstNode() {
+            return firstNode;
         }
 
         /**
          * Sets the start execution unit.
          *
-         * @param start The start unit of type soot.Unit.
+         * @param firstNode The start unit of type soot.Unit.
          */
-        private void setStart(Unit start) {
-            this.start = start;
+        private void setFirstNode(Unit firstNode) {
+            this.firstNode = firstNode;
         }
 
         /**
@@ -193,17 +173,17 @@ public class ParametersList {
          *
          * @return The finish unit of type soot.Unit.
          */
-        public Unit getFinish() {
-            return finish;
+        public Unit getLastNode() {
+            return lastNode;
         }
 
         /**
          * Sets the finish execution unit.
          *
-         * @param finish The finish unit of type soot.Unit.
+         * @param lastNode The finish unit of type soot.Unit.
          */
-        private void setFinish(Unit finish) {
-            this.finish = finish;
+        private void setLastNode(Unit lastNode) {
+            this.lastNode = lastNode;
             finished = true;
         }
 
