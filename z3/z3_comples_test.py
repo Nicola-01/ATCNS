@@ -28,7 +28,7 @@ def extract_variables_and_constraints(graph):
             if var not in excluded_variables:  # Exclude unwanted variables
                 variables.add(var)
 
-    for node, data in graph.nodes(data=True):
+    for node, data in graph.edges(data=True):
         label = data.get('label', '')
         # Handle conditional statements like 'if x + y > 10 goto node4 else goto node5'
         if label.startswith('if'):
