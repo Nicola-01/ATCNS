@@ -1,9 +1,10 @@
 package org.IntentSymbolicExecution;
 
 import org.jgrapht.Graph;
-import org.jgrapht.Graphs;
+//import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.graph.SimpleDirectedGraph;
+//import org.jgrapht.graph.SimpleGraph;
 import soot.Unit;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
@@ -53,7 +54,7 @@ public class FilteredControlFlowGraph {
         this.fullGraph = fullGraph;
         this.completeMethod = completeMethod;
         this.otherMethods = otherMethods;
-        this.filteredCFG = new SimpleGraph<>(DefaultEdge.class);
+        this.filteredCFG = new SimpleDirectedGraph<>(DefaultEdge.class);
 
         startFiltering();
     }
@@ -62,7 +63,11 @@ public class FilteredControlFlowGraph {
         this.fullGraph = filteredControlFlowGraph.fullGraph;
         this.completeMethod = filteredControlFlowGraph.completeMethod;
         this.otherMethods = filteredControlFlowGraph.otherMethods;
-        this.filteredCFG = new SimpleGraph<>(DefaultEdge.class);
+        this.filteredCFG = new SimpleDirectedGraph<>(DefaultEdge.class);
+    }
+
+    public Graph<Map.Entry<String, String>, DefaultEdge> getFilteredCFG() {
+        return this.filteredCFG;
     }
 
     /**
@@ -232,7 +237,7 @@ public class FilteredControlFlowGraph {
      * Resets the content of the filtered control flow graph, clearing all nodes and edges.
      */
     public void resetGraphContent() {
-        filteredCFG = new SimpleGraph<>(DefaultEdge.class);
+        filteredCFG = new SimpleDirectedGraph<>(DefaultEdge.class);
     }
 
     /**
@@ -268,10 +273,12 @@ public class FilteredControlFlowGraph {
             filteredCFG.addEdge(entry, Map.entry("node" + target.hashCode(), target.toString()));
     }
 
+    /*
     private void addToGraph(Map.Entry<String, String> vertex, Unit target) {
         filteredCFG.addVertex(vertex);
         filteredCFG.addEdge(vertex, Map.entry("node" + target.hashCode(), target.toString()));
     }
+    */
 
     private void addToGraph(Map.Entry<String, String> vertex, Map.Entry<String, String> target) {
         filteredCFG.addVertex(vertex);
@@ -404,6 +411,7 @@ public class FilteredControlFlowGraph {
         return edges; // Return null if no such edge is found
     }
 
+    /*
     private List<DefaultEdge> getEdgeWithSource(Map.Entry<String, String> node) {
         List<DefaultEdge> edges = new ArrayList<>();
         for (DefaultEdge edge : filteredCFG.edgeSet()) {
@@ -413,9 +421,9 @@ public class FilteredControlFlowGraph {
         }
         return edges; // Return null if no such edge is found
     }
+    */
 
-
-    public void switchResolver() {
+    public FilteredControlFlowGraph switchResolver() {
 
         FilteredControlFlowGraph switchCFG = new FilteredControlFlowGraph(this);
         List<String> nodesToRemove = new ArrayList<>();
@@ -500,7 +508,10 @@ public class FilteredControlFlowGraph {
             }
 
         }
-        if (!switchCFG.isEmpty())
+        if (!switchCFG.isEmpty()) {
             System.out.println(switchCFG);
+            return switchCFG;
+        }
+        return null;
     }
 }

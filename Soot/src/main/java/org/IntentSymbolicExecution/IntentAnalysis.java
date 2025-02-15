@@ -56,7 +56,35 @@ public class IntentAnalysis {
 
         for (Map.Entry<String, ExceptionalUnitGraph> entry : graphs.entrySet()) {
             FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), entry.getKey(), graphs);
-            filteredControlFlowGraph.switchResolver();
+            filteredControlFlowGraph = filteredControlFlowGraph.switchResolver();
+
+            if (filteredControlFlowGraph != null) {
+                CFGPathFinder pathFinder = new CFGPathFinder(filteredControlFlowGraph);
+                List<List<Map.Entry<String, String>>> allPaths = pathFinder.getAllPaths();
+                printAllPaths(allPaths);
+            }
+
+        }
+    }
+
+    public static void printAllPaths(List<List<Map.Entry<String, String>>> allPaths) {
+        if (allPaths.isEmpty()) {
+            System.out.println("No paths found.");
+            return;
+        }
+    
+        int pathNumber = 1;
+        for (List<Map.Entry<String, String>> path : allPaths) {
+            System.out.println("═════════ Path " + pathNumber + " ═════════");
+            int step = 1;
+            for (Map.Entry<String, String> node : path) {
+                // Extract the code snippet (value) from the node
+                String codeLine = node.getValue();
+                System.out.printf("Step %d: %s%n", step, codeLine);
+                step++;
+            }
+            System.out.println(); // Add a blank line between paths
+            pathNumber++;
         }
     }
 
