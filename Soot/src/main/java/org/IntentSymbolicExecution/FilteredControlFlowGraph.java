@@ -78,8 +78,8 @@ public class FilteredControlFlowGraph {
         return graph;
     }
 
-    public FilteredControlFlowGraph(FilteredControlFlowGraph filteredControlFlowGraph) {
-        this.fullGraph = filteredControlFlowGraph.fullGraph;
+    public FilteredControlFlowGraph(FilteredControlFlowGraph filteredControlFlowGraph, Graph<Map.Entry<String, String>, DefaultEdge> fullGraph) {
+        this.fullGraph = fullGraph;
         this.completeMethod = filteredControlFlowGraph.completeMethod;
         this.otherMethods = filteredControlFlowGraph.otherMethods;
         this.filteredCFG = new SimpleDirectedGraph<>(DefaultEdge.class);
@@ -304,8 +304,9 @@ public class FilteredControlFlowGraph {
     private void resolveEdges( Map.Entry<String, String> starterNode, Map.Entry<String, String> node) {
         for (DefaultEdge defaultEdge : fullGraph.incomingEdgesOf(node)) {
             Map.Entry<String, String> edgeSource = filteredCFG.getEdgeSource(defaultEdge);
-            if (filteredCFG.containsVertex(edgeSource)) {
-                filteredCFG.addEdge(edgeSource, starterNode);
+            Map.Entry<String, String> sourceNode = getNodeWithKey(edgeSource.getKey()); // For resolve a switch node rename issues
+            if (sourceNode != null) {
+                filteredCFG.addEdge(sourceNode, starterNode);
                 continue;
             }
 
@@ -384,13 +385,13 @@ public class FilteredControlFlowGraph {
     /**
      * TODO
      *
-     * @param nodeHash
+     * @param key
      * @return
      */
-    public boolean containsNode(String nodeHash) {
+    public Map.Entry<String, String> getNodeWithKey(String key) {
         for (Map.Entry<String, String> entry : filteredCFG.vertexSet())
-            if (entry.getKey().equals(nodeHash)) return true;
-        return false;
+            if (entry.getKey().equals(key)) return entry;
+        return null;
     }
 
     /**
@@ -403,15 +404,15 @@ public class FilteredControlFlowGraph {
         return filteredCFG.vertexSet().isEmpty();
     }
 
-    private List<DefaultEdge> getEdgeWithTarget(Map.Entry<String, String> node) {
-        List<DefaultEdge> edges = new ArrayList<>();
-        for (DefaultEdge edge : filteredCFG.edgeSet()) {
-            if (filteredCFG.getEdgeSource(edge).equals(node)) {
-                edges.add(edge);
-            }
-        }
-        return edges; // Return null if no such edge is found
-    }
+//    private List<DefaultEdge> getEdgeWithTarget(Map.Entry<String, String> node) {
+//        List<DefaultEdge> edges = new ArrayList<>();
+//        for (DefaultEdge edge : filteredCFG.edgeSet()) {
+//            if (filteredCFG.getEdgeSource(edge).equals(node)) {
+//                edges.add(edge);
+//            }
+//        }
+//        return edges; // Return null if no such edge is found
+//    }
 
     /*
     private List<DefaultEdge> getEdgeWithSource(Map.Entry<String, String> node) {
@@ -425,58 +426,58 @@ public class FilteredControlFlowGraph {
     }
     */
 
-    /*
+
     public FilteredControlFlowGraph switchResolver() {
 
-        FilteredControlFlowGraph switchCFG = new FilteredControlFlowGraph(this);
+        FilteredControlFlowGraph switchCFG = new FilteredControlFlowGraph(this, filteredCFG);
         List<String> nodesToRemove = new ArrayList<>();
 
         Map.Entry<String, String> firstSwitchNode = null;
         Map.Entry<String, String> lastSwitchNode = null;
 
-        for (Unit unit : fullGraph) {
-            String line = unit.toString();
-
-            if (!containsNode("node" + unit.hashCode())) continue;
+        for (Map.Entry<String, String> node : filteredCFG.vertexSet()) {
+            String line = node.getValue();
 
             if (line.startsWith("lookupswitch(")) {
                 String variableName = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
 
-                Pattern pattern = Pattern.compile("case (\\d+): (.*?);");
+                Pattern pattern = Pattern.compile("case (.*?): (.*?);");
                 Matcher matcher = pattern.matcher(line);
 
-                List<Map.Entry<Integer, String>> extractedCases = new ArrayList<>();
+                List<Map.Entry<String, String>> extractedCases = new ArrayList<>();
                 while (matcher.find())
-                    extractedCases.add(Map.entry(Integer.parseInt(matcher.group(1)), matcher.group(2).trim()));
+                    extractedCases.add(Map.entry(matcher.group(1), matcher.group(2).trim()));
 
-                List<Unit> succsList = fullGraph.getSuccsOf(unit);
+                Set<DefaultEdge> succsList = fullGraph.outgoingEdgesOf(node);
                 List<Map.Entry<String, String>> succEntryList = new ArrayList<>();
-                Unit defaultNode = null;
+                Map.Entry<String, String> defaultNode = null;
 
-                for (Map.Entry<Integer, String> caseEntry : extractedCases) {
-                    Unit caseNode = null;
-                    for (Unit succ : succsList) {
+                for (Map.Entry<String, String> caseEntry : extractedCases) {
+                    Map.Entry<String, String> caseNode = null;
+
+                    for (DefaultEdge defaultEdge : succsList) {
+                        Map.Entry<String, String> succ = filteredCFG.getEdgeTarget(defaultEdge);
                         String caseText = caseEntry.getValue().replace("goto ", "");
-                        if (succ.toString().contains(caseText)) {
+                        if (succ.getValue().contains(caseText)) {
                             caseNode = succ;
                             break;
                         }
                     }
 
                     if (caseNode == null) continue;
-                    if (caseNode.toString().startsWith("goto")) {
+
+                    if (caseNode.getValue().startsWith("goto")) {
                         defaultNode = caseNode;
-                        nodesToRemove.add("node" + caseNode.hashCode());
+                        nodesToRemove.add(caseNode.getKey());
                         continue;
                     }
 
                     String nodeText = "if " + variableName + "==" + caseEntry.getKey() + " " + caseEntry.getValue();
-                    if (succEntryList.isEmpty()) {
-                        Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), nodeText);
+                    if (succEntryList.isEmpty()) { // first switch element
+                        Map.Entry<String, String> vertex = Map.entry(node.getKey(), nodeText); // use the node name of the switch
                         succEntryList.add(vertex);
-                        List<DefaultEdge> defaultEdges = getEdgeWithTarget(Map.entry("node" + unit.hashCode(), line));
-                        for (DefaultEdge defaultEdge : defaultEdges) {
-                            Map.Entry<String, String> predNode = filteredCFG.getEdgeTarget(defaultEdge);
+                        for (DefaultEdge defaultEdge : filteredCFG.incomingEdgesOf(node)) {
+                            Map.Entry<String, String> predNode = filteredCFG.getEdgeSource(defaultEdge);
                             switchCFG.addToGraph(vertex, predNode);
                         }
                         firstSwitchNode = vertex;
@@ -487,27 +488,42 @@ public class FilteredControlFlowGraph {
                         switchCFG.addToGraph(vertex, succEntryList.get(succEntryList.size() - 2));
                         lastSwitchNode = vertex;
                     }
-                    switchCFG.addToGraph(Map.entry("node"+caseNode.hashCode(), caseNode.toString()), succEntryList.get(succEntryList.size() - 1));
-                    nodesToRemove.add("node" + caseNode.hashCode());
+                    switchCFG.addToGraph(caseNode, succEntryList.get(succEntryList.size() - 1));
+                    nodesToRemove.add(caseNode.getKey());
                 }
 
                 if (defaultNode == null) continue;
-                Map.Entry<String, String> vertex = Map.entry("node" + defaultNode.hashCode(), defaultNode.toString());
-                switchCFG.addToGraph(vertex, succEntryList.get(succEntryList.size() - 1));
 
-            } else if (!nodesToRemove.contains("node" + unit.hashCode())){
-                switchCFG.addToGraph(unit);
+                switchCFG.addToGraph(defaultNode, succEntryList.get(succEntryList.size() - 1));
 
-                Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), unit.toString());
+            } else if (!nodesToRemove.contains(node.getKey())){
+                switchCFG.addToGraph(node);
 
-                List<DefaultEdge> defaultEdges = switchCFG.getEdgeWithTarget(vertex);
-                for (DefaultEdge defaultEdge : defaultEdges) {
-                    Map.Entry<String, String> predNode = switchCFG.filteredCFG.getEdgeTarget(defaultEdge);
-                    if (firstSwitchNode != null && predNode.getKey().equals(firstSwitchNode.getKey())){
-                        switchCFG.filteredCFG.removeEdge(defaultEdge);
-                        switchCFG.filteredCFG.addEdge(vertex, lastSwitchNode);
-                    }
-                }
+                if (firstSwitchNode == null) continue;
+
+//                List<DefaultEdge> toRemove = new ArrayList<>();
+//
+//                for (DefaultEdge switchEdge : switchCFG.filteredCFG.incomingEdgesOf(firstSwitchNode)) {
+//                    Map.Entry<String, String> predNode = switchCFG.filteredCFG.getEdgeSource(switchEdge);
+//                    for (DefaultEdge predEdge : switchCFG.filteredCFG.outgoingEdgesOf(predNode))
+//                        if (switchCFG.filteredCFG.getEdgeTarget(predEdge).equals(node))
+//                            toRemove.add(switchEdge);
+//                }
+//
+//                for (DefaultEdge defaultEdge : toRemove)
+//                    switchCFG.filteredCFG.removeEdge(defaultEdge);
+
+
+
+
+
+//                for (DefaultEdge defaultEdge : switchCFG.filteredCFG.incomingEdgesOf(node)) {
+//                    Map.Entry<String, String> predNode = switchCFG.filteredCFG.getEdgeTarget(defaultEdge);
+//                    if (firstSwitchNode != null && predNode.getKey().equals(firstSwitchNode.getKey())){
+//                        switchCFG.filteredCFG.removeEdge(defaultEdge);
+//                        switchCFG.filteredCFG.addEdge(node, lastSwitchNode);
+//                    }
+//                }
             }
 
         }
@@ -517,5 +533,4 @@ public class FilteredControlFlowGraph {
         }
         return null;
     }
-    */
 }
