@@ -30,11 +30,13 @@ public class CFGPathFinder {
         List<Map.Entry<String, String>> startNodes = filteredCFG.vertexSet().stream()
             .filter(v -> filteredCFG.incomingEdgesOf(v).isEmpty()) // No incoming edges = start node
             .collect(Collectors.toList());
+        // TODO puoi usare getRootsNodes(filteredCFG)
     
         // Find end nodes (nodes with no successors)
         List<Map.Entry<String, String>> endNodes = filteredCFG.vertexSet().stream()
             .filter(v -> filteredCFG.outgoingEdgesOf(v).isEmpty()) // No outgoing edges = end node
             .collect(Collectors.toList());
+        // TODO puoi usare getLeafNodes(filteredCFG)
     
         // Debug print edges for all nodes with node numbers
         System.out.println("\n=== DEBUG EDGE CONNECTIONS ===");

@@ -53,10 +53,11 @@ public class FilteredControlFlowGraph {
      *                       used for expanding method calls during filtering.
      */
     public FilteredControlFlowGraph(ExceptionalUnitGraph fullGraph, String completeMethod, Map<String, ExceptionalUnitGraph> otherMethods) {
-        this.fullGraph = fullGraphConvert(fullGraph);
         this.completeMethod = completeMethod;
         this.otherMethods = otherMethods;
         this.filteredCFG = new SimpleDirectedGraph<>(DefaultEdge.class);
+        this.fullGraph = fullGraphConvert(fullGraph);
+
 
         startFiltering();
     }
@@ -93,6 +94,48 @@ public class FilteredControlFlowGraph {
      * Filter control flow graph that only contains edges related to Intent operations (e.g., getExtra calls).
      */
     private void startFiltering() {
+
+        List<Graph<Map.Entry<String, String>, DefaultEdge>> methodGraphs = new ArrayList<>();
+        List<Map.Entry<String, String>> methodNodes = new ArrayList<>();
+
+        for (Map.Entry<String, String> node : fullGraph.vertexSet()) {  // todo
+            Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = expandMethodCall(node);
+
+            if (methodGraph == null) continue;
+
+            methodGraphs.add(methodGraph);
+            methodNodes.add(node);
+        }
+
+        for (int i = 0; i < methodGraphs.size(); i++) {
+            Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = methodGraphs.get(i);
+
+            for (Map.Entry<String, String> node : methodGraph.vertexSet())
+                fullGraph.addVertex(node);
+            for (DefaultEdge edge : methodGraph.edgeSet())
+                fullGraph.addEdge(methodGraph.getEdgeSource(edge), methodGraph.getEdgeTarget(edge));
+
+            List<Map.Entry<String, String>> roots = getRootsNodes(methodGraph);
+            List<Map.Entry<String, String>> leafs = getLeafNodes(methodGraph);
+
+            Map.Entry<String, String> methodNode = methodNodes.get(i);
+
+            List<DefaultEdge> toRemove = new ArrayList<>();
+
+            for (DefaultEdge defaultEdge : fullGraph.outgoingEdgesOf(methodNode)){
+                toRemove.add(defaultEdge);
+                Map.Entry<String, String> target = fullGraph.getEdgeTarget(defaultEdge);
+                for (Map.Entry<String, String> leaf : leafs) // todo: doesn't works
+                    fullGraph.addEdge(leaf, target);
+            }
+
+            for (DefaultEdge defaultEdge : toRemove)
+                fullGraph.removeEdge(defaultEdge);
+
+            for (Map.Entry<String, String> node : roots)
+                fullGraph.addEdge(methodNode, node);
+
+        }
 
         // Initialize a map to keep track of parameters that we need to monitor during the analysis.
         // The map's key represents the parameter's name, and the value represents its associated type.
@@ -143,7 +186,6 @@ public class FilteredControlFlowGraph {
                     if (newParameterName.split(" ").length == 1) {
                         if (!parametersToTrack.containsKey(newParameterName))
                             parametersToTrack.put(newParameterName, newParameterName);
-//                        expandMethodCall(unit); TODO
                         continue;
                     }
 
@@ -154,7 +196,6 @@ public class FilteredControlFlowGraph {
                         newParameterName = newParametersName[1];
                         if (!parametersToTrack.containsKey(newParameterName))
                             parametersToTrack.put(newParameterName, newParameterName);
-//                        expandMethodCall(unit); TODO
                         continue;
                     }
 
@@ -176,16 +217,28 @@ public class FilteredControlFlowGraph {
         while (startParametersCount < parametersToTrack.size());
     }
 
+    private List<Map.Entry<String, String>> getRootsNodes(Graph<Map.Entry<String, String>, DefaultEdge> graph) {
+        return graph.vertexSet().stream().filter(v ->
+                        graph.incomingEdgesOf(v).isEmpty()) // No incoming edges = start node
+                .collect(Collectors.toList());
+    }
+
+    private List<Map.Entry<String, String>> getLeafNodes(Graph<Map.Entry<String, String>, DefaultEdge> graph) {
+        return graph.vertexSet().stream().filter(v ->
+                        graph.outgoingEdgesOf(v).isEmpty()) // No outgoing edges = end node
+                .collect(Collectors.toList());
+    }
+
     /**
      * Expands a method call by identifying its class, method name, and parameters,
      * and then integrates the corresponding control flow graph into the filtered graph.
      *
      * @param unit The unit representing the method call in the control flow graph.
      */
-    private void expandMethodCall(Unit unit) {
-        Matcher matcher = patternCallClass.matcher(unit.toString());
+    private Graph<Map.Entry<String, String>, DefaultEdge> expandMethodCall(Map.Entry<String, String> node) {
+        Matcher matcher = patternCallClass.matcher(node.getValue());
 
-        if (!matcher.find()) return;
+        if (!matcher.find() || node.getValue().startsWith("lookupswitch")) return null;
 
         String className = matcher.group("class");
         String methodName = matcher.group("method");
@@ -203,36 +256,33 @@ public class FilteredControlFlowGraph {
 
         if (otherMethods.containsKey(className + "." + methodName)) {
 //            System.out.println(className + "." + methodName);
-//            addMethodGraphToGraph(otherMethods.get(className + "." + methodName), unit); TODO
+            return addMethodGraphToGraph(otherMethods.get(className + "." + methodName)); // TODO
         }
+        return null;
     }
 
     /**
      * Incorporates the control flow graph of a method into the filtered control flow graph.
-     * It connects the entry point of the method to the target unit in the caller's control flow graph.
+     * It connects the entry point of the method to the node unit in the caller's control flow graph.
      *
-     * @param graph  The control flow graph of the method to be incorporated.
-     * @param target The target unit in the caller's graph where the method's graph will be attached.
+     * @param graph The control flow graph of the method to be incorporated.
+     * @param node  The node unit in the caller's graph where the method's graph will be attached.
      */
-    /*
-    private void addMethodGraphToGraph(ExceptionalUnitGraph graph, Unit target) {
-        boolean first = true;
+
+    private Graph<Map.Entry<String, String>, DefaultEdge> addMethodGraphToGraph(ExceptionalUnitGraph graph) {
+        Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = new SimpleDirectedGraph<>(DefaultEdge.class);
+
         for (Unit unit : graph) {
-            if (first) {
-                addToGraph(unit, target);
-                first = false;
-                continue;
-            }
+            Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), unit.toString());
+            methodGraph.addVertex(vertex);
             for (Unit preds : graph.getPredsOf(unit))
-                addToGraph(unit, preds);
-            if (unit.toString().startsWith("return"))
-                addToGraph(target, unit);
+                methodGraph.addEdge(Map.entry("node" + preds.hashCode(), preds.toString()), vertex);
 
             // TODO recursive method usage: to test; add recursive module() function in complexCalculator
-            expandMethodCall(unit);
+//            expandMethodCall(node);
         }
+        return methodGraph;
     }
-    */
 
     /**
      * Extracts the key and type of extra parameter from a line of code.
