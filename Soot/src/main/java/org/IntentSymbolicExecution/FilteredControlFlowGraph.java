@@ -71,7 +71,7 @@ public class FilteredControlFlowGraph {
         for (Unit unit : fullGraph) {
             Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), unit.toString());
             for (Unit pred : fullGraph.getPredsOf(unit)) {
-                Map.Entry<String, String>  predVertex = Map.entry("node" + pred.hashCode(), pred.toString());
+                Map.Entry<String, String> predVertex = Map.entry("node" + pred.hashCode(), pred.toString());
                 graph.addEdge(predVertex, vertex);
             }
         }
@@ -267,8 +267,8 @@ public class FilteredControlFlowGraph {
      *
      * @param node The control flow unit from the original graph.
      * @param pred The pred unit to which this unit should be connected. If {@code null},
-     *               predecessors are automatically searched in the full control flow graph
-     *               to establish connections.
+     *             predecessors are automatically searched in the full control flow graph
+     *             to establish connections.
      */
     private void addToGraph(Map.Entry<String, String> node) {
         filteredCFG.addVertex(node);
@@ -280,8 +280,8 @@ public class FilteredControlFlowGraph {
      *
      * @param node The control flow unit from the original graph.
      * @param pred The pred unit to which this unit should be connected. If {@code null},
-     *               predecessors are automatically searched in the full control flow graph
-     *               to establish connections.
+     *             predecessors are automatically searched in the full control flow graph
+     *             to establish connections.
      */
     private void addToGraph(Map.Entry<String, String> node, Map.Entry<String, String> pred) {
         filteredCFG.addVertex(node);
@@ -299,9 +299,9 @@ public class FilteredControlFlowGraph {
     /**
      * Resolves edges for a given unit by connecting it to its predecessors in the filtered graph.
      *
-     * @param node     TODO
+     * @param node TODO
      */
-    private void resolveEdges( Map.Entry<String, String> starterNode, Map.Entry<String, String> node) {
+    private void resolveEdges(Map.Entry<String, String> starterNode, Map.Entry<String, String> node) {
         for (DefaultEdge defaultEdge : fullGraph.incomingEdgesOf(node)) {
             Map.Entry<String, String> edgeSource = filteredCFG.getEdgeSource(defaultEdge);
             Map.Entry<String, String> sourceNode = getNodeWithKey(edgeSource.getKey()); // For resolve a switch node rename issues
@@ -496,34 +496,29 @@ public class FilteredControlFlowGraph {
 
                 switchCFG.addToGraph(defaultNode, succEntryList.get(succEntryList.size() - 1));
 
-            } else if (!nodesToRemove.contains(node.getKey())){
+            } else if (!nodesToRemove.contains(node.getKey())) {
                 switchCFG.addToGraph(node);
 
                 if (firstSwitchNode == null) continue;
 
-//                List<DefaultEdge> toRemove = new ArrayList<>();
-//
-//                for (DefaultEdge switchEdge : switchCFG.filteredCFG.incomingEdgesOf(firstSwitchNode)) {
-//                    Map.Entry<String, String> predNode = switchCFG.filteredCFG.getEdgeSource(switchEdge);
-//                    for (DefaultEdge predEdge : switchCFG.filteredCFG.outgoingEdgesOf(predNode))
-//                        if (switchCFG.filteredCFG.getEdgeTarget(predEdge).equals(node))
-//                            toRemove.add(switchEdge);
-//                }
-//
-//                for (DefaultEdge defaultEdge : toRemove)
-//                    switchCFG.filteredCFG.removeEdge(defaultEdge);
+                List<DefaultEdge> toRemove = new ArrayList<>();
+                List<DefaultEdge> toAdd = new ArrayList<>();
 
+                for (DefaultEdge defaultEdge : switchCFG.filteredCFG.incomingEdgesOf(node)) {
+                    Map.Entry<String, String> predNode = switchCFG.filteredCFG.getEdgeSource(defaultEdge);
+                    if (predNode.getKey().equals(firstSwitchNode.getKey())) {
+                        // Is not possible to modify the graph inside the foreach
+                        toAdd.add(defaultEdge);
+                        toRemove.add(defaultEdge);
+                    }
+                }
 
+                for (DefaultEdge defaultEdge : toAdd)
+                    switchCFG.filteredCFG.addEdge(lastSwitchNode, node);
 
+                for (DefaultEdge defaultEdge : toRemove)
+                    switchCFG.filteredCFG.removeEdge(defaultEdge);
 
-
-//                for (DefaultEdge defaultEdge : switchCFG.filteredCFG.incomingEdgesOf(node)) {
-//                    Map.Entry<String, String> predNode = switchCFG.filteredCFG.getEdgeTarget(defaultEdge);
-//                    if (firstSwitchNode != null && predNode.getKey().equals(firstSwitchNode.getKey())){
-//                        switchCFG.filteredCFG.removeEdge(defaultEdge);
-//                        switchCFG.filteredCFG.addEdge(node, lastSwitchNode);
-//                    }
-//                }
             }
 
         }
