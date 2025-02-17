@@ -64,9 +64,26 @@ public class FilteredControlFlowGraph {
 
     private Graph<Map.Entry<String, String>, DefaultEdge> fullGraphConvert(ExceptionalUnitGraph fullGraph) {
         Graph<Map.Entry<String, String>, DefaultEdge> graph = new SimpleDirectedGraph<>(DefaultEdge.class);
+
+        List<Graph<Map.Entry<String, String>, DefaultEdge>> methodGraphs = new ArrayList<>();
+        List<Map.Entry<String, String>> methodNodes = new ArrayList<>();
+
         for (Unit unit : fullGraph) {
             Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), unit.toString());
             graph.addVertex(vertex);
+
+
+            Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = expandMethodCall(vertex);
+            if (methodGraph == null) continue;
+
+            methodGraphs.add(methodGraph);
+            methodNodes.add(vertex);
+
+            for (Map.Entry<String, String> methodNode : methodGraph.vertexSet())
+                graph.addVertex(methodNode);
+            for (DefaultEdge methodEdge : methodGraph.edgeSet())
+                graph.addEdge(methodGraph.getEdgeSource(methodEdge), methodGraph.getEdgeTarget(methodEdge));
+
         }
 
         for (Unit unit : fullGraph) {
@@ -76,8 +93,68 @@ public class FilteredControlFlowGraph {
                 graph.addEdge(predVertex, vertex);
             }
         }
+
+        for (int i = 0; i < methodGraphs.size(); i++) {
+            Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = methodGraphs.get(i);
+            Map.Entry<String, String> node = methodNodes.get(i);
+
+            List<Map.Entry<String, String>> roots = getRootsNodes(methodGraph);
+            List<Map.Entry<String, String>> leafs = getLeafNodes(methodGraph);
+
+//            Graph<Map.Entry<String, String>, DefaultEdge> graphCopy = deepCopy(graph);
+            List<Map.Entry<Map.Entry<String, String>, Map.Entry<String, String>>> edgeToRemove = new ArrayList<>();
+
+
+            for (DefaultEdge defaultEdge : graph.outgoingEdgesOf(node)) {
+                edgeToRemove.add(
+                        Map.entry(graph.getEdgeSource(defaultEdge), graph.getEdgeTarget(defaultEdge))
+                );
+//                graphCopy.removeEdge(defaultEdge);
+                Map.Entry<String, String> target = graph.getEdgeTarget(defaultEdge);
+                for (Map.Entry<String, String> leaf : leafs)
+                    graph.addEdge(leaf, target);
+            }
+
+            for (Map.Entry<Map.Entry<String, String>, Map.Entry<String, String>> edge : edgeToRemove) {
+                graph.removeEdge(
+                        edge.getKey(),
+                        edge.getValue()
+                );
+            }
+
+
+            for (Map.Entry<String, String> root : roots)
+                graph.addEdge(node, root);
+
+//            graph = graphCopy;
+        }
+
         return graph;
     }
+
+    /*private Graph<Map.Entry<String, String>, DefaultEdge> deepCopy(Graph<Map.Entry<String, String>, DefaultEdge> graph) {
+        Graph<Map.Entry<String, String>, DefaultEdge> graphCopy = new SimpleDirectedGraph<>(DefaultEdge.class);
+
+        // Copy vertices
+        for (Map.Entry<String, String> vertex : graph.vertexSet()) {
+            graphCopy.addVertex(Map.entry(vertex.getKey(), vertex.getValue())); // Ensuring a new instance
+        }
+
+        // Copy edges
+        for (DefaultEdge edge : graph.edgeSet()) {
+            Map.Entry<String, String> source = graph.getEdgeSource(edge);
+            Map.Entry<String, String> target = graph.getEdgeTarget(edge);
+
+            Map.Entry<String, String> newSource = Map.entry(source.getKey(), source.getValue());
+            Map.Entry<String, String> newTarget = Map.entry(target.getKey(), target.getValue());
+
+            // Ensure vertices exist in the copy before adding edges
+            graphCopy.addVertex(newSource);
+            graphCopy.addVertex(newTarget);
+            graphCopy.addEdge(newSource, newTarget);
+        }
+        return graphCopy;
+    }*/
 
     public FilteredControlFlowGraph(FilteredControlFlowGraph filteredControlFlowGraph, Graph<Map.Entry<String, String>, DefaultEdge> fullGraph) {
         this.fullGraph = fullGraph;
@@ -94,48 +171,6 @@ public class FilteredControlFlowGraph {
      * Filter control flow graph that only contains edges related to Intent operations (e.g., getExtra calls).
      */
     private void startFiltering() {
-
-        List<Graph<Map.Entry<String, String>, DefaultEdge>> methodGraphs = new ArrayList<>();
-        List<Map.Entry<String, String>> methodNodes = new ArrayList<>();
-
-        for (Map.Entry<String, String> node : fullGraph.vertexSet()) {  // todo
-            Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = expandMethodCall(node);
-
-            if (methodGraph == null) continue;
-
-            methodGraphs.add(methodGraph);
-            methodNodes.add(node);
-        }
-
-        for (int i = 0; i < methodGraphs.size(); i++) {
-            Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = methodGraphs.get(i);
-
-            for (Map.Entry<String, String> node : methodGraph.vertexSet())
-                fullGraph.addVertex(node);
-            for (DefaultEdge edge : methodGraph.edgeSet())
-                fullGraph.addEdge(methodGraph.getEdgeSource(edge), methodGraph.getEdgeTarget(edge));
-
-            List<Map.Entry<String, String>> roots = getRootsNodes(methodGraph);
-            List<Map.Entry<String, String>> leafs = getLeafNodes(methodGraph);
-
-            Map.Entry<String, String> methodNode = methodNodes.get(i);
-
-            List<DefaultEdge> toRemove = new ArrayList<>();
-
-            for (DefaultEdge defaultEdge : fullGraph.outgoingEdgesOf(methodNode)){
-                toRemove.add(defaultEdge);
-                Map.Entry<String, String> target = fullGraph.getEdgeTarget(defaultEdge);
-                for (Map.Entry<String, String> leaf : leafs) // todo: doesn't works
-                    fullGraph.addEdge(leaf, target);
-            }
-
-            for (DefaultEdge defaultEdge : toRemove)
-                fullGraph.removeEdge(defaultEdge);
-
-            for (Map.Entry<String, String> node : roots)
-                fullGraph.addEdge(methodNode, node);
-
-        }
 
         // Initialize a map to keep track of parameters that we need to monitor during the analysis.
         // The map's key represents the parameter's name, and the value represents its associated type.
@@ -355,7 +390,7 @@ public class FilteredControlFlowGraph {
         for (DefaultEdge defaultEdge : fullGraph.incomingEdgesOf(node)) {
             Map.Entry<String, String> edgeSource = filteredCFG.getEdgeSource(defaultEdge);
             Map.Entry<String, String> sourceNode = getNodeWithKey(edgeSource.getKey()); // For resolve a switch node rename issues
-            if (sourceNode != null) {
+            if (sourceNode != null) { // edgeSource node is not in the filteredCFG
                 filteredCFG.addEdge(sourceNode, starterNode);
                 continue;
             }
@@ -478,7 +513,6 @@ public class FilteredControlFlowGraph {
 
 
     public FilteredControlFlowGraph switchResolver() {
-
         FilteredControlFlowGraph switchCFG = new FilteredControlFlowGraph(this, filteredCFG);
         List<String> nodesToRemove = new ArrayList<>();
 
@@ -498,7 +532,7 @@ public class FilteredControlFlowGraph {
                 while (matcher.find())
                     extractedCases.add(Map.entry(matcher.group(1), matcher.group(2).trim()));
 
-                Set<DefaultEdge> succsList = fullGraph.outgoingEdgesOf(node);
+                Set<DefaultEdge> succsList = filteredCFG.outgoingEdgesOf(node);
                 List<Map.Entry<String, String>> succEntryList = new ArrayList<>();
                 Map.Entry<String, String> defaultNode = null;
 

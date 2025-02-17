@@ -103,7 +103,7 @@ public class ManifestParsing {
      * @return a Document object representing the parsed AndroidManifest.xml, or null if extraction fails.
      */
     public static Document extractManifest(String apkPath, String appName) {
-        String command = String.format("apktool d %s -o manifest/%s -f", apkPath, appName);
+        String command = String.format("apktool d %s -o manifest/%s -f --no-src", apkPath, appName);
 
         // Use ProcessBuilder to execute the command
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
