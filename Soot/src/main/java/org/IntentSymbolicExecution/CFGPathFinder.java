@@ -15,9 +15,11 @@ import org.jgrapht.graph.DefaultEdge;
 
 public class CFGPathFinder {
 
+    private FilteredControlFlowGraph filteredControlFlowGraph;
     private Graph<Map.Entry<String, String>, DefaultEdge> filteredCFG;
-    
+
     public CFGPathFinder(FilteredControlFlowGraph graph) {
+        this.filteredControlFlowGraph = graph;
         this.filteredCFG = graph.getFilteredCFG();
 
     }
@@ -29,17 +31,11 @@ public class CFGPathFinder {
      */
     public List<List<Map.Entry<String, String>>> getAllPaths() {
         // Find start nodes (nodes with no predecessors)
-        List<Map.Entry<String, String>> startNodes = filteredCFG.vertexSet().stream()
-            .filter(v -> filteredCFG.incomingEdgesOf(v).isEmpty()) // No incoming edges = start node
-            .collect(Collectors.toList());
-        // TODO puoi usare getRootsNodes(filteredCFG)
-    
+        List<Map.Entry<String, String>> startNodes = filteredControlFlowGraph.getRootsNodes(filteredCFG);
+
         // Find end nodes (nodes with no successors)
-        List<Map.Entry<String, String>> endNodes = filteredCFG.vertexSet().stream()
-            .filter(v -> filteredCFG.outgoingEdgesOf(v).isEmpty()) // No outgoing edges = end node
-            .collect(Collectors.toList());
-        // TODO puoi usare getLeafNodes(filteredCFG)
-    
+        List<Map.Entry<String, String>> endNodes = filteredControlFlowGraph.getLeafNodes(filteredCFG);
+
         // Debug print edges for all nodes with node numbers
         /*System.out.println("\n=== DEBUG EDGE CONNECTIONS ===");
         int nodeCounter = 1;
@@ -47,7 +43,7 @@ public class CFGPathFinder {
             System.out.printf("\nNode %d:%n", nodeCounter++);
             System.out.println("  Key:   " + node.getKey());
             System.out.println("  Value: " + node.getValue());
-            
+
             // Print incoming edges (predecessors)
             Set<DefaultEdge> incomingEdges = filteredCFG.incomingEdgesOf(node);
             System.out.println("  Incoming edges: " + incomingEdges.size());
@@ -69,10 +65,10 @@ public class CFGPathFinder {
                     System.out.println("      - " + target.getKey() + ": " + target.getValue());
                 }
             }
-            
+
             System.out.println("----------------------");
         }*/
-    
+
         // Rest of the code remains the same...
         List<List<Map.Entry<String, String>>> allPaths = new ArrayList<>();
         for (Map.Entry<String, String> start : startNodes) {

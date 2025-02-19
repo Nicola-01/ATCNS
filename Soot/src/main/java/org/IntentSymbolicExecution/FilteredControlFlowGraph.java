@@ -1,10 +1,8 @@
 package org.IntentSymbolicExecution;
 
 import org.jgrapht.Graph;
-//import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
-//import org.jgrapht.graph.SimpleGraph;
 import soot.Unit;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
@@ -60,6 +58,7 @@ public class FilteredControlFlowGraph {
 
 
         startFiltering();
+        filteredCFG = graphSimplifier();
     }
 
     private Graph<Map.Entry<String, String>, DefaultEdge> fullGraphConvert(ExceptionalUnitGraph fullGraph) {
@@ -73,7 +72,7 @@ public class FilteredControlFlowGraph {
             graph.addVertex(vertex);
 
 
-            Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = expandMethodCall(vertex);
+            Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = expandMethodCall(vertex, 0);
             if (methodGraph == null) continue;
 
             methodGraphs.add(methodGraph);
@@ -210,6 +209,8 @@ public class FilteredControlFlowGraph {
                 // Continue adding nodes and edges after the first relevant extra is found
                 if (!startAdding) continue;
 
+                if (line.contains(" goto (branch)")) continue; // todo: check
+
                 // Check if any saved parameters are used in the current unit
                 if (parametersToTrack.keySet().stream().anyMatch(line::contains)) {
                     addToGraph(node);
@@ -252,13 +253,13 @@ public class FilteredControlFlowGraph {
         while (startParametersCount < parametersToTrack.size());
     }
 
-    private List<Map.Entry<String, String>> getRootsNodes(Graph<Map.Entry<String, String>, DefaultEdge> graph) {
+    public List<Map.Entry<String, String>> getRootsNodes(Graph<Map.Entry<String, String>, DefaultEdge> graph) {
         return graph.vertexSet().stream().filter(v ->
                         graph.incomingEdgesOf(v).isEmpty()) // No incoming edges = start node
                 .collect(Collectors.toList());
     }
 
-    private List<Map.Entry<String, String>> getLeafNodes(Graph<Map.Entry<String, String>, DefaultEdge> graph) {
+    public List<Map.Entry<String, String>> getLeafNodes(Graph<Map.Entry<String, String>, DefaultEdge> graph) {
         return graph.vertexSet().stream().filter(v ->
                         graph.outgoingEdgesOf(v).isEmpty()) // No outgoing edges = end node
                 .collect(Collectors.toList());
@@ -270,17 +271,18 @@ public class FilteredControlFlowGraph {
      *
      * @param unit The unit representing the method call in the control flow graph.
      */
-    private Graph<Map.Entry<String, String>, DefaultEdge> expandMethodCall(Map.Entry<String, String> node) {
+    private Graph<Map.Entry<String, String>, DefaultEdge> expandMethodCall(Map.Entry<String, String> node, int parametersCount) {
         Matcher matcher = patternCallClass.matcher(node.getValue());
 
         if (!matcher.find() || node.getValue().startsWith("lookupswitch")) return null;
 
         String className = matcher.group("class");
         String methodName = matcher.group("method");
-        String parameters = matcher.group("parameters");
+//        String argumentType = matcher.group("argumentType");
         String arguments = matcher.group("arguments");
+        String assignation = matcher.group("assignation");
 
-        List<String> parameterList = Arrays.asList(parameters.split(",\\s*"));
+//        List<String> parameterList = Arrays.asList(argumentType.split(",\\s*"));
         List<String> argumentList = Arrays.asList(arguments.split(",\\s*"));
 
 //        System.out.println("class = \"" + className + "\"");
@@ -291,7 +293,7 @@ public class FilteredControlFlowGraph {
 
         if (otherMethods.containsKey(className + "." + methodName)) {
 //            System.out.println(className + "." + methodName);
-            return addMethodGraphToGraph(otherMethods.get(className + "." + methodName)); // TODO
+            return addMethodGraphToGraph(otherMethods.get(className + "." + methodName), assignation, argumentList, parametersCount);
         }
         return null;
     }
@@ -304,19 +306,50 @@ public class FilteredControlFlowGraph {
      * @param node  The node unit in the caller's graph where the method's graph will be attached.
      */
 
-    private Graph<Map.Entry<String, String>, DefaultEdge> addMethodGraphToGraph(ExceptionalUnitGraph graph) {
+    private Graph<Map.Entry<String, String>, DefaultEdge> addMethodGraphToGraph(ExceptionalUnitGraph graph, String assignation, List<String> argumentList, int parameterIndex) {
         Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = new SimpleDirectedGraph<>(DefaultEdge.class);
 
+        List<Map.Entry<String, String>> methodParameter = new ArrayList<>();
+
         for (Unit unit : graph) {
-            Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), unit.toString());
+            String line = unit.toString();
+
+            if (line.contains(" := @parameter")) {
+                String parameterName = line.split(" := @parameter")[0];
+                line = "$m" + parameterIndex + " = " + argumentList.get(parameterIndex);
+
+                methodParameter.add(Map.entry(parameterName, "$m" + parameterIndex));
+                parameterIndex++;
+            } else {
+                for (Map.Entry<String, String> param : methodParameter)
+                    line = line.replace(param.getKey(), param.getValue());
+            }
+            if (assignation != null && line.startsWith("return ")) {
+                line = line.replace("return ", assignation + " = ");
+            }
+
+
+            Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), line);
             methodGraph.addVertex(vertex);
-            for (Unit preds : graph.getPredsOf(unit))
-                methodGraph.addEdge(Map.entry("node" + preds.hashCode(), preds.toString()), vertex);
+            for (Unit preds : graph.getPredsOf(unit)) {
+                String predKey = "node" + preds.hashCode();
+                String predLine = findVertexByKey(methodGraph, predKey).getValue();
+                methodGraph.addEdge(Map.entry(predKey, predLine), vertex);
+            }
 
             // TODO recursive method usage: to test; add recursive module() function in complexCalculator
-//            expandMethodCall(node);
+//            expandMethodCall(node, pratameterIndex);
+
+
         }
         return methodGraph;
+    }
+
+    private Map.Entry<String, String> findVertexByKey(Graph<Map.Entry<String, String>, DefaultEdge> graph, String nodeKey) {
+        for (Map.Entry<String, String> node : graph.vertexSet())
+            if (node.getKey().equals(nodeKey))
+                return node;
+        return null;
     }
 
     /**
@@ -489,29 +522,6 @@ public class FilteredControlFlowGraph {
         return filteredCFG.vertexSet().isEmpty();
     }
 
-//    private List<DefaultEdge> getEdgeWithTarget(Map.Entry<String, String> node) {
-//        List<DefaultEdge> edges = new ArrayList<>();
-//        for (DefaultEdge edge : filteredCFG.edgeSet()) {
-//            if (filteredCFG.getEdgeSource(edge).equals(node)) {
-//                edges.add(edge);
-//            }
-//        }
-//        return edges; // Return null if no such edge is found
-//    }
-
-    /*
-    private List<DefaultEdge> getEdgeWithSource(Map.Entry<String, String> node) {
-        List<DefaultEdge> edges = new ArrayList<>();
-        for (DefaultEdge edge : filteredCFG.edgeSet()) {
-            if (filteredCFG.getEdgeTarget(edge).equals(node)) {
-                edges.add(edge);
-            }
-        }
-        return edges; // Return null if no such edge is found
-    }
-    */
-
-
     public FilteredControlFlowGraph switchResolver() {
         FilteredControlFlowGraph switchCFG = new FilteredControlFlowGraph(this, filteredCFG);
         List<String> nodesToRemove = new ArrayList<>();
@@ -611,5 +621,57 @@ public class FilteredControlFlowGraph {
             return switchCFG;
         }
         return null;
+    }
+
+    private Graph<Map.Entry<String, String>, DefaultEdge> graphSimplifier() {
+        Graph<Map.Entry<String, String>, DefaultEdge> simplifiedGraph = new SimpleDirectedGraph<>(DefaultEdge.class);
+
+        List<Map.Entry<String, String>> nodesRelabeled = new ArrayList<>();
+
+        for (Map.Entry<String, String> node : filteredCFG.vertexSet()) {
+            String nodeLabel = node.getValue();
+            String newNodeLabel = "";
+
+            Matcher matcher = patternEquals.matcher(nodeLabel);
+            if (matcher.find()) {
+                String assignation = matcher.group("assignation");
+                String object = matcher.group("object");
+                String method = matcher.group("method");
+                String argument = matcher.group("argument");
+                if(method.equals("equals"))
+                    newNodeLabel = String.format("%s = %s == %s", assignation, object, argument);
+                else
+                    newNodeLabel = nodeLabel; // TODO: other methods
+                nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
+            }
+
+        }
+
+        for (Map.Entry<String, String> node : filteredCFG.vertexSet()) {
+            String nodeLabel = node.getValue();
+
+            for (Map.Entry<String, String> nodeRelabeled : nodesRelabeled)
+                nodeLabel = nodeLabel.replace(nodeRelabeled.getKey(), nodeRelabeled.getValue());
+
+            simplifiedGraph.addVertex(Map.entry(node.getKey(), nodeLabel));
+        }
+
+        for (DefaultEdge defaultEdge : filteredCFG.edgeSet()) {
+            Map.Entry<String, String> source = filteredCFG.getEdgeSource(defaultEdge);
+            Map.Entry<String, String> target = filteredCFG.getEdgeTarget(defaultEdge);
+            String sourceLabel = source.getValue();
+            String targetLabel = target.getValue();
+            for (Map.Entry<String, String> nodeRelabeled : nodesRelabeled) {
+                sourceLabel = sourceLabel.replace(nodeRelabeled.getKey(), nodeRelabeled.getValue());
+                targetLabel = targetLabel.replace(nodeRelabeled.getKey(), nodeRelabeled.getValue());
+
+                source = Map.entry(source.getKey(), sourceLabel);
+                target = Map.entry(target.getKey(), targetLabel);
+            }
+
+            simplifiedGraph.addEdge(source, target);
+        }
+
+        return simplifiedGraph;
     }
 }
