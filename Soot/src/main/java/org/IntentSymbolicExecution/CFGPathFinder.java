@@ -39,7 +39,7 @@ public class CFGPathFinder {
         // TODO puoi usare getLeafNodes(filteredCFG)
     
         // Debug print edges for all nodes with node numbers
-        System.out.println("\n=== DEBUG EDGE CONNECTIONS ===");
+        /*System.out.println("\n=== DEBUG EDGE CONNECTIONS ===");
         int nodeCounter = 1;
         for (Map.Entry<String, String> node : filteredCFG.vertexSet()) {
             System.out.printf("\nNode %d:%n", nodeCounter++);
@@ -69,7 +69,7 @@ public class CFGPathFinder {
             }
             
             System.out.println("----------------------");
-        }
+        }*/
     
         // Rest of the code remains the same...
         List<List<Map.Entry<String, String>>> allPaths = new ArrayList<>();

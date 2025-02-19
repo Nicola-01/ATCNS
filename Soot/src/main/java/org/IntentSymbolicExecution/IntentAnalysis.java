@@ -13,6 +13,8 @@ import soot.tagkit.ConstantValueTag;
 import soot.tagkit.Tag;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -61,13 +63,44 @@ public class IntentAnalysis {
             if (filteredControlFlowGraph != null) {
                 CFGPathFinder pathFinder = new CFGPathFinder(filteredControlFlowGraph);
                 List<List<Map.Entry<String, String>>> allPaths = pathFinder.getAllPaths();
-                printAllPaths(allPaths);
+                //printAllPaths(allPaths);
+                generateDotFile(allPaths, "paths.dot");
             }
 
         }
     }
 
-    public static void printAllPaths(List<List<Map.Entry<String, String>>> allPaths) {
+    public static void generateDotFile(List<List<Map.Entry<String, String>>> allPaths, String fileName) {
+        try (FileWriter writer = new FileWriter(fileName)) {
+            int pathNumber = 1;
+            for (List<Map.Entry<String, String>> path : allPaths) {
+                writer.write(String.format("digraph path_%d {\n", pathNumber));
+                
+                int nodeNumber = 1;
+                Map.Entry<String, String> prevNode = null;
+
+                for (Map.Entry<String, String> node : path) {
+                    String nodeName = "node" + nodeNumber + "_" + pathNumber;
+                    writer.write(String.format("    %s [label=\"%s\"];\n", nodeName, node.getValue()));
+                    
+                    if (prevNode != null) {
+                        String prevNodeName = "node" + (nodeNumber - 1) + "_" + pathNumber;
+                        writer.write(String.format("    %s -> %s;\n", prevNodeName, nodeName));
+                    }
+
+                    prevNode = node;
+                    nodeNumber++;
+                }
+                
+                writer.write("}\n\n"); // Close the current graph
+                pathNumber++;
+            }
+        } catch (IOException e) {
+            System.err.println("Error writing DOT file: " + e.getMessage());
+        }
+    }
+
+    /*public static void printAllPaths(List<List<Map.Entry<String, String>>> allPaths) {
         if (allPaths.isEmpty()) {
             System.out.println("No paths found.");
             return;
@@ -86,7 +119,7 @@ public class IntentAnalysis {
             System.out.println(); // Add a blank line between paths
             pathNumber++;
         }
-    }
+    }*/
 
     /**
      * Configures Soot options for analyzing the given APK file.
