@@ -1,5 +1,7 @@
 package org.IntentSymbolicExecution;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -117,5 +119,37 @@ public class CFGPathFinder {
         visitedInPath.remove(currentNode);
     }
 
+    public void generateDotFile(List<List<Map.Entry<String, String>>> allPaths, String fileName) {
+        try (FileWriter writer = new FileWriter(fileName)) {
+            int pathNumber = 1;
+            writer.write(String.format("digraph paths {\n"));
+            for (List<Map.Entry<String, String>> path : allPaths) {
+                writer.write(String.format("subgraph path_%d {\n", pathNumber));
+                
+                int nodeNumber = 1;
+                Map.Entry<String, String> prevNode = null;
+
+                for (Map.Entry<String, String> node : path) {
+                    String nodeName = "node" + nodeNumber + "_" + pathNumber;
+                    writer.write(String.format("    %s [label=\"%s\"];\n", nodeName, node.getValue().replace("\"","\\\"")));
+                    //writer.write(String.format("    %s [label=\"%s\"];\n", nodeName, node.getValue()));
+                    
+                    if (prevNode != null) {
+                        String prevNodeName = "node" + (nodeNumber - 1) + "_" + pathNumber;
+                        writer.write(String.format("    %s -> %s;\n", prevNodeName, nodeName));
+                    }
+
+                    prevNode = node;
+                    nodeNumber++;
+                }
+                
+                writer.write("}\n\n"); // Close the current subgraph
+                pathNumber++;
+            }
+            writer.write("}\n");
+        } catch (IOException e) {
+            System.err.println("Error writing DOT file: " + e.getMessage());
+        }
+    }
 
 }
