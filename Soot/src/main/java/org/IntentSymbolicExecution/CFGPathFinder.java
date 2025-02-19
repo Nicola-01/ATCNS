@@ -125,24 +125,31 @@ public class CFGPathFinder {
             writer.write(String.format("digraph paths {\n"));
             for (List<Map.Entry<String, String>> path : allPaths) {
                 writer.write(String.format("subgraph path_%d {\n", pathNumber));
-                
+
                 int nodeNumber = 1;
                 Map.Entry<String, String> prevNode = null;
 
                 for (Map.Entry<String, String> node : path) {
                     String nodeName = "node" + nodeNumber + "_" + pathNumber;
-                    writer.write(String.format("    %s [label=\"%s\"];\n", nodeName, node.getValue().replace("\"","\\\"")));
-                    //writer.write(String.format("    %s [label=\"%s\"];\n", nodeName, node.getValue()));
-                    
+                    String nodeLabel = node.getValue();
+                    writer.write(String.format("    %s [label=\"%s\"];\n", nodeName, nodeLabel.replace("\"", "\\\"")));
+
                     if (prevNode != null) {
                         String prevNodeName = "node" + (nodeNumber - 1) + "_" + pathNumber;
-                        writer.write(String.format("    %s -> %s;\n", prevNodeName, nodeName));
+
+                        String ifLable = "";
+                        if (prevNode.getValue().startsWith("if") && prevNode.getValue().contains(" goto ")) {
+                            String ifTrueNode = prevNode.getValue().split(" goto ")[1];
+                            ifLable = String.format(" [label=\"%s\"]", ifTrueNode.equals(nodeLabel));
+                        }
+
+                        writer.write(String.format("    %s -> %s%s;\n", prevNodeName, nodeName, ifLable));
                     }
 
                     prevNode = node;
                     nodeNumber++;
                 }
-                
+
                 writer.write("}\n\n"); // Close the current subgraph
                 pathNumber++;
             }
