@@ -635,13 +635,23 @@ public class FilteredControlFlowGraph {
             Matcher matcher = patternEquals.matcher(nodeLabel);
             if (matcher.find()) {
                 String assignation = matcher.group("assignation");
+                String invoke = matcher.group("invoke");
                 String object = matcher.group("object");
+                String objectType = matcher.group("objectType");
+                String returnedType = matcher.group("returnedType");
                 String method = matcher.group("method");
+                //String argumentType = matcher.group("argumentType");
                 String argument = matcher.group("argument");
-                if(method.equals("equals"))
+                if (method.equals("equals"))
                     newNodeLabel = String.format("%s = %s == %s", assignation, object, argument);
+                else if (invoke.equals("virtualinvoke") && object != null)
+                    newNodeLabel = String.format("%s (%s) = (%s) %s.%s(%s)", assignation, returnedType, objectType, object, method, argument);
+                else if (invoke != null && object == null && assignation != null)
+                    newNodeLabel = String.format("%s (%s) = (%s).%s(%s)", assignation, returnedType, objectType, method, argument);
+                else if (assignation == null)
+                    newNodeLabel = String.format("(%s) (%s).%s(%s)", returnedType, objectType, method, argument);    
                 else
-                    newNodeLabel = nodeLabel; // TODO: other methods
+                    newNodeLabel = nodeLabel;
                 nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
             }
 
