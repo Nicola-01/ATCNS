@@ -72,7 +72,7 @@ public class FilteredControlFlowGraph {
             graph.addVertex(vertex);
 
 
-            Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = expandMethodCall(vertex, 0);
+            Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = expandMethodCall(vertex, 0, 0);
             if (methodGraph == null) continue;
 
             methodGraphs.add(methodGraph);
@@ -209,8 +209,6 @@ public class FilteredControlFlowGraph {
                 // Continue adding nodes and edges after the first relevant extra is found
                 if (!startAdding) continue;
 
-                if (line.contains(" goto (branch)")) continue; // todo: check
-
                 // Check if any saved parameters are used in the current unit
                 if (parametersToTrack.keySet().stream().anyMatch(line::contains)) {
                     addToGraph(node);
@@ -271,15 +269,15 @@ public class FilteredControlFlowGraph {
      *
      * @param unit The unit representing the method call in the control flow graph.
      */
-    private Graph<Map.Entry<String, String>, DefaultEdge> expandMethodCall(Map.Entry<String, String> node, int parametersCount) {
-        Matcher matcher = patternCallClass.matcher(node.getValue());
+    private Graph<Map.Entry<String, String>, DefaultEdge> expandMethodCall(Map.Entry<String, String> node, int parametersCount, int depth) {
+        Matcher matcher = patternMethodCall.matcher(node.getValue());
 
-        if (!matcher.find() || node.getValue().startsWith("lookupswitch")) return null;
+        if (!matcher.find() || node.getValue().startsWith("lookupswitch") || depth == 5) return null;
 
-        String className = matcher.group("class");
+        String className = matcher.group("objectType");
         String methodName = matcher.group("method");
 //        String argumentType = matcher.group("argumentType");
-        String arguments = matcher.group("arguments");
+        String arguments = matcher.group("argument");
         String assignation = matcher.group("assignation");
 
 //        List<String> parameterList = Arrays.asList(argumentType.split(",\\s*"));
@@ -292,8 +290,10 @@ public class FilteredControlFlowGraph {
 //        System.out.println("");
 
         if (otherMethods.containsKey(className + "." + methodName)) {
+            ExceptionalUnitGraph graph = otherMethods.get(className + "." + methodName);
+            Unit rootNode = graph.getHeads().get(0);
 //            System.out.println(className + "." + methodName);
-            return addMethodGraphToGraph(otherMethods.get(className + "." + methodName), assignation, argumentList, parametersCount);
+            return addMethodGraphToGraph(graph, assignation, argumentList, parametersCount, depth);
         }
         return null;
     }
@@ -306,17 +306,19 @@ public class FilteredControlFlowGraph {
      * @param node  The node unit in the caller's graph where the method's graph will be attached.
      */
 
-    private Graph<Map.Entry<String, String>, DefaultEdge> addMethodGraphToGraph(ExceptionalUnitGraph graph, String assignation, List<String> argumentList, int parameterIndex) {
+    private Graph<Map.Entry<String, String>, DefaultEdge> addMethodGraphToGraph(ExceptionalUnitGraph graph, String assignation, List<String> argumentList, int parameterIndex, int depth) {
         Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = new SimpleDirectedGraph<>(DefaultEdge.class);
 
         List<Map.Entry<String, String>> methodParameter = new ArrayList<>();
+        int parametersCount = 0;
 
         for (Unit unit : graph) {
             String line = unit.toString();
 
             if (line.contains(" := @parameter")) {
                 String parameterName = line.split(" := @parameter")[0];
-                line = "$m" + parameterIndex + " = " + argumentList.get(parameterIndex);
+                line = "$m" + parameterIndex + " = " + argumentList.get(parametersCount);
+                parametersCount++;
 
                 methodParameter.add(Map.entry(parameterName, "$m" + parameterIndex));
                 parameterIndex++;
@@ -328,20 +330,23 @@ public class FilteredControlFlowGraph {
                 line = line.replace("return ", assignation + " = ");
             }
 
-
             Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), line);
             methodGraph.addVertex(vertex);
-            for (Unit preds : graph.getPredsOf(unit)) {
-                String predKey = "node" + preds.hashCode();
-                String predLine = findVertexByKey(methodGraph, predKey).getValue();
-                methodGraph.addEdge(Map.entry(predKey, predLine), vertex);
-            }
 
             // TODO recursive method usage: to test; add recursive module() function in complexCalculator
-//            expandMethodCall(node, pratameterIndex);
-
-
+            expandMethodCall(vertex, parameterIndex, depth + 1);
         }
+
+        for (Unit unit : graph) {
+            String nodeKey = "node" + unit.hashCode();
+
+            for (Unit preds : graph.getPredsOf(unit)) {
+                String predKey = "node" + preds.hashCode();
+                methodGraph.addEdge(findVertexByKey(methodGraph, predKey), findVertexByKey(methodGraph, nodeKey));
+            }
+        }
+
+
         return methodGraph;
     }
 
@@ -632,13 +637,13 @@ public class FilteredControlFlowGraph {
             String nodeLabel = node.getValue();
             String newNodeLabel = "";
 
-            Matcher matcher = patternEquals.matcher(nodeLabel);
+            Matcher matcher = patternMethodCall.matcher(nodeLabel);
             if (matcher.find()) {
                 String assignation = matcher.group("assignation");
                 String object = matcher.group("object");
                 String method = matcher.group("method");
                 String argument = matcher.group("argument");
-                if(method.equals("equals"))
+                if (method.equals("equals"))
                     newNodeLabel = String.format("%s = %s == %s", assignation, object, argument);
                 else
                     newNodeLabel = nodeLabel; // TODO: other methods

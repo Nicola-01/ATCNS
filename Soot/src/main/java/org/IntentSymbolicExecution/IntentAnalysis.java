@@ -100,7 +100,6 @@ public class IntentAnalysis {
      */
     private static void setupSoot(String apkPath, String androidJarPath) {
         // Initialize Soot
-        Options.v().set_src_prec(Options.src_prec_apk);
         Options.v().set_android_jars(androidJarPath);
         Options.v().set_process_dir(List.of(apkPath));
         Options.v().set_whole_program(true);
