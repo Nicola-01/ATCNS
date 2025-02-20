@@ -29,6 +29,8 @@ public class RegexUtils {
     private static final String methodCallRegex = "^(?:(?<assignation>\\$?\\w+)\\s*=\\s*)?(?<invoke>\\w+)\\s+((?<object>\\$?\\w+)\\.)?\\<(?<objectType>[^:]+):\\s*(?<returnedType>[^:]+)\\s+(?<method>\\w+)\\((?<argumentType>.*?)\\)\\>\\((?<argument>.*?)\\)$";
     public static final Pattern patternMethodCall = Pattern.compile(methodCallRegex);
 
+    public static final Pattern casePattern = Pattern.compile("(?<switchCase>(?<case>case (?<value>.*?)|default): (?<goto>.*?(?<equals>\\\".*?\\\")?));");
+
     // Private constructor to prevent instantiation
     private RegexUtils() {
     }
