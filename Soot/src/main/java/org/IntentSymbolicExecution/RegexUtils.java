@@ -25,16 +25,9 @@ public class RegexUtils {
     private static final String regexGetAction = "getAction\\(\\)";
     public static final Pattern patterGetAction = Pattern.compile(regexGetAction);
 
-//    private static final String regexCallClass = "<(?<class>[^:]+):\\s[^ ]+\\s(?<method>[^()]+)\\((?<parameters>[^)]*)\\)>\\((?<arguments>[^)]*)\\)";
-    private static final String regexCallClass = "^(?:(?<assignation>\\w+)\\s*=\\s*)?(?<invoke>\\w+)\\s+<(?<class>[^:]+):\\s[^ ]+\\s(?<method>[^()]+)\\((?<argumentType>[^)]*)\\)>\\((?<arguments>[^)]*)\\)";
-    private static final String regexCallClass2= "(\\$[a-zA-Z0-9]+)\\s=\\svirtualinvoke\\s+(\\$[a-zA-Z0-9]+)\\.\\<([^:]+):\\s*([a-zA-Z0-9]+)\\s+([a-zA-Z0-9]+)\\(([^)]+)\\)\\>\\(([^)]+)\\)";;
-    public static final Pattern patternCallClass = Pattern.compile(regexCallClass);
-
-//    private static final String regexEquals = "^(?<assignation>\\$?\\w+)\\s*=\\s*\\w+\\s+(?<object>\\$?\\w+)\\.<java\\.lang\\.String:\\s*boolean\\s*equals\\(java\\.lang\\.Object\\)\\>\\((?<argument>.*)\\)$";
-    private static final String methodCallRegex =
-        "^(?:(?<assignation>\\$?\\w+)\\s*=\\s*)?(?<invoke>\\w+)\\s+((?<object>\\$?\\w+)\\.)?\\<(?<objectType>[^:]+):\\s*(?<returnedType>[^:]+)\\s+(?<method>\\w+)\\((?<argumentType>.*?)\\)\\>\\((?<argument>.*?)\\)$"
-        ;
-    public static final Pattern patternEquals = Pattern.compile(methodCallRegex);
+    //    private static final String regexEquals = "^(?<assignation>\\$?\\w+)\\s*=\\s*\\w+\\s+(?<object>\\$?\\w+)\\.<java\\.lang\\.String:\\s*boolean\\s*equals\\(java\\.lang\\.Object\\)\\>\\((?<argument>.*)\\)$";
+    private static final String methodCallRegex = "^(?:(?<assignation>\\$?\\w+)\\s*=\\s*)?(?<invoke>\\w+)\\s+((?<object>\\$?\\w+)\\.)?\\<(?<objectType>[^:]+):\\s*(?<returnedType>[^:]+)\\s+(?<method>\\w+)\\((?<argumentType>.*?)\\)\\>\\((?<argument>.*?)\\)$";
+    public static final Pattern patternMethodCall = Pattern.compile(methodCallRegex);
 
     // Private constructor to prevent instantiation
     private RegexUtils() {
