@@ -4,6 +4,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
 import soot.Unit;
+//import soot.jimple.IfStmt;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
 import java.util.*;
@@ -94,6 +95,16 @@ public class FilteredControlFlowGraph {
             Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), unit.toString());
             graph.addVertex(vertex);
 
+/*            if (unit.toString().contains(" goto (branch)")) // todo: check
+                if (unit instanceof IfStmt) {
+                    IfStmt ifStmt = (IfStmt) unit;
+                    Unit trueBranch = ifStmt.getTarget(); // Where it jumps if condition is true
+                    List<Unit> successors = fullGraph.getSuccsOf(unit);
+                    Unit falseBranch = successors.contains(trueBranch) && successors.size() > 1 ? successors.get(1) : null;
+
+                    System.out.println("True branch: " + trueBranch);
+                    System.out.println("False branch: " + falseBranch);
+                }*/
 
             Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = expandMethodCall(vertex, 0, 0);
             if (methodGraph == null) continue;
@@ -422,7 +433,15 @@ public class FilteredControlFlowGraph {
             Map.Entry<String, String> edgeSource = filteredCFG.getEdgeSource(defaultEdge);
             Map.Entry<String, String> sourceNode = findVertexByKey(filteredCFG, edgeSource.getKey()); // For resolve a switch node rename issues
             if (sourceNode != null) { // edgeSource node is not in the filteredCFG
-                filteredCFG.addEdge(sourceNode, starterNode);
+/*                if (sourceNode.getKey().equals(starterNode.getKey())) {
+                    Random rand = new Random();
+                    int randomNum = rand.nextInt(999999999);
+                    Map.Entry<String, String> tempNode = Map.entry("nodeTMP" + randomNum, "TMP_TMP_TMP_TMP");
+                    filteredCFG.addVertex(tempNode);
+                    filteredCFG.addEdge(sourceNode, tempNode);
+                    filteredCFG.addEdge(tempNode, sourceNode);
+                } else*/
+                    filteredCFG.addEdge(sourceNode, starterNode);
                 continue;
             }
 

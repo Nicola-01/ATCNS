@@ -87,6 +87,7 @@ public class IntentAnalysis {
         Options.v().set_android_jars(androidJarPath);
         Options.v().set_process_dir(List.of(apkPath));
         Options.v().set_whole_program(true);
+
         Options.v().set_allow_phantom_refs(true);
         Options.v().set_process_multiple_dex(true);
         Options.v().set_force_android_jar(androidJarPath);
@@ -114,10 +115,8 @@ public class IntentAnalysis {
                 String className = method.getDeclaringClass().getName(); // Get the class name
 
                 // Check if the class is an exported activity
-                if (exportedActivities.contains(className)) {
-                    System.out.println("\nClass: " + className + "\nMethod: " + method);
+                if (exportedActivities.contains(className))
                     graphs.put(className + "." + method.getName(), new ExceptionalUnitGraph(body));
-                }
             }
         }));
 
