@@ -20,12 +20,17 @@ import java.util.*;
 /**
  * This class performs static analysis on an APK file to
  * analyze Intent-related operations in their methods.
+ * It uses Soot to extract the control flow graph (CFG) of methods,
+ * filters the CFG to focus on Intent-related operations, and generates
+ * a graph of execution paths for further symbolic execution using Z3.
  */
 public class IntentAnalysis {
     /**
      * Constructor that initializes the analysis for a given APK file.
      *
-     * @param apkPath The path to the APK file to be analyzed.
+     * @param apkPath        The path to the APK file to be analyzed.
+     * @param androidJarPath The path to the Android SDK JAR file corresponding to the APK's SDK version.
+     *                       If null, the appropriate SDK JAR will be downloaded automatically.
      */
     public IntentAnalysis(String apkPath, String androidJarPath) {
         // Parse the APK's AndroidManifest.xml to retrieve metadata
@@ -44,19 +49,20 @@ public class IntentAnalysis {
         setupSoot(apkPath, androidJarPath);
         Scene.v().loadNecessaryClasses();
 
-        // Get global variable of the application
+        // Get global variables of the application
         Map<String, String> globalVariables = getGlobalVariables(packageName);
         System.out.println("\nGLOBAL VARIABLES:");
         for (Map.Entry<String, String> entry : globalVariables.entrySet())
             System.out.println("Variable: " + entry.getKey() + " | Value: " + entry.getValue());
 
         System.out.println();
-        
-        // Compute the Control Flow Graph
+
+        // Compute the Control Flow Graph (CFG) for exported activities
         Map<String, ExceptionalUnitGraph> graphs = getCFGs(exportedActivities);
 
         System.out.println();
 
+        // Analyze each CFG to extract Intent-related paths
         for (Map.Entry<String, ExceptionalUnitGraph> entry : graphs.entrySet()) {
             FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), entry.getKey(), graphs);
             filteredControlFlowGraph = filteredControlFlowGraph.switchResolver();
@@ -67,30 +73,8 @@ public class IntentAnalysis {
                 //printAllPaths(allPaths);
                 pathFinder.generateDotFile(allPaths, "paths.dot");
             }
-
         }
     }
-
-    /*public static void printAllPaths(List<List<Map.Entry<String, String>>> allPaths) {
-        if (allPaths.isEmpty()) {
-            System.out.println("No paths found.");
-            return;
-        }
-    
-        int pathNumber = 1;
-        for (List<Map.Entry<String, String>> path : allPaths) {
-            System.out.println("═════════ Path " + pathNumber + " ═════════");
-            int step = 1;
-            for (Map.Entry<String, String> node : path) {
-                // Extract the code snippet (value) from the node
-                String codeLine = node.getValue();
-                System.out.printf("Step %d: %s%n", step, codeLine);
-                step++;
-            }
-            System.out.println(); // Add a blank line between paths
-            pathNumber++;
-        }
-    }*/
 
     /**
      * Configures Soot options for analyzing the given APK file.
@@ -114,9 +98,9 @@ public class IntentAnalysis {
     /**
      * Generates a mapping of method names to filtered control flow graphs (CFGs) for exported activities.
      *
-     * @param exportedActivities A list exported activities from the APK.
+     * @param exportedActivities A list of exported activities from the APK.
      * @return A map where the keys are method identifiers in the format "ClassName.MethodName",
-     *         and the values are {@link FilteredControlFlowGraph} objects representing the control flow of the corresponding method.
+     * and the values are {@link ExceptionalUnitGraph} objects representing the control flow of the corresponding method.
      */
     private static Map<String, ExceptionalUnitGraph> getCFGs(List<String> exportedActivities) {
         Map<String, ExceptionalUnitGraph> graphs = new HashMap<>();
@@ -130,8 +114,10 @@ public class IntentAnalysis {
                 String className = method.getDeclaringClass().getName(); // Get the class name
 
                 // Check if the class is an exported activity
-                if (exportedActivities.contains(className))
+                if (exportedActivities.contains(className)) {
+                    System.out.println("\nClass: " + className + "\nMethod: " + method);
                     graphs.put(className + "." + method.getName(), new ExceptionalUnitGraph(body));
+                }
             }
         }));
 
@@ -145,12 +131,11 @@ public class IntentAnalysis {
      * Retrieves the global variables (static final, static non-final fields) in the specified package from the APK.
      * The method filters classes by the given package name and then checks for static final, static non-final fields
      * in those classes. For each global variable, the value is resolved (if possible) and added to a map.
-     * 
+     *
      * @param packageName The name of the package to filter classes by.
      * @return A map where the key is the name of the global variable and the value is its resolved value as a string.
      */
     private static Map<String, String> getGlobalVariables(String packageName) {
-        
         Map<String, String> globalVariables = new HashMap<>();
 
         for (SootClass sc : Scene.v().getClasses()) {
@@ -159,30 +144,27 @@ public class IntentAnalysis {
                     if (field.isStatic() || !field.isFinal()) { // Example heuristic for global variables
                         String fieldName = field.getName();
                         String fieldValue = resolveFieldValue(field); // Placeholder for the value
-                        //System.out.println(fieldName + " " + fieldValue);
                         globalVariables.put(fieldName, fieldValue);
                     }
                 }
             }
         }
-        
-        return globalVariables;
 
+        return globalVariables;
     }
 
     /**
      * Resolves the value of a given field, if possible. This method first checks if the field has
-     * a constant value (for static final variables) using a `ConstantValueTag`. 
-     * If no constant is found, it attempts to analyze the `<clinit>` (class initializer) method of 
-     * the field's declaring class to find where the field is assigned a value (e.g. for static variables). 
+     * a constant value (for static final variables) using a `ConstantValueTag`.
+     * If no constant is found, it attempts to analyze the `<clinit>` (class initializer) method of
+     * the field's declaring class to find where the field is assigned a value (e.g. for static variables).
      * The resolved value can be a constant or the string representation of the assigned value.
-     * 
+     *
      * @param field The field whose value is to be resolved.
-     * @return A string representing the resolved value of the field. If the value can't be determined, 
-     *         returns the field's signature.
+     * @return A string representing the resolved value of the field. If the value can't be determined,
+     * returns the field's signature.
      */
     private static String resolveFieldValue(SootField field) {
-        
         // Check if the field has a constant value
         for (Tag tag : field.getTags()) {
             if (tag instanceof ConstantValueTag) {
@@ -196,7 +178,7 @@ public class IntentAnalysis {
         if (declaringClass.declaresMethodByName("<clinit>")) {
             SootMethod clinit = declaringClass.getMethodByName("<clinit>");
             Body body = clinit.retrieveActiveBody();
-            //System.out.println(body);
+
             // Look for statements assigning a value to this field
             for (Unit unit : body.getUnits()) {
                 if (unit instanceof AssignStmt) {
@@ -231,6 +213,4 @@ public class IntentAnalysis {
         // Fallback: return the field's signature
         return field.getSignature();
     }
-
 }
-
