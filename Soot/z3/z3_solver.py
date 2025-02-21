@@ -3,6 +3,8 @@ from collections import deque
 import networkx as nx
 import pygraphviz as pgv
 
+from z3 import *
+
 def parse_dot_file(dot_path):
     """Reads the DOT file and returns a dictionary of NetworkX graphs."""
     A = pgv.AGraph(dot_path)
@@ -38,32 +40,90 @@ def find_variable_declaration(graph, start_node, target_var):
     
     return None, None
 
+def infer_type(variable, value):
+    
+    # Check if the value is a boolean
+    if value.lower() == "true" or value.lower() == "false":
+        return Bool(variable)
+
+    # Check if the value is a string (enclosed in double quotes)
+    if value.startswith('"') and value.endswith('"'):
+        return String(variable)
+
+    # Check if the value is an integer
+    try:
+        int(value)
+        return Int(variable)
+    except ValueError:
+        pass
+
+    # Check if the value is a float
+    try:
+        float(value)
+        return Float(variable, Float32())
+    except ValueError:
+        pass
+
+    # If none of the above, return "unknown"
+    return "unknown"
+
+
 # Load and parse the DOT file
 subgraphs = parse_dot_file("paths.dot")
-path_1 = subgraphs["path_1"]
 
-print("Variable declarations and their associated if conditions:")
-for node in path_1.nodes(data=True):
-    node_id = node[0]
-    label = node[1].get('label', '').strip()
+for i in range(1,len(subgraphs)):
     
-    if label.startswith('if '):
-        # Extract variable and value from condition
-        match = re.match(r'if\s+([^\s=]+)\s*==\s*([^\s]+)\s+goto', label)
-        if not match:
-            continue
+    pathName = f"path_{i}"
+    print(f"Solution for {pathName}")
+
+    # print("Variable declarations and their associated if conditions:")
+
+    parameters = {}
+
+    parameters.update({"i0": Int('i0')})
+    parameters.update({"i1": Int('i1')})
+    parameters.update({"r2": String('r2')})
+
+    solver = Solver()
+
+    for node in subgraphs[pathName].nodes(data=True):
+        node_id = node[0]
+        label = node[1].get('label', '').strip()
+        
+        if label == "$m1 = $i1": 
+            break
+        
+        # print(node_id + " " + label)
+        
+        if (' = ') in label and len(label.split(' = ')) == 2:
+            variable, value = label.split(' = ', 1)
+            variable = variable.replace("$","")
+            if len(variable.split(' ')) == 1 and len(value.split(' ')) == 1:
+                parameters.update({variable: infer_type(variable, value)})       
+                condition = f"parameters.get('{variable}') == {value}"
+                solver.add(eval(condition))
             
-        var_name = match.group(1)
-        var_value = match.group(2)
-        
-        # Find where the variable was declared
-        decl_node, decl_code = find_variable_declaration(path_1, node_id, var_name)
-        
-        print(f"If Node: {node_id}")
-        print(f"Condition: {var_name} == {var_value}")
-        if decl_node:
-            print(f"Declaration found in node: {decl_node}")
-            print(f"Declaration code: {decl_code}")
-        else:
-            print("No declaration found in preceding nodes")
-        print("-" * 50)
+        if label.startswith('if '):
+            condition = label.replace(" == ", "==").split(' ')[1].replace("$","").replace("==", " == ")
+            
+            for key, value in parameters.items():
+                condition = condition.replace(key, f"parameters.get('{key}')")
+            
+                        
+            for successor in subgraphs[pathName].successors(node_id):
+                edge_data = subgraphs[pathName].get_edge_data(node_id, successor)
+                edge_label = edge_data.get('label', '') if edge_data else ''
+                
+                if edge_label == "false":
+                    condition = f"Not({condition})"
+            
+            solver.add(eval(condition))
+
+    if solver.check() == sat:
+        model = solver.model()
+        print(f"n1 = {model[parameters.get('i0')]}")
+        print(f"n2 = {model[parameters.get('i1')]}")
+        print(f"Op = {model[parameters.get('r2')]}")
+    else:
+        print("No solution found.")
+    print("-"*50)
