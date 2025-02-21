@@ -90,21 +90,13 @@ for i in range(1,len(subgraphs)):
         node_id = node[0]
         label = node[1].get('label', '').strip()
         
-        if label == "$m1 = $i1": 
-            break
+        # if label == "$m1 = $i1": 
+        #     break
         
         # print(node_id + " " + label)
         
-        if (' = ') in label and len(label.split(' = ')) == 2:
-            variable, value = label.split(' = ', 1)
-            variable = variable.replace("$","")
-            if len(variable.split(' ')) == 1 and len(value.split(' ')) == 1:
-                parameters.update({variable: infer_type(variable, value)})       
-                condition = f"parameters.get('{variable}') == {value}"
-                solver.add(eval(condition))
-            
         if label.startswith('if '):
-            condition = label.replace(" == ", "==").split(' ')[1].replace("$","").replace("==", " == ")
+            condition = label.replace(" == ", "==").split(' ')[1].replace("$","")
             
             for key, value in parameters.items():
                 condition = condition.replace(key, f"parameters.get('{key}')")
@@ -117,7 +109,15 @@ for i in range(1,len(subgraphs)):
                 if edge_label == "false":
                     condition = f"Not({condition})"
             
-            solver.add(eval(condition))
+            solver.add(eval(condition)) 
+        elif (' = ') in label and len(label.split(' = ')) == 2:
+            variable, value = label.split(' = ', 1)
+            variable = variable.replace("$","")
+            if len(variable.split(' ')) == 1 and len(value.split(' ')) == 1:
+                parameters.update({variable: infer_type(variable, value)})       
+                condition = f"parameters.get('{variable}') == {value}"
+                solver.add(eval(condition))
+            
 
     if solver.check() == sat:
         model = solver.model()
@@ -127,3 +127,4 @@ for i in range(1,len(subgraphs)):
     else:
         print("No solution found.")
     print("-"*50)
+    
