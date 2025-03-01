@@ -1,7 +1,7 @@
 import re
 import networkx as nx
 import pygraphviz as pgv
-from z3 import *
+from z3 import Int, String, Bool, Real, Solver, sat, Not
 
 # Regular expression pattern for matching the parameter definition in the node label.
 PARAM_PATTERN = re.compile(
@@ -18,158 +18,133 @@ def parse_dot_file(dot_path):
     # Convert each subgraph to a NetworkX DiGraph and return as a dictionary.
     return {sub.name: nx.DiGraph(sub) for sub in A.subgraphs()}
 
-def parse_parameters_from_subgraph(graph):
+
+def infer_type(variable, value):
+    
+    # Check if the value is a boolean
+    if value.lower() == "true" or value.lower() == "false":
+        return Bool(variable)
+
+    # Check if the value is a string (enclosed in double quotes)
+    if value.startswith('"') and value.endswith('"'):
+        return String(variable)
+
+    # Check if the value is an integer
+    try:
+        int(value)
+        return Int(variable)
+    except ValueError:
+        pass
+
+    # Check if the value is a float
+    try:
+        float(value)
+        return Real(variable)
+    except ValueError:
+        pass
+
+    # If none of the above, return "unknown"
+    return "unknown"
+
+
+def parse_intent_params(graph):
     """
     Scans the given subgraph for nodes whose label matches the pattern:
       <variable> (<returned_type>) = (android.os.Bundle) <object>.<bundle_get_method>("<parameter_name>")
     and returns a dictionary mapping variable names (without any '$') to Z3 variables
     of the appropriate type.
     """
-    params = {}
-    # Iterate over each node in the graph.
+    intent_params = {}
     for node in graph.nodes(data=True):
         label = node[1].get('label', '').strip()
         # Check if the label matches the expected parameter pattern.
         match = PARAM_PATTERN.match(label)
+        
         if match:
-            variable, returned_type, param_name = match.groups()
-            # Remove any leading '$' from the variable name.
-            variable = variable.lstrip('$')
-            # Create a Z3 variable of the appropriate type.
-            if returned_type.lower() == "int":
-                params[variable] = Int(variable)
-            elif "string" in returned_type.lower():
-                params[variable] = String(variable)
-            elif "bool" in returned_type.lower():
-                params[variable] = Bool(variable)
-            elif "float" in returned_type.lower():
-                params[variable] = Real(variable)
-            else:
-                # If the type is not recognized, default to an integer.
-                params[variable] = Int(variable)
-
-    return params
-
-def add_constraints_from_subgraph(graph, solver, parameters, eval_context):
-    """
-    Iterates over nodes in the graph to add constraints to the Z3 solver.
+            var, ret_type, param_name = match.groups()
+            var = var.lstrip('$')
+            if var not in intent_params:
+                # Create a Z3 variable of the appropriate type.
+                if "int" in ret_type.lower():
+                    intent_params[var] = Int(var)
+                elif "string" in ret_type.lower():
+                    intent_params[var] = String(var)
+                elif "bool" in ret_type.lower():
+                    intent_params[var] = Bool(var)
+                elif "float" in ret_type.lower():
+                    intent_params[var] = Real(var)
+                else: # If the type is not recognized, default to an integer.
+                    intent_params[var] = Int(var)
     
-    This function handles two types of nodes:
-      - 'if' nodes: extract the condition and add it to the solver,
-        negating the condition if any outgoing edge is labeled "false".
-      - Simple assignment nodes: add constraints like `var == value`.
-    
-    Parameters:
-      graph: The NetworkX graph representing a path.
-      solver: The Z3 solver instance to which constraints are added.
-      parameters: A dictionary of Z3 variables extracted from parameter definitions.
-      eval_context: A context dictionary for eval() containing variables and functions.
-    """    
-    condition_parameters = []
+    print("intent_parameters: ", intent_params)
+    return intent_params
+            
 
-    # Iterate over each node in the graph.
+def parse_if(graph):
+
+    if_parameters = {}
+    conditions = []
     for node in graph.nodes(data=True):
         node_id = node[0]
         label = node[1].get('label', '').strip()
-        
-        # Skip nodes that are parameter definitions.
-        if PARAM_PATTERN.match(label):
-            continue
 
-        # Process nodes that represent conditional statements.
         if label.startswith('if '):
             # Extract the condition part of the label (between "if " and "goto").
             match = re.search(r'if\s+(.+?)\s+goto', label)
             if match:
-                condition_str = match.group(1)
-                # Remove any '$' characters so that variable names match those in our context.
-                condition_str = condition_str.replace("$", "")
-                condition_param = condition_str.split("==")[0]
-                if condition_param not in condition_parameters:
-                    condition_parameters.append(condition_param)    
-                #print(condition_parameters)
-                # Check outgoing edges: if any edge has the label "false", negate the condition.
+                condition = match.group(1).lstrip('$')
+                cond_param = condition.split('==')[0]
+                cond_value = condition.split('==')[1]
+                if cond_param not in if_parameters:
+                    if_parameters.update({cond_param: infer_type(cond_param, cond_value)})
+                    #if_parameters.append(cond_param)
+
                 for successor in graph.successors(node_id):
                     edge_data = graph.get_edge_data(node_id, successor)
-                    if edge_data and edge_data.get('label', '') == "false":
-                        condition_str = f"Not({condition_str})"
-                # Evaluate the condition string in the provided context and add it to the solver.
-                try:
-                    solver.add(eval(condition_str, {}, eval_context))
-                except Exception as e:
-                    print(f"Error evaluating condition '{condition_str}':", e)
-                    
-        # Process simple assignment nodes (e.g., "i2 = 0").
-        elif ' = ' in label:
-            parts = label.split(' = ')
-            if len(parts) == 2:
-                variable, value = parts
-                # Clean up variable name by removing '$' and extra whitespace.
-                variable = variable.replace("$", "").strip()
-                value = value.strip()
-                # Process only simple tokens (one word on each side).
-                if len(variable.split()) == 1 and len(value.split()) == 1:
-                    if variable not in parameters and variable in condition_parameters:
-                        # Infer the variable type based on the value.
-                        try:
-                            int(value)
-                            parameters[variable] = Int(variable)
-                        except:
-                            try:
-                                float(value)
-                                parameters[variable] = Real(variable)
-                            except:
-                                if value.lower() in ["true", "false"]:
-                                    parameters[variable] = Bool(variable)
-                                else:
-                                    parameters[variable] = String(variable)
-                    # Construct the constraint string to enforce that the variable equals the value.
-                    constraint_str = f"{variable} == {value}"
-                    # Evaluate and add the assignment constraint.
-                    try:
-                        solver.add(eval(constraint_str, {}, eval_context))
-                    except Exception as e:
-                        print(f"Error evaluating assignment constraint '{constraint_str}':", e)
+                    edge_label = edge_data.get('label', '') if edge_data else ''
+                    #print(edge_label, condition)
+                    if edge_label == 'false':
+                        neg_condition = f"Not({condition})"
+                        #print(neg_condition)
+                        if neg_condition not in conditions:
+                            conditions.append(neg_condition)
+                        #print("false case: ", conditions)
+                    elif edge_label == 'true':
+                        #print(condition)
+                        if condition not in conditions:
+                            conditions.append(condition)
+                        #print("true case: ", conditions)
 
-    print("All parameters: ", parameters)
-# Main logic
+    print("if_parameters: ", if_parameters)
+    print("conditions: ", conditions)
+    return if_parameters, conditions
+            
 
 # Load the DOT file and extract subgraphs (paths).
 subgraphs = parse_dot_file("paths.dot")
 
-# Process each subgraph (each representing a different path).
 for i in range(1, len(subgraphs)):
     pathName = f"path_{i}"
-    print(f"Solution for {pathName}")
+    print(pathName)
+    intent_params = parse_intent_params(subgraphs[pathName])
+    if_parameters, conditions = parse_if(subgraphs[pathName])
+    parameters = if_parameters | intent_params
 
-    # Automatically retrieve intent-related parameter definitions from the subgraph.
-    parameters = parse_parameters_from_subgraph(subgraphs[pathName])
-    print("Detected intent-related parameters:", parameters)
-
-    # Initialize a new Z3 solver instance.
     solver = Solver()
 
-    # Build the evaluation context so that eval() can correctly resolve parameters and functions.
-    eval_context = {"parameters": parameters, "Not": Not}
-    eval_context.update(parameters)
+    for condition in conditions:
+        solver.add(eval(condition, {"Not": Not}, parameters))
 
-    # Add constraints extracted from the subgraph nodes to the solver.
-    add_constraints_from_subgraph(subgraphs[pathName], solver, parameters, eval_context)
-
-    ############ DEBUG #################
-    print("################################\nConstraints in the solver:")
-    for assertion in solver.assertions():
-        print(assertion)
-    print("################################")
-    ####################################
-
-    # Check if the constraints are satisfiable.
     if solver.check() == sat:
         model = solver.model()
-        # If a solution is found, print the model values for each parameter.
-        for param, var in parameters.items():
-            val = model.evaluate(var, model_completion=True)
-            print(f"{param} = {val}")
+        print(f"n1 = {model[parameters.get('i0')] if model[parameters.get('i0')] is not None else 'No restriction on this value'}")
+        print(f"n2 = {model[parameters.get('i1')] if model[parameters.get('i1')] is not None else 'No restriction on this value'}")
+        print(f"Op = {model[parameters.get('r2')] if model[parameters.get('r2')] is not None else 'No restriction on this value'}")
+        print(f"b4 = {model[parameters.get('b4')] if model[parameters.get('b4')] is not None else 'No restriction on this value'}")
     else:
-        print("No solution found.")
-    print("-" * 50)
+        print("No solution found")
+
+    print("-"*50)
+    
+    
+    
