@@ -137,10 +137,15 @@ for i in range(1, len(subgraphs)):
 
     if solver.check() == sat:
         model = solver.model()
-        print(f"n1 = {model[parameters.get('i0')] if model[parameters.get('i0')] is not None else 'No restriction on this value'}")
-        print(f"n2 = {model[parameters.get('i1')] if model[parameters.get('i1')] is not None else 'No restriction on this value'}")
-        print(f"Op = {model[parameters.get('r2')] if model[parameters.get('r2')] is not None else 'No restriction on this value'}")
-        print(f"b4 = {model[parameters.get('b4')] if model[parameters.get('b4')] is not None else 'No restriction on this value'}")
+        
+        for param_name, z3_var in parameters.items():
+            value = model[z3_var]
+            print(f"{param_name} = {value if value is not None else 'No restriction on this value'}")
+
+        #print(f"n1 = {model[parameters.get('i0')] if model[parameters.get('i0')] is not None else 'No restriction on this value'}")
+        #print(f"n2 = {model[parameters.get('i1')] if model[parameters.get('i1')] is not None else 'No restriction on this value'}")
+        #print(f"Op = {model[parameters.get('r2')] if model[parameters.get('r2')] is not None else 'No restriction on this value'}")
+        #print(f"b4 = {model[parameters.get('b4')] if model[parameters.get('b4')] is not None else 'No restriction on this value'}")
     else:
         print("No solution found")
 
