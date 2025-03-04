@@ -5,8 +5,8 @@ from z3 import Int, String, Bool, Real, Solver, sat, Not
 
 # Regular expression pattern for matching the parameter definition in the node label.
 PARAM_PATTERN = re.compile(
-        r'^\$?(\w+)\s*\(([^)]+)\)\s*=\s*\(android\.os\.Bundle\)\s*\$?\w+\.get\w+\("([^"]+)"\)'
-    )
+    r'^\$?(\w+)\s*\(([^)]+)\)\s*=\s*\(android\.(?:os\.Bundle|content\.Intent)\)\s*\$?\w+\.get\w+\("([^"]+)"\)'
+)
 
 def parse_dot_file(dot_path):
     """
@@ -97,7 +97,11 @@ def parse_if(graph):
                 cond_value = condition.split('==')[1].strip()
                 if cond_param not in if_parameters:
                     if_parameters.update({cond_param: infer_type(cond_param, cond_value)})
-                    #if_parameters.append(cond_param)
+                    var_condition = search_for_var_declaration(graph, cond_param)
+                    #print(f"{cond_param} ... {cond_value} ...", var_condition)
+                    if var_condition:
+                        conditions.append(var_condition)
+                    
 
                 for successor in graph.successors(node_id):
                     edge_data = graph.get_edge_data(node_id, successor)
@@ -120,15 +124,30 @@ def parse_if(graph):
     return if_parameters, conditions
             
 
+def search_for_var_declaration(graph, var_name):
+    var_condition = ""
+    for node in graph.nodes(data=True):
+        label = node[1].get('label', '').strip()
+
+        if (' = ') in label and len(label.split(' = ')) == 2 and var_name in label.split(' = ')[0]:
+            variable, value = label.split(" = ", 1)
+            variable = variable.replace("$","")
+            value = value.replace("$", "") if value.startswith("$") else value
+            if len(variable.split(' ')) == 1 and len(value.split(' ')) == 1:
+                var_condition = f"{variable}=={value}"
+
+    return var_condition
+
+
 # Load the DOT file and extract subgraphs (paths).
 subgraphs = parse_dot_file("paths.dot")
 
-for i in range(1, len(subgraphs)):
+for i in range(1, len(subgraphs)+1):
     pathName = f"path_{i}"
     print(pathName)
     intent_params = parse_intent_params(subgraphs[pathName])
     if_parameters, conditions = parse_if(subgraphs[pathName])
-    parameters = if_parameters | intent_params
+    parameters = if_parameters | intent_params 
     #print("Parameters", parameters)
     solver = Solver()
 
@@ -138,14 +157,10 @@ for i in range(1, len(subgraphs)):
     if solver.check() == sat:
         model = solver.model()
         
-        for param_name, z3_var in parameters.items():
+        for param_name, z3_var in intent_params.items():
             value = model[z3_var]
             print(f"{param_name} = {value if value is not None else 'No restriction on this value'}")
 
-        #print(f"n1 = {model[parameters.get('i0')] if model[parameters.get('i0')] is not None else 'No restriction on this value'}")
-        #print(f"n2 = {model[parameters.get('i1')] if model[parameters.get('i1')] is not None else 'No restriction on this value'}")
-        #print(f"Op = {model[parameters.get('r2')] if model[parameters.get('r2')] is not None else 'No restriction on this value'}")
-        #print(f"b4 = {model[parameters.get('b4')] if model[parameters.get('b4')] is not None else 'No restriction on this value'}")
     else:
         print("No solution found")
 
