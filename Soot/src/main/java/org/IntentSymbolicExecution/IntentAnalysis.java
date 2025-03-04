@@ -58,7 +58,7 @@ public class IntentAnalysis {
         System.out.println();
 
         // Compute the Control Flow Graph (CFG) for exported activities
-        Map<String, ExceptionalUnitGraph> graphs = getCFGs(exportedActivities);
+        Map<String, ExceptionalUnitGraph> graphs = getCFGs(exportedActivities, packageName);
 
         System.out.println();
 
@@ -100,10 +100,11 @@ public class IntentAnalysis {
      * Generates a mapping of method names to filtered control flow graphs (CFGs) for exported activities.
      *
      * @param exportedActivities A list of exported activities from the APK.
+     * @param packageName The name of the apk package.
      * @return A map where the keys are method identifiers in the format "ClassName.MethodName",
      * and the values are {@link ExceptionalUnitGraph} objects representing the control flow of the corresponding method.
      */
-    private static Map<String, ExceptionalUnitGraph> getCFGs(List<String> exportedActivities) {
+    private static Map<String, ExceptionalUnitGraph> getCFGs(List<String> exportedActivities, String packageName) {
         Map<String, ExceptionalUnitGraph> graphs = new HashMap<>();
 
         // Add a custom transformation to analyze methods for Intent-related operations
@@ -115,7 +116,8 @@ public class IntentAnalysis {
                 String className = method.getDeclaringClass().getName(); // Get the class name
 
                 // Check if the class is an exported activity
-                if (exportedActivities.contains(className))
+//                if (exportedActivities.contains(className))
+                if (className.startsWith(packageName))
                     graphs.put(className + "." + method.getName(), new ExceptionalUnitGraph(body));
             }
         }));
