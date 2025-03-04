@@ -93,8 +93,8 @@ def parse_if(graph):
             match = re.search(r'if\s+(.+?)\s+goto', label)
             if match:
                 condition = match.group(1).lstrip('$')
-                cond_param = condition.split('==')[0]
-                cond_value = condition.split('==')[1]
+                cond_param = condition.split('==')[0].strip()
+                cond_value = condition.split('==')[1].strip()
                 if cond_param not in if_parameters:
                     if_parameters.update({cond_param: infer_type(cond_param, cond_value)})
                     #if_parameters.append(cond_param)
@@ -129,7 +129,7 @@ for i in range(1, len(subgraphs)):
     intent_params = parse_intent_params(subgraphs[pathName])
     if_parameters, conditions = parse_if(subgraphs[pathName])
     parameters = if_parameters | intent_params
-
+    #print("Parameters", parameters)
     solver = Solver()
 
     for condition in conditions:
