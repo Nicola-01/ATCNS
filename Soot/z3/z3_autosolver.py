@@ -92,31 +92,37 @@ def parse_if(graph):
             match = re.search(r'if\s+(.+?)\s+goto', label)
             if match:
                 condition = match.group(1).lstrip('$')
-                cond_param = condition.split('==')[0].strip()
-                cond_value = condition.split('==')[1].strip()
-                if cond_param not in if_parameters:
-                    if_parameters.update({cond_param: infer_type(cond_param, cond_value)})
-                    var_condition = search_for_var_declaration(graph, cond_param)
-                    #print(f"{cond_param} ... {cond_value} ...", var_condition)
-                    if var_condition:
-                        conditions.append(var_condition)
-                    
+                # Regex for capturing a variable, an operator, and a value.
+                op_regex = re.compile(r'(\w+)\s*(==|<=|>=|<|>|!=)\s*(.+)')
+                op_match = op_regex.match(condition)
+                if op_match:
+                    cond_param, operator, cond_value = op_match.groups()
+                    cond_param = cond_param.strip()
+                    cond_value = cond_value.strip()
+                
+                    if cond_param not in if_parameters:
+                        if_parameters.update({cond_param: infer_type(cond_param, cond_value)})
+                        var_condition = search_for_var_declaration(graph, cond_param)
+                        #print(f"{cond_param} ... {cond_value} ...", var_condition)
+                        if var_condition:
+                            conditions.append(var_condition)
+                        
 
-                for successor in graph.successors(node_id):
-                    edge_data = graph.get_edge_data(node_id, successor)
-                    edge_label = edge_data.get('label', '') if edge_data else ''
-                    #print(edge_label, condition)
-                    if edge_label == 'false':
-                        neg_condition = f"Not({condition})"
-                        #print(neg_condition)
-                        if neg_condition not in conditions:
-                            conditions.append(neg_condition)
-                        #print("false case: ", conditions)
-                    elif edge_label == 'true':
-                        #print(condition)
-                        if condition not in conditions:
-                            conditions.append(condition)
-                        #print("true case: ", conditions)
+                    for successor in graph.successors(node_id):
+                        edge_data = graph.get_edge_data(node_id, successor)
+                        edge_label = edge_data.get('label', '') if edge_data else ''
+                        #print(edge_label, condition)
+                        if edge_label == 'false':
+                            neg_condition = f"Not({condition})"
+                            #print(neg_condition)
+                            if neg_condition not in conditions:
+                                conditions.append(neg_condition)
+                            #print("false case: ", conditions)
+                        elif edge_label == 'true':
+                            #print(condition)
+                            if condition not in conditions:
+                                conditions.append(condition)
+                            #print("true case: ", conditions)
 
     return if_parameters, conditions
             
@@ -141,7 +147,7 @@ def search_for_var_declaration(graph, var_name):
 
 
 # Load the DOT file and extract subgraphs (paths).
-subgraphs = parse_dot_file("paths.dot")
+subgraphs = parse_dot_file("paths/paths.dot")
 
 for i in range(1, len(subgraphs)+1):
     pathName = f"path_{i}"

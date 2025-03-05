@@ -73,12 +73,21 @@ public class FilteredControlFlowGraph {
     }
 
     /**
-     * todo
+     * //TODO
      *
      * @return
      */
     public Graph<Map.Entry<String, String>, DefaultEdge> getFilteredCFG() {
         return this.filteredCFG;
+    }
+
+    /**
+     * //TODO
+     * 
+     * @return
+     */
+    public String getCompleteMethod() {
+        return this.completeMethod;
     }
 
     /**
