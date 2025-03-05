@@ -171,8 +171,6 @@ for i in range(1, len(subgraphs)+1):
             print(f"{param_name} = {value if value is not None else 'No restriction on this value'}")
 
         print("-"*50)
-        if (pathName != "path_34"):
-            break
     # else:
     #     print("No solution found")
 
