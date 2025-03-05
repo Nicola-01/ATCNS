@@ -38,7 +38,7 @@ public class IntentAnalysis {
 
         // Retrieve necessary data from the manifest
         int SDK_Version = manifest.getSDK_Version();
-        List<String> exportedActivities = manifest.getExportedActivities();
+        List<Map.Entry<String, String>> exportedActivities = manifest.getExportedActivities();
         String packageName = manifest.getPackageName();
 
         // Download the corresponding Android SDK JAR and get its path
@@ -64,6 +64,17 @@ public class IntentAnalysis {
 
         // Analyze each CFG to extract Intent-related paths
         for (Map.Entry<String, ExceptionalUnitGraph> entry : graphs.entrySet()) {
+
+            String activityName = entry.getKey().substring(0, entry.getKey().lastIndexOf("."));
+            String action = "";
+            for (Map.Entry<String, String> exportedActivity : exportedActivities) {
+                if (exportedActivity.getKey().equals(activityName)) {
+                    action = exportedActivity.getValue();
+                    continue;
+                }
+            }
+            if (action.isEmpty()) continue;
+
             FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), entry.getKey(), graphs);
             filteredControlFlowGraph = filteredControlFlowGraph.switchResolver();
 
@@ -72,7 +83,8 @@ public class IntentAnalysis {
                 CFGPathFinder pathFinder = new CFGPathFinder(filteredControlFlowGraph);
                 List<List<Map.Entry<String, String>>> allPaths = pathFinder.getAllPaths();
                 //printAllPaths(allPaths);
-                pathFinder.generateDotFile(allPaths, fileName);
+
+                pathFinder.generateDotFile(allPaths, fileName, packageName, activityName, action);
             }
         }
     }
@@ -101,11 +113,11 @@ public class IntentAnalysis {
      * Generates a mapping of method names to filtered control flow graphs (CFGs) for exported activities.
      *
      * @param exportedActivities A list of exported activities from the APK.
-     * @param packageName The name of the apk package.
+     * @param packageName        The name of the apk package.
      * @return A map where the keys are method identifiers in the format "ClassName.MethodName",
      * and the values are {@link ExceptionalUnitGraph} objects representing the control flow of the corresponding method.
      */
-    private static Map<String, ExceptionalUnitGraph> getCFGs(List<String> exportedActivities, String packageName) {
+    private static Map<String, ExceptionalUnitGraph> getCFGs(List<Map.Entry<String, String>> exportedActivities, String packageName) {
         Map<String, ExceptionalUnitGraph> graphs = new HashMap<>();
 
         // Add a custom transformation to analyze methods for Intent-related operations

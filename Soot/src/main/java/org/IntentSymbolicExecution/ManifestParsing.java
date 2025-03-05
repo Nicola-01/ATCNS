@@ -13,6 +13,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A utility class for parsing the AndroidManifest.xml file of an APK.
@@ -35,14 +36,14 @@ public class ManifestParsing {
     private static String PackageName;
 
     /**
-     * A list of all activities defined in the AndroidManifest.xml.
+     * A map of all activities, activity name, action; defined in the AndroidManifest.xml.
      */
-    private static List<String> Activities;
+    private static List<Map.Entry<String, String>> Activities;
 
     /**
      * A list of exported activities (android:exported="true") in the AndroidManifest.xml.
      */
-    private static List<String> ExportedActivities;
+    private static List<Map.Entry<String, String>> ExportedActivities;
 
     /**
      * Gets the compile SDK version of the application.
@@ -65,9 +66,9 @@ public class ManifestParsing {
     /**
      * Gets the list of all activities in the AndroidManifest.xml.
      *
-     * @return a list of activity names.
+     * @return a list of activity name and action.
      */
-    public List<String> getActivities() {
+    public List<Map.Entry<String, String>> getActivities() {
         return Activities;
     }
 
@@ -76,7 +77,7 @@ public class ManifestParsing {
      *
      * @return a list of exported activity names.
      */
-    public List<String> getExportedActivities() {
+    public List<Map.Entry<String, String>> getExportedActivities() {
         return ExportedActivities;
     }
 
@@ -199,16 +200,8 @@ public class ManifestParsing {
         System.out.println();
     }
 
-    /**
-     * Extracts activities from the AndroidManifest.xml.
-     *
-     * @param manifest               the Document object representing the AndroidManifest.xml.
-     * @param packageName            the package name of the application.
-     * @param onlyExportedActivities if true, filters only exported activities.
-     * @return a list of activity names.
-     */
-    public static List<String> getActivities(Document manifest, String packageName, Boolean onlyExportedActivities) {
-        List<String> activities = new ArrayList<>();
+    public static List<Map.Entry<String, String>> getActivities(Document manifest, String packageName, Boolean onlyExportedActivities) {
+        List<Map.Entry<String, String>> activities = new ArrayList<>();
 
         // Get all <activity> elements within the <application> tag
         NodeList activityNodes = manifest.getElementsByTagName("activity");
@@ -219,21 +212,59 @@ public class ManifestParsing {
                 Element activityElement = (Element) node;
                 String activityName = activityElement.getAttribute("android:name");
 
-                // Skip activities that are not in the correct package
-                if (!activityName.contains(packageName))
+                // Ensure activity belongs to the correct package
+                if (!activityName.contains(packageName)) {
                     continue;
+                }
 
+                // Extract the exported attribute
                 String exported = activityElement.getAttribute("android:exported");
 
-                if (onlyExportedActivities) {
-                    // If android:exported="true", add it to the list
-                    if (exported.equals("true"))
-                        activities.add(activityName);
-                } else
-                    activities.add(activityName);
+                // Get the intent-filters and extract actions
+                List<String> actions = getIntentActions(activityElement);
+
+                // If onlyExportedActivities is true, filter out non-exported activities
+                if (onlyExportedActivities && !"true".equals(exported)) {
+                    continue;
+                }
+
+                // Store each activity with its actions
+                for (String action : actions) {
+                    activities.add(Map.entry(activityName, action));
+                }
             }
         }
 
         return activities;
+    }
+
+    /**
+     * Extracts intent-filter actions from an activity element.
+     *
+     * @param activityElement the activity element.
+     * @return a list of action names.
+     */
+    private static List<String> getIntentActions(Element activityElement) {
+        List<String> actions = new ArrayList<>();
+
+        // Get all <intent-filter> elements inside the activity
+        NodeList intentFilters = activityElement.getElementsByTagName("intent-filter");
+
+        for (int i = 0; i < intentFilters.getLength(); i++) {
+            Node intentFilterNode = intentFilters.item(i);
+            if (intentFilterNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element intentFilterElement = (Element) intentFilterNode;
+
+                // Get all <action> elements inside the intent-filter
+                NodeList actionNodes = intentFilterElement.getElementsByTagName("action");
+                for (int j = 0; j < actionNodes.getLength(); j++) {
+                    Element actionElement = (Element) actionNodes.item(j);
+                    String actionName = actionElement.getAttribute("android:name");
+                    actions.add(actionName);
+                }
+            }
+        }
+
+        return actions;
     }
 }

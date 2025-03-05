@@ -115,8 +115,13 @@ public class CFGPathFinder {
         visitedInPath.remove(currentNode);
     }
 
-    public void generateDotFile(List<List<Map.Entry<String, String>>> allPaths, String fileName) {
+    public void generateDotFile(List<List<Map.Entry<String, String>>> allPaths, String fileName, String packageName, String activity, String action) {
         try (FileWriter writer = new FileWriter(fileName)) {
+
+            writer.write(String.format("# package: %s\n", packageName));
+            writer.write(String.format("# activity: %s\n", activity));
+            writer.write(String.format("# action: %s\n", action));
+
             int pathNumber = 1;
             writer.write(String.format("digraph paths {\n"));
             for (List<Map.Entry<String, String>> path : allPaths) {
