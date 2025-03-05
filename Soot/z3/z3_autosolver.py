@@ -18,6 +18,23 @@ def parse_dot_file(dot_path):
     # Convert each subgraph to a NetworkX DiGraph and return as a dictionary.
     return {sub.name: nx.DiGraph(sub) for sub in A.subgraphs()}
 
+def extract_metadata(dot_path):
+    """
+    Extracts package, activity, and action from the DOT file header.
+    """
+    metadata = {"package": None, "activity": None, "action": None}
+
+    with open(dot_path, "r", encoding="utf-8") as file:
+        for line in file:
+            if line.startswith("#"):
+                match = re.match(r"#\s*(package|activity|action):\s*(.+)", line)
+                if match:
+                    key, value = match.groups()
+                    metadata[key] = value.strip()
+            else: return metadata
+
+    return metadata
+
 
 def infer_type(variable, value):
     
@@ -147,7 +164,11 @@ def search_for_var_declaration(graph, var_name):
 
 
 # Load the DOT file and extract subgraphs (paths).
-subgraphs = parse_dot_file("paths/paths.dot")
+dot_file = "../paths/com.example.complexcalculator.Calculator.onCreate_paths.dot"
+# dot_file = "paths/paths.dot"
+subgraphs = parse_dot_file(dot_file)
+metadata = extract_metadata(dot_file)
+# print(metadata)
 
 for i in range(1, len(subgraphs)+1):
     pathName = f"path_{i}"
@@ -181,3 +202,5 @@ for i in range(1, len(subgraphs)+1):
     #     print("No solution found")
 
     # print("-"*50)  
+
+# print(metadata)
