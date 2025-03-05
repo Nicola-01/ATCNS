@@ -76,7 +76,6 @@ def parse_intent_params(graph):
                 else: # If the type is not recognized, default to an integer.
                     intent_params[var] = Int(var)
     
-    print("intent_parameters: ", intent_params)
     return intent_params
             
 
@@ -119,8 +118,6 @@ def parse_if(graph):
                             conditions.append(condition)
                         #print("true case: ", conditions)
 
-    print("if_parameters: ", if_parameters)
-    print("conditions: ", conditions)
     return if_parameters, conditions
             
 
@@ -133,8 +130,12 @@ def search_for_var_declaration(graph, var_name):
             variable, value = label.split(" = ", 1)
             variable = variable.replace("$","")
             value = value.replace("$", "") if value.startswith("$") else value
-            if len(variable.split(' ')) == 1 and len(value.split(' ')) == 1:
+            if (' ') in variable: continue
+            if not((' ') in variable):
                 var_condition = f"{variable}=={value}"
+            if ('==') in value: 
+                var_condition = f"{variable}==({value})"
+            
 
     return var_condition
 
@@ -144,9 +145,15 @@ subgraphs = parse_dot_file("paths.dot")
 
 for i in range(1, len(subgraphs)+1):
     pathName = f"path_{i}"
-    print(pathName)
+    # print(pathName)
+    
     intent_params = parse_intent_params(subgraphs[pathName])
+    # print("intent_parameters: ", intent_params)
+    
     if_parameters, conditions = parse_if(subgraphs[pathName])
+    # print("if_parameters: ", if_parameters)
+    # print("conditions: ", conditions)
+    
     parameters = if_parameters | intent_params 
     #print("Parameters", parameters)
     solver = Solver()
@@ -154,17 +161,19 @@ for i in range(1, len(subgraphs)+1):
     for condition in conditions:
         solver.add(eval(condition, {"Not": Not}, parameters))
 
+
     if solver.check() == sat:
+        print(pathName)
         model = solver.model()
         
         for param_name, z3_var in intent_params.items():
             value = model[z3_var]
             print(f"{param_name} = {value if value is not None else 'No restriction on this value'}")
 
-    else:
-        print("No solution found")
+        print("-"*50)
+        if (pathName != "path_34"):
+            break
+    # else:
+    #     print("No solution found")
 
-    print("-"*50)
-    
-    
-    
+    # print("-"*50)  
