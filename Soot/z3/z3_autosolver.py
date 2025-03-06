@@ -168,26 +168,30 @@ def search_for_var_declaration(graph, var_name):
 # MENU: Select a DOT file to analyze
 # ---------------------------
 paths_dir = "paths"
-# List only DOT files
 files = [f for f in os.listdir(paths_dir) if f.endswith('.dot') and os.path.isfile(os.path.join(paths_dir, f))]
 
 if not files:
     print("No .dot files found in the 'paths' directory.")
     exit()
 
-print("Select a file to analyze:\n")
-for idx, file in enumerate(files, start=1):
-    print(f"{idx}. {file}")
+def display_menu():
+    print("Select a file to analyze:\n")
+    for idx, file in enumerate(files, start=1):
+        print(f"{idx}. {file}")
 
-try:
-    selection = int(input("\nEnter the number of the file: "))
-    if selection < 1 or selection > len(files):
-        raise ValueError
-except ValueError:
-    print("Invalid selection. Exiting.")
-    exit()
+selected_index = None
+while selected_index is None:
+    display_menu()
+    try:
+        selection = int(input("\nEnter the number of the file: "))
+        if 1 <= selection <= len(files):
+            selected_index = selection - 1
+        else:
+            print("Invalid selection. Please try again.\n")
+    except ValueError:
+        print("Invalid input. Please enter a valid number.\n")
 
-dot_file = os.path.join(paths_dir, files[selection - 1])
+dot_file = os.path.join(paths_dir, files[selected_index])
 print(f"Selected file: {dot_file}\n")
 
 
