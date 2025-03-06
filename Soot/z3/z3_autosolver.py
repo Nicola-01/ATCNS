@@ -1,4 +1,5 @@
 import re
+import os
 import networkx as nx
 import pygraphviz as pgv
 from z3 import Int, String, Bool, Real, Solver, sat, Not
@@ -163,8 +164,35 @@ def search_for_var_declaration(graph, var_name):
     return var_condition
 
 
+# ---------------------------
+# MENU: Select a DOT file to analyze
+# ---------------------------
+paths_dir = "paths"
+# List only DOT files
+files = [f for f in os.listdir(paths_dir) if f.endswith('.dot') and os.path.isfile(os.path.join(paths_dir, f))]
+
+if not files:
+    print("No .dot files found in the 'paths' directory.")
+    exit()
+
+print("Select a file to analyze:\n")
+for idx, file in enumerate(files, start=1):
+    print(f"{idx}. {file}")
+
+try:
+    selection = int(input("\nEnter the number of the file: "))
+    if selection < 1 or selection > len(files):
+        raise ValueError
+except ValueError:
+    print("Invalid selection. Exiting.")
+    exit()
+
+dot_file = os.path.join(paths_dir, files[selection - 1])
+print(f"Selected file: {dot_file}\n")
+
+
 # Load the DOT file and extract subgraphs (paths).
-dot_file = "../paths/com.example.complexcalculator.Calculator.onCreate_paths.dot"
+#dot_file = "paths/com.example.complexcalculator.Calculator.onCreate_paths.dot"
 # dot_file = "paths/paths.dot"
 subgraphs = parse_dot_file(dot_file)
 metadata = extract_metadata(dot_file)
