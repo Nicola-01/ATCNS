@@ -4,7 +4,6 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
 import soot.Unit;
-//import soot.jimple.IfStmt;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
 import java.util.*;
@@ -267,6 +266,12 @@ public class FilteredControlFlowGraph {
 
                         if (matcher.find())
                             parametersToTrack.put(matcher.group(1), matcher.group(1));
+
+//                        for (DefaultEdge edge : fullGraph.outgoingEdgesOf(node)) {
+//                            Map.Entry<String, String> target = fullGraph.getEdgeTarget(edge);
+//                            addToGraph(target);
+//                        }
+
                         continue;
                     }
                 }
@@ -660,6 +665,7 @@ public class FilteredControlFlowGraph {
             replaceVertex(node, nodesToReplace.get(node));
     }
 
+
     /**
      * Resolves switch statements in the control flow graph by converting them into
      * a series of conditional branches. This method simplifies the graph by replacing
@@ -677,7 +683,7 @@ public class FilteredControlFlowGraph {
 
         stringSwitchSimplifier();
 
-        Graph<Map.Entry<String, String>, DefaultEdge> filteredCFGCopy = filteredCFG;
+        Graph<Map.Entry<String, String>, DefaultEdge> filteredCFGCopy = graphDeepCopy(filteredCFG);
 
         for (Map.Entry<String, String> node : filteredCFG.vertexSet()) {
             String line = node.getValue();
@@ -716,7 +722,7 @@ public class FilteredControlFlowGraph {
 
                     if (caseNode == null) continue;
 
-                    if (caseNode.getValue().startsWith("goto")) {
+                    if (caseNode.getValue().equals(defaultCase)) {
                         defaultNode = caseNode;
                         nodesToRemove.add(caseNode.getKey());
                         continue;
@@ -727,13 +733,15 @@ public class FilteredControlFlowGraph {
                         Map.Entry<String, String> newNode = Map.entry(node.getKey(), nodeText); // use the node name of the switch
                         succEntryList.add(newNode);
 
+                        // connect the node to the preds
                         for (DefaultEdge defaultEdge : filteredCFG.incomingEdgesOf(node))
                             switchCFG.addToGraph(node, findVertexByKey(switchCFG.filteredCFG, filteredCFG.getEdgeSource(defaultEdge).getKey()));
 
                         switchCFG.replaceVertex(node, newNode);
 
                         // remove edges
-                        for (DefaultEdge defaultEdge : filteredCFG.outgoingEdgesOf(node))
+                        Set<DefaultEdge> edgesToRemove = new HashSet<>(filteredCFGCopy.outgoingEdgesOf(node));
+                        for (DefaultEdge defaultEdge : edgesToRemove)
                             filteredCFGCopy.removeEdge(defaultEdge);
 
                         firstSwitchNode = newNode;
@@ -790,6 +798,18 @@ public class FilteredControlFlowGraph {
             return switchCFG;
         }
         return null;
+    }
+
+    private Graph<Map.Entry<String, String>, DefaultEdge> graphDeepCopy(Graph<Map.Entry<String, String>, DefaultEdge> filteredCFG) {
+        Graph<Map.Entry<String, String>, DefaultEdge> filteredCFGCopy = new SimpleDirectedGraph<>(DefaultEdge.class);
+
+        for (Map.Entry<String, String> entry : filteredCFG.vertexSet())
+            filteredCFGCopy.addVertex(entry);
+
+        for (DefaultEdge defaultEdge : filteredCFG.edgeSet())
+            filteredCFGCopy.addEdge(filteredCFG.getEdgeSource(defaultEdge), filteredCFG.getEdgeTarget(defaultEdge));
+
+        return filteredCFGCopy;
     }
 
     /**
