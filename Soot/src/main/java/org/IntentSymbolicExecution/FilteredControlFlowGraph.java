@@ -54,8 +54,10 @@ public class FilteredControlFlowGraph {
         this.filteredCFG = new SimpleDirectedGraph<>(DefaultEdge.class);
         this.fullGraph = graphConvert(fullGraph);
 
-        gotoResolver();
-        startFiltering();
+        removeGoToVertex(); // fullGraph
+        gotoResolver(); // fullGraph
+        
+        startFiltering(); // filteredCFG
         filteredCFG = graphSimplifier();
     }
 
@@ -507,18 +509,18 @@ public class FilteredControlFlowGraph {
     /**
      * Remove vertex and reconnects their predecessors to successors.
      */
-    private void removeVertex(Map.Entry<String, String> node) {
+    private void removeVertex(Graph<Map.Entry<String, String>, DefaultEdge> graph, Map.Entry<String, String> node) {
         // Find predecessors and successors
         Set<Map.Entry<String, String>> predecessors = new HashSet<>();
         Map<Map.Entry<String, String>, Map.Entry<String, String>> ifNodesToReplace = new HashMap<>();
 
-        for (DefaultEdge incomingEdge : filteredCFG.incomingEdgesOf(node)) {
-            predecessors.add(filteredCFG.getEdgeSource(incomingEdge));
+        for (DefaultEdge incomingEdge : graph.incomingEdgesOf(node)) {
+            predecessors.add(graph.getEdgeSource(incomingEdge));
         }
 
         Set<Map.Entry<String, String>> successors = new HashSet<>();
-        for (DefaultEdge outgoingEdge : filteredCFG.outgoingEdgesOf(node))
-            successors.add(filteredCFG.getEdgeTarget(outgoingEdge));
+        for (DefaultEdge outgoingEdge : graph.outgoingEdgesOf(node))
+            successors.add(graph.getEdgeTarget(outgoingEdge));
 
         // Connect each predecessor to each successor, avoiding loops.
         for (Map.Entry<String, String> predecessor : predecessors)
@@ -531,12 +533,12 @@ public class FilteredControlFlowGraph {
                 }
 
                 if (!predecessor.equals(successor))  // Avoid adding loops
-                    filteredCFG.addEdge(predecessor, successor);
+                    graph.addEdge(predecessor, successor);
 
             }
 
         // Remove the current node.
-        filteredCFG.removeVertex(node);
+        graph.removeVertex(node);
 
         for (Map.Entry<Map.Entry<String, String>, Map.Entry<String, String>> replaceNode : ifNodesToReplace.entrySet())
             replaceVertex(replaceNode.getKey(), replaceNode.getValue());
@@ -577,13 +579,13 @@ public class FilteredControlFlowGraph {
         Map<String, String> nodesToRemove = new HashMap<>();
 
         // Identify vertices to remove.
-        for (Map.Entry<String, String> vertex : filteredCFG.vertexSet())
+        for (Map.Entry<String, String> vertex : fullGraph.vertexSet())
             if (vertex.getValue().startsWith("goto"))
                 nodesToRemove.put(vertex.getKey(), vertex.getValue());
 
         // Reconnect predecessors and successors for each node to be removed.
         for (Map.Entry<String, String> node : nodesToRemove.entrySet())
-            removeVertex(node);
+            removeVertex(fullGraph, node);
     }
 
     private void stringSwitchSimplifier() {
@@ -619,7 +621,7 @@ public class FilteredControlFlowGraph {
         }
 
         for (Map.Entry<String, String> node : nodesToRemove)
-            removeVertex(node);
+            removeVertex(filteredCFG, node);
 
         for (Map.Entry<String, String> node : nodesToReplace.keySet())
             replaceVertex(node, nodesToReplace.get(node));
@@ -820,7 +822,7 @@ public class FilteredControlFlowGraph {
      */
     public String toString() {
         // Remove "goto" vertices before generating the DOT representation.
-        removeGoToVertex();
+        // removeGoToVertex();
 
         StringBuilder dotGraph = new StringBuilder();
         dotGraph.append(String.format("digraph %s {\n", completeMethod.replace(".", "_")));

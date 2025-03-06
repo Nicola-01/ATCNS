@@ -66,14 +66,14 @@ public class IntentAnalysis {
         for (Map.Entry<String, ExceptionalUnitGraph> entry : graphs.entrySet()) {
 
             String activityName = entry.getKey().substring(0, entry.getKey().lastIndexOf("."));
-            String action = "";
+            String action = null;
             for (Map.Entry<String, String> exportedActivity : exportedActivities) {
                 if (exportedActivity.getKey().equals(activityName)) {
                     action = exportedActivity.getValue();
-                    continue;
+                    break;
                 }
             }
-            if (action.isEmpty()) continue;
+            if (action == null) continue;
 
             FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), entry.getKey(), graphs);
             filteredControlFlowGraph = filteredControlFlowGraph.switchResolver();

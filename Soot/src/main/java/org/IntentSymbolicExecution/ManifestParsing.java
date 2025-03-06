@@ -228,6 +228,9 @@ public class ManifestParsing {
                     continue;
                 }
 
+                if (actions.isEmpty())
+                    activities.add(Map.entry(activityName, ""));
+
                 // Store each activity with its actions
                 for (String action : actions) {
                     activities.add(Map.entry(activityName, action));
