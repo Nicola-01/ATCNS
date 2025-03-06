@@ -9,6 +9,14 @@ PARAM_PATTERN = re.compile(
     r'^\$?(\w+)\s*\(([^)]+)\)\s*=\s*\(android\.(?:os\.Bundle|content\.Intent)\)\s*\$?\w+\.get\w+\("([^"]+)"\)'
 )
 
+# Mapping for displaying types in the desired format.
+TYPE_MAPPING = {
+    "Int": "int",
+    "String": "String",
+    "Bool": "bool",
+    "Real": "float"
+}
+
 def parse_dot_file(dot_path):
     """
     Reads the DOT file and returns a dictionary of NetworkX directed graphs.
@@ -68,11 +76,12 @@ def infer_type(variable, value):
 def parse_intent_params(graph):
     """
     Scans the given subgraph for nodes whose label matches the pattern:
-      <variable> (<returned_type>) = (android.os.Bundle) <object>.<bundle_get_method>("<parameter_name>")
+    <variable> (<returned_type>) = (android.os.Bundle|android.content.Intent) <object>.<bundle_get_method>("<parameter_name>")
     and returns a dictionary mapping variable names (without any '$') to Z3 variables
     of the appropriate type.
     """
     intent_params = {}
+    param_name_map = {}
     for node in graph.nodes(data=True):
         label = node[1].get('label', '').strip()
         # Check if the label matches the expected parameter pattern.
@@ -81,6 +90,9 @@ def parse_intent_params(graph):
         if match:
             var, ret_type, param_name = match.groups()
             var = var.lstrip('$')
+            if var not in param_name_map:
+                param_name_map[var] = param_name
+            #print(f"param_name: {param_name}")
             if var not in intent_params:
                 # Create a Z3 variable of the appropriate type.
                 if "int" in ret_type.lower():
@@ -94,7 +106,7 @@ def parse_intent_params(graph):
                 else: # If the type is not recognized, default to an integer.
                     intent_params[var] = Int(var)
     
-    return intent_params
+    return intent_params, param_name_map
             
 
 def parse_if(graph):
@@ -202,37 +214,47 @@ subgraphs = parse_dot_file(dot_file)
 metadata = extract_metadata(dot_file)
 # print(metadata)
 
-for i in range(1, len(subgraphs)+1):
-    pathName = f"path_{i}"
-    # print(pathName)
+# Open a text file to store the metadata and solutions.
+with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
+    # Write metadata at the top of the file.
+    for key, value in metadata.items():
+        output_file.write(f"{key.capitalize()}: {value}\n")
+    output_file.write("\n")
     
-    intent_params = parse_intent_params(subgraphs[pathName])
-    # print("intent_parameters: ", intent_params)
-    
-    if_parameters, conditions = parse_if(subgraphs[pathName])
-    # print("if_parameters: ", if_parameters)
-    # print("conditions: ", conditions)
-    
-    parameters = if_parameters | intent_params 
-    #print("Parameters", parameters)
-    solver = Solver()
-
-    for condition in conditions:
-        solver.add(eval(condition, {"Not": Not}, parameters))
-
-
-    if solver.check() == sat:
-        print(pathName)
-        model = solver.model()
+    # Process each path in the DOT file.
+    for i in range(1, len(subgraphs) + 1):
+        pathName = f"path_{i}"
         
-        for param_name, z3_var in intent_params.items():
-            value = model[z3_var]
-            print(f"{param_name} = {value if value is not None else 'No restriction on this value'}")
-
-        print("-"*50)
-    # else:
-    #     print("No solution found")
-
-    # print("-"*50)  
-
-# print(metadata)
+        intent_params, param_name_map = parse_intent_params(subgraphs[pathName])
+        if_parameters, conditions = parse_if(subgraphs[pathName])
+        parameters = if_parameters | intent_params
+        solver = Solver()
+        
+        for condition in conditions:
+            solver.add(eval(condition, {"Not": Not}, parameters))
+        
+        # Prepare the solution line.
+        solution_line = ""
+        if solver.check() == sat:
+            model = solver.model()
+            # Build a list of parameter strings.
+            param_strings = []
+            for param, z3_var in sorted(intent_params.items()):
+                # Determine the type string.
+                sort_name = z3_var.sort().name()
+                type_str = TYPE_MAPPING.get(sort_name, sort_name)
+                value = model[z3_var]
+                if value is None:
+                    value_str = "[no lim]"
+                else:
+                    # Wrap string values in quotes.
+                    if sort_name == "String":
+                        value_str = f'{value}'
+                    else:
+                        value_str = str(value)
+                param_strings.append(f"{param_name_map.get(param)} ({type_str}) : {value_str}")
+            solution_line = " | ".join(param_strings)
+        
+            output_file.write(f"{solution_line}\n")
+        
+print("Analysis complete. Results written to 'analysis_results.txt'.")
