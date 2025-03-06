@@ -31,6 +31,9 @@ public class RegexUtils {
 
     public static final Pattern casePattern = Pattern.compile("(?<switchCase>(?<case>case (?<value>.*?)|default): (?<goto>.*?(?<equals>\\\".*?\\\")?));");
 
+    private static final String globalVariablesRegex = "^(?<variable>\\S+)\\s*=\\s*<(?<package>[^:>]+):\\s+(?<type>\\S+)\\s+(?<varname>[^>]+)>$";
+    public static final Pattern globalVariablesPattern = Pattern.compile(globalVariablesRegex);
+
     // Private constructor to prevent instantiation
     private RegexUtils() {
     }

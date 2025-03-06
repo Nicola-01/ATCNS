@@ -1,35 +1,6 @@
 # package: com.example.primarychecker
 # activity: com.example.primarychecker.PrimaryChecker
 # action: com.example.primarychecker.action.PRIMARYCHECKER
-
-# global variable:
-#   purple_200 = 2131034872
-#   MAX = 50
-#   CHAR = 120
-#   data_extraction_rules = 2131886081
-#   Theme_PrimaryChecker = 2131755636
-#   teal_200 = 2131034887
-#   result = 2131231047
-#   number = 2131231007
-#   white = 2131034891
-#   teal_700 = 2131034888
-#   purple_700 = 2131034874
-#   MIDDLE = 25
-#   purple_500 = 2131034873
-#   ic_launcher = 2131558400
-#   backup_rules = 2131886080
-#   ic_launcher_round = 2131558401
-#   black = 2131034145
-#   $assertionsDisabled = 0
-#   check = 2131230817
-#   app_name = 2131689500
-#   MIN = <com.example.primarychecker.PrimaryChecker: int MIN>
-#   main_activity = 2131427379
-#   ic_launcher_foreground = 2131165330
-#   TEST = test
-#   ic_launcher_background = 2131165329
-#   NEGATIVE = -2
-
 digraph paths {
 subgraph path_1 {
     node1_1 [label="i0 (int) = (android.content.Intent) $r3.getIntExtra(\"number\", 0)"];
@@ -37,7 +8,7 @@ subgraph path_1 {
     node1_1 -> node2_1;
     node3_1 [label="if $r2 == null goto $r11 = new java.lang.AssertionError"];
     node2_1 -> node3_1;
-    node4_1 [label="r5 = <com.example.primarychecker.PrimaryChecker: java.lang.String TEST>"];
+    node4_1 [label="r5 = test"];
     node3_1 -> node4_1 [label="false"];
     node5_1 [label="$z0 = $r2 == r5"];
     node4_1 -> node5_1;
@@ -57,7 +28,7 @@ subgraph path_1 {
     node11_1 -> node12_1;
     node13_1 [label="$r6 (java.lang.Boolean) = (java.lang.Boolean).valueOf($z0)"];
     node12_1 -> node13_1;
-    node14_1 [label="i0 = <com.example.primarychecker.R$string: int app_name>"];
+    node14_1 [label="i0 = 2131689500"];
     node13_1 -> node14_1;
     node15_1 [label="$r2 (java.lang.String) = (com.example.primarychecker.PrimaryChecker) r0.getString(i0)"];
     node14_1 -> node15_1;
@@ -85,7 +56,7 @@ subgraph path_2 {
     node1_2 -> node2_2;
     node3_2 [label="if $r2 == null goto $r11 = new java.lang.AssertionError"];
     node2_2 -> node3_2;
-    node4_2 [label="r5 = <com.example.primarychecker.PrimaryChecker: java.lang.String TEST>"];
+    node4_2 [label="r5 = test"];
     node3_2 -> node4_2 [label="false"];
     node5_2 [label="$z0 = $r2 == r5"];
     node4_2 -> node5_2;
@@ -95,8 +66,8 @@ subgraph path_2 {
     node6_2 -> node7_2 [label="false"];
     node8_2 [label="if i0 > 50 goto i0 = <com.example.primarychecker.R$string: int app_name>"];
     node7_2 -> node8_2 [label="false"];
-    node9_2 [label="i0 = <com.example.primarychecker.R$string: int app_name>"];
-    node8_2 -> node9_2 [label="true"];
+    node9_2 [label="i0 = 2131689500"];
+    node8_2 -> node9_2 [label="false"];
     node10_2 [label="$r2 (java.lang.String) = (com.example.primarychecker.PrimaryChecker) r0.getString(i0)"];
     node9_2 -> node10_2;
     node11_2 [label="(int) (android.util.Log).e($r2, \"Error\")"];
@@ -113,7 +84,7 @@ subgraph path_3 {
     node1_3 -> node2_3;
     node3_3 [label="if $r2 == null goto $r11 = new java.lang.AssertionError"];
     node2_3 -> node3_3;
-    node4_3 [label="r5 = <com.example.primarychecker.PrimaryChecker: java.lang.String TEST>"];
+    node4_3 [label="r5 = test"];
     node3_3 -> node4_3 [label="false"];
     node5_3 [label="$z0 = $r2 == r5"];
     node4_3 -> node5_3;
@@ -121,8 +92,8 @@ subgraph path_3 {
     node5_3 -> node6_3;
     node7_3 [label="if i0 <= 0 goto i0 = <com.example.primarychecker.R$string: int app_name>"];
     node6_3 -> node7_3 [label="false"];
-    node8_3 [label="i0 = <com.example.primarychecker.R$string: int app_name>"];
-    node7_3 -> node8_3 [label="true"];
+    node8_3 [label="i0 = 2131689500"];
+    node7_3 -> node8_3 [label="false"];
     node9_3 [label="$r2 (java.lang.String) = (com.example.primarychecker.PrimaryChecker) r0.getString(i0)"];
     node8_3 -> node9_3;
     node10_3 [label="(int) (android.util.Log).e($r2, \"Error\")"];
@@ -139,7 +110,7 @@ subgraph path_4 {
     node1_4 -> node2_4;
     node3_4 [label="if $r2 == null goto $r11 = new java.lang.AssertionError"];
     node2_4 -> node3_4;
-    node4_4 [label="r5 = <com.example.primarychecker.PrimaryChecker: java.lang.String TEST>"];
+    node4_4 [label="r5 = test"];
     node3_4 -> node4_4 [label="false"];
     node5_4 [label="$z0 = $r2 == r5"];
     node4_4 -> node5_4;

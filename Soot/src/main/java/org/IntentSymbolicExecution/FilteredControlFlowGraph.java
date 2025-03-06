@@ -48,7 +48,7 @@ public class FilteredControlFlowGraph {
      * @param otherMethods   A map of other methods and their corresponding control flow graphs,
      *                       used for expanding method calls during filtering.
      */
-    public FilteredControlFlowGraph(ExceptionalUnitGraph fullGraph, String completeMethod, Map<String, ExceptionalUnitGraph> otherMethods) {
+    public FilteredControlFlowGraph(ExceptionalUnitGraph fullGraph, String completeMethod, Map<String, ExceptionalUnitGraph> otherMethods, Map<String, String> globalVariables) {
         this.completeMethod = completeMethod;
         this.otherMethods = otherMethods;
         this.filteredCFG = new SimpleDirectedGraph<>(DefaultEdge.class);
@@ -56,8 +56,8 @@ public class FilteredControlFlowGraph {
 
         removeGoToVertex(); // fullGraph
         gotoResolver(); // fullGraph
-        
         startFiltering(); // filteredCFG
+        replaceGlobalVariables(globalVariables);
         filteredCFG = graphSimplifier();
     }
 
@@ -90,6 +90,30 @@ public class FilteredControlFlowGraph {
      */
     public String getCompleteMethod() {
         return this.completeMethod;
+    }
+
+    private void replaceGlobalVariables(Map<String, String> globalVariables) {
+
+        for (Map.Entry<String, String> vertex : fullGraph.vertexSet()) {
+            Matcher matcher = RegexUtils.globalVariablesPattern.matcher(vertex.getValue());
+            //System.out.println(vertex.getValue() + " : " + matcher.matches());
+            if (matcher.matches()) {
+                String variable = matcher.group("variable");
+                //String packageName = matcher.group("package");
+                //String type = matcher.group("type");
+                String varName = matcher.group("varname");
+                //System.out.println(variable + " : " + varName);
+                if (globalVariables.containsKey(varName)) {
+                    //System.out.println("test");
+                    String globalVariableValue = globalVariables.get(varName);
+                    String newNodeValue = String.format("%s = %s", variable, globalVariableValue);
+                    Map.Entry<String, String> newNode = Map.entry(vertex.getKey(), newNodeValue);
+                    replaceVertex(vertex, newNode);
+
+                }
+            }
+        }
+
     }
 
     /**

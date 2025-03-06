@@ -75,7 +75,7 @@ public class IntentAnalysis {
             }
             if (action == null) continue;
 
-            FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), entry.getKey(), graphs);
+            FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), entry.getKey(), graphs, globalVariables);
             filteredControlFlowGraph = filteredControlFlowGraph.switchResolver();
 
             if (filteredControlFlowGraph != null) {
