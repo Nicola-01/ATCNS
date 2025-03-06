@@ -27,6 +27,9 @@ solver.add(eval(condition))
 condition = "parametes.get('r2') == StringVal(\"*\")"
 solver.add(eval(condition))
 
+condition = "parametes.get('i0') == (1 == 2)"
+solver.add(eval(condition))
+
 # Check if the constraints are satisfiable
 if solver.check() == sat:
     model = solver.model()

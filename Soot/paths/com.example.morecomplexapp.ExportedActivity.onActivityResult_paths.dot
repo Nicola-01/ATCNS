@@ -1,0 +1,21 @@
+# package: com.example.morecomplexapp
+# activity: com.example.morecomplexapp.ExportedActivity
+# action: 
+digraph paths {
+subgraph path_1 {
+    node1_1 [label="$r3 (java.lang.String) = (android.content.Intent) $r1.getStringExtra(\"resultParam\")"];
+    node2_1 [label="$z0 = $r2 == $r3"];
+    node1_1 -> node2_1;
+    node3_1 [label="if $z0 == 0 goto staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>(\"ExportedActivity\", \"Parameter check failed.\")"];
+    node2_1 -> node3_1;
+}
+
+subgraph path_2 {
+    node1_2 [label="$r3 (java.lang.String) = (android.content.Intent) $r1.getStringExtra(\"resultParam\")"];
+    node2_2 [label="$z0 = $r2 == $r3"];
+    node1_2 -> node2_2;
+    node3_2 [label="if $z0 == 0 goto staticinvoke <android.util.Log: int e(java.lang.String,java.lang.String)>(\"ExportedActivity\", \"Parameter check failed for value2.\")"];
+    node2_2 -> node3_2;
+}
+
+}
