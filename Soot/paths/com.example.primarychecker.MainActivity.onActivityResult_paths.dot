@@ -1,0 +1,54 @@
+# package: com.example.primarychecker
+# activity: com.example.primarychecker.MainActivity
+# action: android.intent.action.MAIN
+
+# global variable:
+#   purple_200 = 2131034872
+#   MAX = 50
+#   CHAR = 120
+#   data_extraction_rules = 2131886081
+#   Theme_PrimaryChecker = 2131755636
+#   teal_200 = 2131034887
+#   result = 2131231047
+#   number = 2131231007
+#   white = 2131034891
+#   teal_700 = 2131034888
+#   purple_700 = 2131034874
+#   MIDDLE = 25
+#   purple_500 = 2131034873
+#   ic_launcher = 2131558400
+#   backup_rules = 2131886080
+#   ic_launcher_round = 2131558401
+#   black = 2131034145
+#   $assertionsDisabled = 0
+#   check = 2131230817
+#   app_name = 2131689500
+#   MIN = <com.example.primarychecker.PrimaryChecker: int MIN>
+#   main_activity = 2131427379
+#   ic_launcher_foreground = 2131165330
+#   TEST = test
+#   ic_launcher_background = 2131165329
+#   NEGATIVE = -2
+
+digraph paths {
+subgraph path_1 {
+    node1_1 [label="$z0 (boolean) = (android.content.Intent) $r1.getBooleanExtra(\"result\", 0)"];
+    node2_1 [label="$r4 (java.lang.StringBuilder) = (java.lang.StringBuilder) $r6.append(\"is primary: \")"];
+    node1_1 -> node2_1;
+    node3_1 [label="$r4 (java.lang.StringBuilder) = (java.lang.StringBuilder) $r4.append($z0)"];
+    node2_1 -> node3_1;
+    node4_1 [label="$r5 (java.lang.String) = (java.lang.StringBuilder) $r4.toString()"];
+    node3_1 -> node4_1;
+    node5_1 [label="(int) (android.util.Log).i(\"MainActivity\", $r5)"];
+    node4_1 -> node5_1;
+    node6_1 [label="$r5 (java.lang.String) = (java.lang.String).valueOf($z0)"];
+    node5_1 -> node6_1;
+    node7_1 [label="null (void) = (android.widget.TextView) r3.setText($r5)"];
+    node6_1 -> node7_1;
+}
+
+subgraph path_2 {
+    node1_2 [label="null (void) = (android.widget.TextView) r3.setText(\"Error\")"];
+}
+
+}

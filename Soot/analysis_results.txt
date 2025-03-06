@@ -1,0 +1,4 @@
+Package: com.example.primarychecker
+Activity: com.example.primarychecker.PrimaryChecker
+Action: com.example.primarychecker.action.PRIMARYCHECKER
+

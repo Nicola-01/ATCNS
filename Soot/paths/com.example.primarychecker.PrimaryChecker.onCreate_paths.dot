@@ -1,3 +1,35 @@
+# package: com.example.primarychecker
+# activity: com.example.primarychecker.PrimaryChecker
+# action: com.example.primarychecker.action.PRIMARYCHECKER
+
+# global variable:
+#   purple_200 = 2131034872
+#   MAX = 50
+#   CHAR = 120
+#   data_extraction_rules = 2131886081
+#   Theme_PrimaryChecker = 2131755636
+#   teal_200 = 2131034887
+#   result = 2131231047
+#   number = 2131231007
+#   white = 2131034891
+#   teal_700 = 2131034888
+#   purple_700 = 2131034874
+#   MIDDLE = 25
+#   purple_500 = 2131034873
+#   ic_launcher = 2131558400
+#   backup_rules = 2131886080
+#   ic_launcher_round = 2131558401
+#   black = 2131034145
+#   $assertionsDisabled = 0
+#   check = 2131230817
+#   app_name = 2131689500
+#   MIN = <com.example.primarychecker.PrimaryChecker: int MIN>
+#   main_activity = 2131427379
+#   ic_launcher_foreground = 2131165330
+#   TEST = test
+#   ic_launcher_background = 2131165329
+#   NEGATIVE = -2
+
 digraph paths {
 subgraph path_1 {
     node1_1 [label="i0 (int) = (android.content.Intent) $r3.getIntExtra(\"number\", 0)"];

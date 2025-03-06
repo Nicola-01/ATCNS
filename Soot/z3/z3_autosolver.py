@@ -2,7 +2,7 @@ import re
 import os
 import networkx as nx
 import pygraphviz as pgv
-from z3 import Int, String, Bool, Real, Solver, sat, Not
+from z3 import Int, String, Bool, Real, Solver, sat, Not, StringVal
 
 # Regular expression pattern for matching the parameter definition in the node label.
 PARAM_PATTERN = re.compile(
@@ -16,6 +16,10 @@ TYPE_MAPPING = {
     "Bool": "bool",
     "Real": "float"
 }
+
+# Define a Z3 constant representing null for strings.
+NULL = StringVal("null")
+
 
 def parse_dot_file(dot_path):
     """
@@ -163,6 +167,7 @@ def search_for_var_declaration(graph, var_name):
         label = node[1].get('label', '').strip()
 
         if (' = ') in label and len(label.split(' = ')) == 2 and var_name in label.split(' = ')[0]:
+            #print("here")
             variable, value = label.split(" = ", 1)
             variable = variable.replace("$","")
             value = value.replace("$", "") if value.startswith("$") else value
@@ -175,6 +180,20 @@ def search_for_var_declaration(graph, var_name):
 
     return var_condition
 
+
+def get_global_variables(dot_path):
+    global_variables = {}
+
+    with open(dot_path, "r", encoding="utf-8") as file:
+        for line in file:
+            if line.startswith("#   "):
+                match = re.match(r"^#\s{3}(?P<variable>\S+)\s*=\s*(?P<value>.+)$", line)
+                if match:
+                    variable, value = match.groups()
+                    if variable not in global_variables:
+                        global_variables[variable] = value
+    
+    return global_variables
 
 # ---------------------------
 # MENU: Select a DOT file to analyze
@@ -212,6 +231,8 @@ print(f"Selected file: {dot_file}\n")
 # dot_file = "paths/paths.dot"
 subgraphs = parse_dot_file(dot_file)
 metadata = extract_metadata(dot_file)
+global_variables = get_global_variables(dot_file)
+#print(global_variables)
 # print(metadata)
 
 # Open a text file to store the metadata and solutions.
@@ -228,10 +249,12 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
         intent_params, param_name_map = parse_intent_params(subgraphs[pathName])
         if_parameters, conditions = parse_if(subgraphs[pathName])
         parameters = if_parameters | intent_params
+        print(parameters)
         solver = Solver()
         
         for condition in conditions:
-            solver.add(eval(condition, {"Not": Not}, parameters))
+            print(condition) 
+            solver.add(eval(condition, {"Not": Not, "null": NULL}, parameters))
         
         # Prepare the solution line.
         solution_line = ""
