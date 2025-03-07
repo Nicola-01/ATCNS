@@ -12,3 +12,5 @@ Soot/target/
 Soot/android_jars/
 
 Soot/dotFiles/
+
+intentSender/api.key
