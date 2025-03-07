@@ -11,10 +11,11 @@ PARAM_PATTERN = re.compile(
 
 # Mapping for displaying types in the desired format.
 TYPE_MAPPING = {
-    "Int": "int",
-    "String": "String",
-    "Bool": "bool",
-    "Real": "float"
+    "Int": "integer",
+    "String": "string",
+    "Bool": "boolean",
+    "Real": "float",
+    "Char": "char"
 }
 
 # Define a Z3 constant representing null for strings.

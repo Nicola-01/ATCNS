@@ -1,0 +1,9 @@
+Package: com.example.complexcalculator
+Activity: com.example.complexcalculator.Calculator
+Action: com.example.calculator.action.CALCULATE
+
+n1 (integer) : [no lim] | n2 (integer) : [no lim] | Op (string) : "*"
+n1 (integer) : [no lim] | n2 (integer) : [no lim] | Op (string) : "+"
+n1 (integer) : [no lim] | n2 (integer) : [no lim] | Op (string) : "-"
+n1 (integer) : [no lim] | n2 (integer) : 1 | Op (string) : "/"
+n1 (integer) : [no lim] | n2 (integer) : 0 | Op (string) : "/"
