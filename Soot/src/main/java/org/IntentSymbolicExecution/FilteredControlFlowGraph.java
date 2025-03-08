@@ -94,7 +94,7 @@ public class FilteredControlFlowGraph {
 
     private void replaceGlobalVariables(Map<String, String> globalVariables) {
 
-        for (Map.Entry<String, String> vertex : fullGraph.vertexSet()) {
+        for (Map.Entry<String, String> vertex : filteredCFG.vertexSet()) {
             Matcher matcher = RegexUtils.globalVariablesPattern.matcher(vertex.getValue());
             //System.out.println(vertex.getValue() + " : " + matcher.matches());
             if (matcher.matches()) {
@@ -267,10 +267,11 @@ public class FilteredControlFlowGraph {
                         if (matcher.find())
                             parametersToTrack.put(matcher.group(1), matcher.group(1));
 
+                        // add all the targets of the switch
                         for (DefaultEdge edge : fullGraph.outgoingEdgesOf(node)) {
                             Map.Entry<String, String> target = fullGraph.getEdgeTarget(edge);
                             if (!target.getValue().startsWith("lookupswitch"))
-                                addToGraph(target);
+                                addToGraph(target, node);
                         }
 
                         continue;
@@ -615,7 +616,9 @@ public class FilteredControlFlowGraph {
             else if (graph.getEdgeTarget(edge).equals(oldNode))
                 simplifiedGraph.addEdge(findVertexByKey(simplifiedGraph, graph.getEdgeSource(edge).getKey()), newNode);
             else
-                simplifiedGraph.addEdge(findVertexByKey(simplifiedGraph, graph.getEdgeSource(edge).getKey()), graph.getEdgeTarget(edge));
+                simplifiedGraph.addEdge(findVertexByKey(simplifiedGraph, graph.getEdgeSource(edge).getKey()),
+                        findVertexByKey(simplifiedGraph, graph.getEdgeTarget(edge).getKey())
+                );
         }
 
         return simplifiedGraph;
