@@ -29,6 +29,9 @@ public class RegexUtils {
     private static final String methodCallRegex = "^(?:(?<assignation>\\$?\\w+)\\s*=\\s*)?(?<invoke>\\w+)\\s+((?<object>\\$?\\w+)\\.)?\\<(?<objectType>[^:]+):\\s*(?<returnedType>[^:]+)\\s+(?<method>\\w+)\\((?<argumentType>.*?)\\)\\>\\((?<argument>.*?)\\)$";
     public static final Pattern patternMethodCall = Pattern.compile(methodCallRegex);
 
+    private static final String assignationRegex = "^([\\w\\$]+)\\s*(\\([\\w\\.]+\\))?\\s*=";
+    public static final Pattern assignationPattern = Pattern.compile(assignationRegex);
+
     public static final Pattern casePattern = Pattern.compile("(?<switchCase>(?<case>case (?<value>.*?)|default): (?<goto>.*?(?<equals>\\\".*?\\\")?));");
 
     private static final String globalVariablesRegex = "^(?<variable>\\S+)\\s*=\\s*<(?<package>[^:>]+):\\s+(?<type>\\S+)\\s+(?<varname>[^>]+)>$";

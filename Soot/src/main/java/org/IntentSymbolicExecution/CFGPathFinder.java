@@ -2,16 +2,13 @@ package org.IntentSymbolicExecution;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.regex.Matcher;
 
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
+
+import static org.IntentSymbolicExecution.RegexUtils.assignationPattern;
 
 public class CFGPathFinder {
 
@@ -76,8 +73,86 @@ public class CFGPathFinder {
             Set<Map.Entry<String, String>> visitedInPath = new HashSet<>();
             findAllPathsDFS(start, endNodes, currentPath, visitedInPath, allPaths);
         }
-        return allPaths;
+
+        return variableRenaming(allPaths);
+
     }
+
+    /**
+     * Renames variables in the given list of paths.
+     *
+     * <p>This method iterates over each path (a list of code entries), identifies assignment statements,
+     * and renames the variables by appending an underscore and a usage count. The new name is applied to both
+     * the left-hand side (assignment target) and the right-hand side (usages) within each code line.
+     *
+     * <p>For example, if a variable "i0" is assigned, it will be renamed to "i0_1" on its first occurrence,
+     * and subsequent usages will be updated accordingly.
+     *
+     * @param allPaths the original list of paths, where each path is a list of Map.Entry objects (key: identifier, value: code line)
+     * @return a new list of paths with the variables renamed sensibly
+     */
+    private List<List<Map.Entry<String, String>>> variableRenaming(List<List<Map.Entry<String, String>>> allPaths) {
+        List<List<Map.Entry<String, String>>> updatedPaths = new ArrayList<>();
+
+        // Iterate over each path (list of entries)
+        for (List<Map.Entry<String, String>> path : allPaths) {
+            // Map to store the usage count for each variable in the current path
+            Map<String, Integer> variableUsageCount = new HashMap<>();
+            List<Map.Entry<String, String>> updatedPath = new ArrayList<>();
+
+            // Process each code entry in the path
+            for (Map.Entry<String, String> entry : path) {
+                String codeLine = entry.getValue();
+                boolean assignmentProcessed = false;
+
+                // Check if the line contains an assignment using the assignationPattern regex.
+                Matcher matcher = assignationPattern.matcher(codeLine);
+                if (matcher.find()) {
+                    // Extract the variable name from the assignment.
+                    String variable = matcher.group(1);
+                    // Update usage count for this variable.
+                    variableUsageCount.put(variable, variableUsageCount.getOrDefault(variable, 0) + 1);
+
+                    // Process the left-hand side (portion before the "=")
+                    String leftSide = codeLine.substring(0, codeLine.indexOf("="));
+                    // Create a new variable name by appending the current count.
+                    String newVariableName = variable + "_" + variableUsageCount.get(variable);
+                    // Replace the old variable name with the new one in the left-hand side.
+                    String updatedLeftSide = leftSide.replace(variable, newVariableName);
+
+                    // Update the full code line with the modified left-hand side.
+                    codeLine = codeLine.replace(leftSide, updatedLeftSide);
+                    assignmentProcessed = true;
+                }
+
+                // Process variable replacements in the rest of the line.
+                for (String var : variableUsageCount.keySet()) {
+                    // By default, the replacement uses the current count.
+                    String replacementName = String.format("%s_%d", var, variableUsageCount.get(var));
+                    String segmentToReplace = codeLine;
+
+                    if (assignmentProcessed) {
+                        // For the right-hand side, use the previous count (if the assignment was processed)
+                        replacementName = String.format("%s_%d", var, variableUsageCount.get(var) - 1)
+                                .replace('-', '_');
+                        // Only consider the portion after the equal sign.
+                        segmentToReplace = codeLine.substring(codeLine.indexOf("="));
+                    }
+                    // Replace occurrences of the variable in the designated segment.
+                    String updatedSegment = segmentToReplace.replace(var, replacementName);
+                    // Update the full code line with the replaced segment.
+                    codeLine = codeLine.replace(segmentToReplace, updatedSegment);
+                }
+                // Add the updated entry with the modified code line to the updated path.
+                updatedPath.add(Map.entry(entry.getKey(), codeLine));
+            }
+            // Add the fully updated path to the collection of updated paths.
+            updatedPaths.add(updatedPath);
+        }
+
+        return updatedPaths;
+    }
+
 
     /**
      * Recursively performs DFS to find all paths from the current node to any end node.
