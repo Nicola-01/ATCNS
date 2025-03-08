@@ -1,5 +1,6 @@
 package org.IntentSymbolicExecution;
 
+import org.IntentSymbolicExecution.IntentAnalysis.GlobalVariablesInfo;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleDirectedGraph;
@@ -47,7 +48,7 @@ public class FilteredControlFlowGraph {
      * @param otherMethods   A map of other methods and their corresponding control flow graphs,
      *                       used for expanding method calls during filtering.
      */
-    public FilteredControlFlowGraph(ExceptionalUnitGraph fullGraph, String completeMethod, Map<String, ExceptionalUnitGraph> otherMethods, Map<String, String> globalVariables) {
+    public FilteredControlFlowGraph(ExceptionalUnitGraph fullGraph, String completeMethod, Map<String, ExceptionalUnitGraph> otherMethods, Map<String, GlobalVariablesInfo> globalVariables) {
         this.completeMethod = completeMethod;
         this.otherMethods = otherMethods;
         this.filteredCFG = new SimpleDirectedGraph<>(DefaultEdge.class);
@@ -92,7 +93,7 @@ public class FilteredControlFlowGraph {
         return this.completeMethod;
     }
 
-    private void replaceGlobalVariables(Map<String, String> globalVariables) {
+    private void replaceGlobalVariables(Map<String, GlobalVariablesInfo> globalVariables) {
 
         for (Map.Entry<String, String> vertex : filteredCFG.vertexSet()) {
             Matcher matcher = RegexUtils.globalVariablesPattern.matcher(vertex.getValue());
@@ -105,8 +106,13 @@ public class FilteredControlFlowGraph {
                 //System.out.println(variable + " : " + varName);
                 if (globalVariables.containsKey(varName)) {
                     //System.out.println("test");
-                    String globalVariableValue = globalVariables.get(varName);
-                    String newNodeValue = String.format("%s = %s", variable, globalVariableValue);
+                    GlobalVariablesInfo globalVariableInfo = globalVariables.get(varName);
+                    String variableType = globalVariableInfo.getType();
+                    String newNodeValue = "";
+                    if (variableType.toLowerCase().contains("java.lang.string"))
+                        newNodeValue = String.format("%s = \"%s\"", variable, globalVariableInfo.getValue());
+                    else
+                        newNodeValue = String.format("%s = %s", variable, globalVariableInfo.getValue());
                     Map.Entry<String, String> newNode = Map.entry(vertex.getKey(), newNodeValue);
                     filteredCFG = replaceVertex(filteredCFG, vertex, newNode);
 

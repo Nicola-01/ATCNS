@@ -6,7 +6,7 @@ from z3 import Int, String, Bool, Real, Solver, sat, Not, StringVal
 
 # Regular expression pattern for matching the parameter definition in the node label.
 PARAM_PATTERN = re.compile(
-    r'^\$?(\w+)\s*\(([^)]+)\)\s*=\s*\(android\.(?:os\.Bundle|content\.Intent)\)\s*\$?\w+\.get\w+\("([^"]+)"\)'
+    r'^\$?(\w+)\s*\(([^)]+)\)\s*=\s*\(android\.(?:os\.Bundle|content\.Intent)\)\s*\$?\w+\.get\w+\("([^"]+)"(?:,\s*[^)]+)?\)'
 )
 
 # Mapping for displaying types in the desired format.
@@ -18,8 +18,20 @@ TYPE_MAPPING = {
     "Char": "char"
 }
 
+intent_params, param_name_map, if_parameters = {}, {}, {}
+conditions = []
+
 # Define a Z3 constant representing null for strings.
 NULL = StringVal("null")
+
+
+def reset_globals():
+    """Reset global variables for each new subgraph."""
+    global intent_params, param_name_map, if_parameters, conditions
+    intent_params = {}
+    param_name_map = {}
+    if_parameters = {}
+    conditions = []
 
 
 def parse_dot_file(dot_path):
@@ -85,8 +97,9 @@ def parse_intent_params(graph):
     and returns a dictionary mapping variable names (without any '$') to Z3 variables
     of the appropriate type.
     """
-    intent_params = {}
-    param_name_map = {}
+    #intent_params = {}
+    #param_name_map = {}
+    global intent_params, param_name_map
     for node in graph.nodes(data=True):
         label = node[1].get('label', '').strip()
         # Check if the label matches the expected parameter pattern.
@@ -111,13 +124,14 @@ def parse_intent_params(graph):
                 else: # If the type is not recognized, default to an integer.
                     intent_params[var] = Int(var)
     
-    return intent_params, param_name_map
+    #return intent_params, param_name_map
             
 
 def parse_if(graph):
 
-    if_parameters = {}
-    conditions = []
+    #if_parameters = {}
+    #conditions = []
+    global if_parameters, conditions
     for node in graph.nodes(data=True):
         node_id = node[0]
         label = node[1].get('label', '').strip()
@@ -135,34 +149,39 @@ def parse_if(graph):
                     cond_param = cond_param.strip()
                     cond_value = cond_value.strip()
                 
-                    if cond_param not in if_parameters:
+                    if cond_param not in if_parameters and cond_param not in intent_params:
                         if_parameters.update({cond_param: infer_type(cond_param, cond_value)})
                         var_condition = search_for_var_declaration(graph, cond_param)
                         #print(f"{cond_param} ... {cond_value} ...", var_condition)
                         if var_condition:
                             conditions.append(var_condition)
                         
-
-                    for successor in graph.successors(node_id):
-                        edge_data = graph.get_edge_data(node_id, successor)
-                        edge_label = edge_data.get('label', '') if edge_data else ''
-                        #print(edge_label, condition)
-                        if edge_label == 'false':
-                            neg_condition = f"Not({condition})"
-                            #print(neg_condition)
-                            if neg_condition not in conditions:
-                                conditions.append(neg_condition)
-                            #print("false case: ", conditions)
-                        elif edge_label == 'true':
+                    if list(graph.successors(node_id)):
+                        for successor in graph.successors(node_id):
+                            edge_data = graph.get_edge_data(node_id, successor)
+                            edge_label = edge_data.get('label', '') if edge_data else ''
+                            #print(edge_label, condition)
+                            if edge_label == 'false':
+                                neg_condition = f"Not({condition})"
+                                #print(neg_condition)
+                                if neg_condition not in conditions:
+                                    conditions.append(neg_condition)
+                                #print("false case: ", conditions)
+                            elif edge_label == 'true':
+                                #print(condition)
+                                if condition not in conditions:
+                                    conditions.append(condition)
+                                #print("true case: ", conditions)
+                    else:
+                        if condition not in conditions:
                             #print(condition)
-                            if condition not in conditions:
-                                conditions.append(condition)
-                            #print("true case: ", conditions)
+                            conditions.append(condition)
 
-    return if_parameters, conditions
+    #return if_parameters, conditions
             
 
 def search_for_var_declaration(graph, var_name):
+    #global conditions
     var_condition = ""
     for node in graph.nodes(data=True):
         label = node[1].get('label', '').strip()
@@ -171,14 +190,40 @@ def search_for_var_declaration(graph, var_name):
             variable, value = label.split(" = ", 1)
             variable = variable.replace("$","")
             value = value.replace("$", "") if value.startswith("$") else value
-            if (' ') in variable: continue
+            if (' ') in variable: 
+                continue
             if not((' ') in variable):
                 var_condition = f"{variable}=={value}"
-            if ('==') in value: 
-                var_condition = f"{variable}==({value})"
-            
+            if ('==') in value:
+                var1, var2 = value.split("==")
+                var1 = var1.strip()
+                var2 = var2.strip()
+                #print(var1, var2)
+                if var1 not in intent_params and var1 not in if_parameters:
+                    add_new_condition(graph, var1)
+                if var2 not in intent_params and var2 not in if_parameters:
+                    add_new_condition(graph, var2)
 
+                #print(var1 + ":" + var2) 
+                var_condition = f"{variable}==({var1}=={var2})"
+    #print("var_declarations: ", var_condition) 
+            
     return var_condition
+
+
+def add_new_condition(graph, var_name):
+    global intent_params, if_parameters, conditions
+    var_condition = search_for_var_declaration(graph, var_name)
+    #print(var_condition)
+    if var_condition:
+        variable, value = var_condition.split("==")
+        #print(value.startswith('"') and value.endswith('"'))
+
+        if variable not in if_parameters and variable not in intent_params:
+            if_parameters[variable] = infer_type(variable, value)
+        
+        if var_condition not in conditions:
+            conditions.append(var_condition)
 
 
 # ---------------------------
@@ -230,11 +275,14 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
     for i in range(1, len(subgraphs) + 1):
         pathName = f"path_{i}"
         
-        intent_params, param_name_map = parse_intent_params(subgraphs[pathName])
-        if_parameters, conditions = parse_if(subgraphs[pathName])
+        #intent_params, param_name_map = parse_intent_params(subgraphs[pathName])
+        #if_parameters, conditions = parse_if(subgraphs[pathName])
+        parse_intent_params(subgraphs[pathName])
+        parse_if(subgraphs[pathName])
         parameters = if_parameters | intent_params
-        solver = Solver()
-        
+        print("Conditions: ", conditions)
+        print("Parameters: ", parameters)
+        solver = Solver() 
         for condition in conditions: 
             solver.add(eval(condition, {"Not": Not, "null": NULL}, parameters))
         
@@ -261,5 +309,9 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
             solution_line = " | ".join(param_strings)
         
             output_file.write(f"{solution_line}\n")
+            print(f"{pathName}\n", solution_line)
+        print("-"*50)
+        
+        reset_globals()
         
 print("Analysis complete. Results written to 'analysis_results.txt'.")

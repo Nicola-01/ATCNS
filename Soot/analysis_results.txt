@@ -1,4 +1,27 @@
-Package: com.example.primarychecker
-Activity: com.example.primarychecker.PrimaryChecker
-Action: com.example.primarychecker.action.PRIMARYCHECKER
+Package: com.example.morecomplexapp
+Activity: com.example.morecomplexapp.ExportedActivity
+Action: 
 
+param2 (integer) : 43 | param1 (string) : "value1"
+param2 (integer) : 101 | param1 (string) : "value1"
+param2 (integer) : 201 | param1 (string) : "value1"
+param2 (integer) : [no lim] | param1 (string) : "value1"
+param2 (integer) : 43 | param1 (string) : "value2"
+param2 (integer) : 101 | param1 (string) : "value2"
+param2 (integer) : 201 | param1 (string) : "value2"
+param2 (integer) : [no lim] | param1 (string) : "value2"
+param2 (integer) : 43 | param1 (string) : "value2"
+param2 (integer) : 43 | param1 (string) : "value3"
+param2 (integer) : 101 | param1 (string) : "value3"
+param2 (integer) : 201 | param1 (string) : "value3"
+param2 (integer) : [no lim] | param1 (string) : "value3"
+param2 (integer) : 43 | param1 (string) : "value3"
+param2 (integer) : 101 | param1 (string) : "value3"
+param2 (integer) : 43 | param1 (string) : ""
+param2 (integer) : 101 | param1 (string) : ""
+param2 (integer) : 201 | param1 (string) : ""
+param2 (integer) : [no lim] | param1 (string) : ""
+param2 (integer) : 43 | param1 (string) : ""
+param2 (integer) : 101 | param1 (string) : ""
+param2 (integer) : 201 | param1 (string) : ""
+param2 (integer) : [no lim] | param1 (string) : ""

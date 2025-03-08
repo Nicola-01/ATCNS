@@ -25,6 +25,30 @@ import java.util.*;
  * a graph of execution paths for further symbolic execution using Z3.
  */
 public class IntentAnalysis {
+    
+    public static class GlobalVariablesInfo {
+        private String type;
+        private String value;
+
+        public GlobalVariablesInfo(String type, String value) {
+            this.type = type;
+            this.value = value;
+        }
+
+        public String getType() {
+            return type;
+        }
+    
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("(%s) = %s", type, value);
+        }
+    }
+    
     /**
      * Constructor that initializes the analysis for a given APK file.
      *
@@ -50,10 +74,10 @@ public class IntentAnalysis {
         Scene.v().loadNecessaryClasses();
 
         // Get global variables of the application
-        Map<String, String> globalVariables = getGlobalVariables(packageName);
+        Map<String, GlobalVariablesInfo> globalVariables = getGlobalVariables(packageName);
         System.out.println("\nGLOBAL VARIABLES:");
-        for (Map.Entry<String, String> entry : globalVariables.entrySet())
-            System.out.println("Variable: " + entry.getKey() + " | Value: " + entry.getValue());
+        for (Map.Entry<String, GlobalVariablesInfo> entry : globalVariables.entrySet())
+            System.out.println("Variable: " + entry.getKey() + " " + entry.getValue().toString());
 
         System.out.println();
 
@@ -149,8 +173,8 @@ public class IntentAnalysis {
      * @param packageName The name of the package to filter classes by.
      * @return A map where the key is the name of the global variable and the value is its resolved value as a string.
      */
-    private static Map<String, String> getGlobalVariables(String packageName) {
-        Map<String, String> globalVariables = new HashMap<>();
+    private static Map<String, GlobalVariablesInfo> getGlobalVariables(String packageName) {
+        Map<String, GlobalVariablesInfo> globalVariables = new HashMap<>();
 
         for (SootClass sc : Scene.v().getClasses()) {
             if (sc.getName().startsWith(packageName)) { // Filter by package name
@@ -158,7 +182,10 @@ public class IntentAnalysis {
                     if (field.isStatic() || !field.isFinal()) { // Example heuristic for global variables
                         String fieldName = field.getName();
                         String fieldValue = resolveFieldValue(field); // Placeholder for the value
-                        globalVariables.put(fieldName, fieldValue);
+                        String fieldType = field.getType().toString();
+                        
+                        GlobalVariablesInfo info = new IntentAnalysis.GlobalVariablesInfo(fieldType, fieldValue);
+                        globalVariables.put(fieldName, info);
                     }
                 }
             }
