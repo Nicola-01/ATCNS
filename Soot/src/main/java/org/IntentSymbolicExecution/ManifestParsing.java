@@ -187,7 +187,13 @@ public class ManifestParsing {
 
         // Extract specific attributes from the <manifest> element
         PackageName = root.getAttribute("package");
-        SDK_Version = Integer.parseInt(root.getAttribute("android:compileSdkVersion"));
+        String sdkVersion = root.getAttribute("android:compileSdkVersion");
+        if (sdkVersion.isEmpty())
+            sdkVersion = root.getAttribute("platformBuildVersionCode");
+        if (sdkVersion.isEmpty())
+            sdkVersion = "35";
+
+        SDK_Version = Integer.parseInt(sdkVersion);
         Activities = getActivities(manifest, PackageName, false);
         ExportedActivities = getActivities(manifest, PackageName, true);
 

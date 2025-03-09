@@ -6,6 +6,7 @@ import java.nio.file.Files;
 //import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -99,6 +100,7 @@ public class Main {
 
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid input.");
+                    throw e;
                 }
                 break;
         }
@@ -119,6 +121,7 @@ public class Main {
         File[] apkFiles = appsDir.listFiles((dir, name) -> name.endsWith(".apk"));
 
         if (apkFiles != null) {
+            Arrays.sort(apkFiles, (f1, f2) -> f1.getName().compareToIgnoreCase(f2.getName()));
             int len = String.valueOf(apkFiles.length).length();
 
             for (int i = 0; i < apkFiles.length; i++) {

@@ -138,6 +138,8 @@ public class FilteredControlFlowGraph {
             Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), unit.toString());
             graph.addVertex(vertex);
 
+            /*
+            // todo to fix
             Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = expandMethodCall(vertex, 0, 0);
             if (methodGraph == null) continue;
 
@@ -148,6 +150,8 @@ public class FilteredControlFlowGraph {
                 graph.addVertex(methodNode);
             for (DefaultEdge methodEdge : methodGraph.edgeSet())
                 graph.addEdge(methodGraph.getEdgeSource(methodEdge), methodGraph.getEdgeTarget(methodEdge));
+
+             */
         }
 
         for (Unit unit : fullGraph) {
@@ -367,6 +371,7 @@ public class FilteredControlFlowGraph {
 
         for (Unit unit : graph) {
             String line = unit.toString();
+            System.out.println(line);
 
             if (line.contains(" := @parameter")) {
                 String parameterName = line.split(" := @parameter")[0];
@@ -525,15 +530,20 @@ public class FilteredControlFlowGraph {
             Map.Entry<String, String> edgeSource = filteredCFG.getEdgeSource(defaultEdge);
             Map.Entry<String, String> sourceNode = findVertexByKey(filteredCFG, edgeSource.getKey()); // For resolve a switch node rename issues
             if (sourceNode != null) { // edgeSource node is not in the filteredCFG
-//                if (sourceNode.getKey().equals(starterNode.getKey())) {
-//                    Random rand = new Random();
-//                    int randomNum = rand.nextInt(999999999);
-//                    Map.Entry<String, String> tempNode = Map.entry("nodeTMP" + randomNum, "TMP_TMP_TMP_TMP");
-//                    filteredCFG.addVertex(tempNode);
-//                    filteredCFG.addEdge(sourceNode, tempNode);
-//                    filteredCFG.addEdge(tempNode, sourceNode);
-//                } else
-                filteredCFG.addEdge(sourceNode, starterNode);
+
+                // todo -------------------------------------
+                if (sourceNode.getKey().equals(starterNode.getKey())) {
+                    Random rand = new Random();
+                    int randomNum = rand.nextInt(999999999);
+                    Map.Entry<String, String> tempNode = Map.entry("nodeTMP" + randomNum, "TMP_TMP_TMP_TMP");
+                    filteredCFG.addVertex(tempNode);
+                    filteredCFG.addEdge(sourceNode, tempNode);
+                    filteredCFG.addEdge(tempNode, sourceNode);
+                } else
+                    filteredCFG.addEdge(sourceNode, starterNode);
+                // todo -------------------------------------
+
+
                 continue;
             }
 
