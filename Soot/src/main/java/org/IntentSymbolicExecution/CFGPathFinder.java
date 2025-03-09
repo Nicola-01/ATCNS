@@ -103,26 +103,25 @@ public class CFGPathFinder {
             // Process each code entry in the path
             for (Map.Entry<String, String> entry : path) {
                 String codeLine = entry.getValue();
-                boolean assignmentProcessed = false;
+                String assignedVariable = "";
 
                 // Check if the line contains an assignment using the assignationPattern regex.
                 Matcher matcher = assignationPattern.matcher(codeLine);
                 if (matcher.find()) {
                     // Extract the variable name from the assignment.
-                    String variable = matcher.group(1);
+                    assignedVariable = matcher.group(1);
                     // Update usage count for this variable.
-                    variableUsageCount.put(variable, variableUsageCount.getOrDefault(variable, 0) + 1);
+                    variableUsageCount.put(assignedVariable, variableUsageCount.getOrDefault(assignedVariable, 0) + 1);
 
                     // Process the left-hand side (portion before the "=")
                     String leftSide = codeLine.substring(0, codeLine.indexOf("="));
                     // Create a new variable name by appending the current count.
-                    String newVariableName = variable + "_" + variableUsageCount.get(variable);
+                    String newVariableName = assignedVariable + "_" + variableUsageCount.get(assignedVariable);
                     // Replace the old variable name with the new one in the left-hand side.
-                    String updatedLeftSide = leftSide.replace(variable, newVariableName);
+                    String updatedLeftSide = leftSide.replace(assignedVariable, newVariableName);
 
                     // Update the full code line with the modified left-hand side.
                     codeLine = codeLine.replace(leftSide, updatedLeftSide);
-                    assignmentProcessed = true;
                 }
 
                 // Process variable replacements in the rest of the line.
@@ -131,7 +130,7 @@ public class CFGPathFinder {
                     String replacementName = String.format("%s_%d", var, variableUsageCount.get(var));
                     String segmentToReplace = codeLine;
 
-                    if (assignmentProcessed) {
+                    if (var.equals(assignedVariable)) {
                         // For the right-hand side, use the previous count (if the assignment was processed)
                         replacementName = String.format("%s_%d", var, variableUsageCount.get(var) - 1)
                                 .replace('-', '_');
