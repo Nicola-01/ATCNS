@@ -1,5 +1,6 @@
 package org.IntentSymbolicExecution;
 
+import android.app.Activity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,6 +15,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A utility class for parsing the AndroidManifest.xml file of an APK.
@@ -36,14 +39,14 @@ public class ManifestParsing {
     private static String PackageName;
 
     /**
-     * A map of all activities, activity name, action; defined in the AndroidManifest.xml.
+     * A map of all activities, activity name, action, adn exported; defined in the AndroidManifest.xml.
      */
-    private static List<Map.Entry<String, String>> Activities;
+    private static List<Activity> Activities;
 
     /**
      * A list of exported activities (android:exported="true") in the AndroidManifest.xml.
      */
-    private static List<Map.Entry<String, String>> ExportedActivities;
+    private static final List<Activity> ExportedActivities = new ArrayList<>();
 
     /**
      * Gets the compile SDK version of the application.
@@ -68,7 +71,7 @@ public class ManifestParsing {
      *
      * @return a list of activity name and action.
      */
-    public List<Map.Entry<String, String>> getActivities() {
+    public List<Activity> getActivities() {
         return Activities;
     }
 
@@ -77,7 +80,7 @@ public class ManifestParsing {
      *
      * @return a list of exported activity names.
      */
-    public List<Map.Entry<String, String>> getExportedActivities() {
+    public List<Activity> getExportedActivities() {
         return ExportedActivities;
     }
 
@@ -90,7 +93,7 @@ public class ManifestParsing {
         String appName = apkPath.substring(apkPath.lastIndexOf('/') + 1).split("\\.")[0];
 
         Document manifest = extractManifest(apkPath, appName);
-        queryManifest(manifest);
+        queryManifest(manifest, appName);
 
         // Delete the extracted directory after returning the Document
         deleteDir(String.format("manifest/%s", appName));
@@ -113,11 +116,6 @@ public class ManifestParsing {
         System.out.println("Starting execution of apktool...");
         try {
             Process process = processBuilder.start();
-//            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                System.out.println(line);
-//            }
 
             // Wait for the process to finish
             int exitCode = process.waitFor();
@@ -176,7 +174,7 @@ public class ManifestParsing {
      *
      * @param manifest the Document object representing the AndroidManifest.xml.
      */
-    public static void queryManifest(Document manifest) {
+    public static void queryManifest(Document manifest, String appName) {
         if (manifest == null) {
             System.out.println("Manifest is null.");
             return;
@@ -187,15 +185,13 @@ public class ManifestParsing {
 
         // Extract specific attributes from the <manifest> element
         PackageName = root.getAttribute("package");
-        String sdkVersion = root.getAttribute("android:compileSdkVersion");
-        if (sdkVersion.isEmpty())
-            sdkVersion = root.getAttribute("platformBuildVersionCode");
-        if (sdkVersion.isEmpty())
-            sdkVersion = "35";
 
-        SDK_Version = Integer.parseInt(sdkVersion);
-        Activities = getActivities(manifest, PackageName, false);
-        ExportedActivities = getActivities(manifest, PackageName, true);
+        SDK_Version = getTargetSDKVersion(appName);
+        Activities = getActivities(manifest);
+
+        for (Activity activity : Activities)
+            if (activity.isExported())
+                ExportedActivities.add(activity);
 
         // Print the extracted values
         System.out.println();
@@ -206,8 +202,29 @@ public class ManifestParsing {
         System.out.println();
     }
 
-    public static List<Map.Entry<String, String>> getActivities(Document manifest, String packageName, Boolean onlyExportedActivities) {
-        List<Map.Entry<String, String>> activities = new ArrayList<>();
+    private static int getTargetSDKVersion(String appName) {
+        try {
+            String command = String.format("cat manifest/%s/apktool.yml | grep targetSdkVersion", appName);
+            ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
+            processBuilder.redirectErrorStream(true);
+            Process process = processBuilder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            String regex = "targetSdkVersion:\\s*'(\\d+)'";
+            Pattern pattern = Pattern.compile(regex);
+            while ((line = reader.readLine()) != null) {
+                Matcher matcher = pattern.matcher(line);
+                if (matcher.find()) {
+                    return Integer.parseInt(matcher.group(1));
+                }
+            }
+        } catch (IOException ignored) {
+        }
+        return 34;
+    }
+
+    private static List<Activity> getActivities(Document manifest) {
+        List<Activity> activities = new ArrayList<>();
 
         // Get all <activity> elements within the <application> tag
         NodeList activityNodes = manifest.getElementsByTagName("activity");
@@ -217,30 +234,42 @@ public class ManifestParsing {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element activityElement = (Element) node;
                 String activityName = activityElement.getAttribute("android:name");
+                if (activityName.startsWith("."))
+                    activityName = String.format("%s%s", PackageName, activityName);
 
                 // Ensure activity belongs to the correct package
-                if (!activityName.contains(packageName)) {
-                    continue;
-                }
+//                if (!activityName.contains(packageName)) continue;
 
                 // Extract the exported attribute
                 String exported = activityElement.getAttribute("android:exported");
 
+                boolean isExported;
+                boolean hasIntentFilter = activityElement.getElementsByTagName("intent-filter").getLength() > 0;  // True if there is an intent-filter, false otherwise
+
+                // If SDK >= 31, the "exported" attribute must be explicitly set in the manifest
+                if (SDK_Version >= 31) {
+                    isExported = Boolean.parseBoolean(exported);
+                } else {
+                    // For SDK < 31, check if the activity has an intent-filter
+                    if (exported.isEmpty()) // exported non specified, if there is a intentFilter -> activity exported
+                        isExported = hasIntentFilter;
+                    else // if exported specified, get that value
+                        isExported = Boolean.parseBoolean(exported);
+                }
+
                 // Get the intent-filters and extract actions
                 List<String> actions = getIntentActions(activityElement);
 
-                // If onlyExportedActivities is true, filter out non-exported activities
-                if (onlyExportedActivities && !"true".equals(exported)) {
-                    continue;
-                }
+//                // If onlyExportedActivities is true, filter out non-exported activities
+//                if (onlyExportedActivities && !"true".equals(exported))
+//                    continue;
 
                 if (actions.isEmpty())
-                    activities.add(Map.entry(activityName, ""));
+                    activities.add(new Activity(activityName, "", isExported));
 
                 // Store each activity with its actions
-                for (String action : actions) {
-                    activities.add(Map.entry(activityName, action));
-                }
+                for (String action : actions)
+                    activities.add(new Activity(activityName, action, isExported));
             }
         }
 
@@ -275,5 +304,38 @@ public class ManifestParsing {
         }
 
         return actions;
+    }
+
+    public static class Activity {
+        private final String name;
+        private final String action;
+        private final Boolean exported;
+
+        public Activity(String name, String action, Boolean exported) {
+            this.name = name;
+            this.action = action;
+            this.exported = exported;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getAction() {
+            return action;
+        }
+
+        public Boolean isExported() {
+            return exported;
+        }
+
+        @Override
+        public String toString() {
+            return "Activity{" +
+                    "name='" + name + '\'' +
+                    ", action='" + action + '\'' +
+                    ", exported=" + exported +
+                    '}';
+        }
     }
 }

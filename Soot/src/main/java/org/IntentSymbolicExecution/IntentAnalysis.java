@@ -62,7 +62,7 @@ public class IntentAnalysis {
 
         // Retrieve necessary data from the manifest
         int SDK_Version = manifest.getSDK_Version();
-        List<Map.Entry<String, String>> exportedActivities = manifest.getExportedActivities();
+        List<ManifestParsing.Activity> exportedActivities = manifest.getExportedActivities();
         String packageName = manifest.getPackageName();
 
         // Download the corresponding Android SDK JAR and get its path
@@ -91,9 +91,9 @@ public class IntentAnalysis {
 
             String activityName = entry.getKey().substring(0, entry.getKey().lastIndexOf("."));
             String action = null;
-            for (Map.Entry<String, String> exportedActivity : exportedActivities) {
-                if (exportedActivity.getKey().equals(activityName)) {
-                    action = exportedActivity.getValue();
+            for (ManifestParsing.Activity exportedActivity : exportedActivities) {
+                if (exportedActivity.getName().equals(activityName)) {
+                    action = exportedActivity.getAction();
                     break;
                 }
             }
@@ -141,7 +141,7 @@ public class IntentAnalysis {
      * @return A map where the keys are method identifiers in the format "ClassName.MethodName",
      * and the values are {@link ExceptionalUnitGraph} objects representing the control flow of the corresponding method.
      */
-    private static Map<String, ExceptionalUnitGraph> getCFGs(List<Map.Entry<String, String>> exportedActivities, String packageName) {
+    private static Map<String, ExceptionalUnitGraph> getCFGs(List<ManifestParsing.Activity> exportedActivities, String packageName) {
         Map<String, ExceptionalUnitGraph> graphs = new HashMap<>();
 
         // Add a custom transformation to analyze methods for Intent-related operations
