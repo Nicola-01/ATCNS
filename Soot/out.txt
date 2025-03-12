@@ -1,0 +1,78 @@
+[r]	for Reload
+[e]	for Exit
+	- - - - -
+[01]  a2dpvolume.apk
+[02]  aagtl.apk
+[03]  aard2.apk
+[04]  acal.apk
+[05]  Addi.apk
+[06]  adsdroid.apk
+[07]  aGrep.apk
+[08]  alarmclock.apk
+[09]  aLogCat.apk
+[10]  amazed.apk
+[11]  androidmatic-keyer.apk
+[12]  anycut.apk
+[13]  anymemo.apk
+[14]  appcachecleaner.apk
+[15]  autoanswer.apk
+[16]  battery_circle.apk
+[17]  batterydog.apk
+[18]  bites.apk
+[19]  blokish.apk
+[20]  bomber.apk
+[21]  bookcatalogue.apk
+[22]  countdowntimer.apk
+[23]  dalvikexplorer.apk
+[24]  dialer2.apk
+[25]  divide_and_conquer.apk
+[26]  fileexplorer.apk
+[27]  frozenbubble.apk
+[28]  gestures.apk
+[29]  hndroid.apk
+[30]  hotdeath.apk
+[31]  importcontacts.apk
+[32]  jamendo.apk
+[33]  k9mail.apk
+[34]  learn_music_notes.apk
+[35]  lockpatterngenerator.apk
+[36]  lolcatbuilder.apk
+[37]  manpages.apk
+[38]  mileage.apk
+[39]  mininoteviewer.apk
+[40]  mirrored.apk
+[41]  multismssender.apk
+[42]  munchlife.apk
+[43]  musicplayer.apk
+[44]  myexpenses.apk
+[45]  mylock.apk
+[46]  nectroid.apk
+[47]  netcounter.apk
+[48]  passwordmaker.apk
+[49]  passwordmanager.apk
+[50]  quicksettings.apk
+[51]  ringdroid.apk
+[52]  sanity.apk
+[53]  swiftp.apk
+[54]  syncmypix.apk
+[55]  tippytipper.apk
+[56]  tomdroid.apk
+[57]  translate.apk
+[58]  weight_chart.apk
+[59]  whohasmystuff.apk
+[60]  wikipedia.apk
+[61]  worldclock.apk
+[62]  yahtzee.apk
+[63]  zooborns.apk
+Choose an option: You selected: a2dpvolume.apk
+Starting execution of apktool...
+apktool command executed successfully.
+AndroidManifest.xml successfully parsed.
+
+Package: a2dp.Vol
+Compile SDK Version: 28
+Activities: [Activity{name='a2dp.Vol.ConnectWidgetConfigureActivity', action='android.appwidget.action.APPWIDGET_CONFIGURE', exported=true}, Activity{name='a2dp.Vol.main', action='android.intent.action.MAIN', exported=true}, Activity{name='a2dp.Vol.ManageData', action='', exported=false}, Activity{name='a2dp.Vol.Preferences', action='', exported=false}, Activity{name='a2dp.Vol.EditDevice', action='', exported=false}, Activity{name='a2dp.Vol.AppChooser', action='', exported=false}, Activity{name='a2dp.Vol.CustomIntentMaker', action='', exported=false}, Activity{name='a2dp.Vol.PackagesChooser', action='', exported=false}, Activity{name='a2dp.Vol.LocViewer', action='', exported=false}]
+Exported Activities: [Activity{name='a2dp.Vol.ConnectWidgetConfigureActivity', action='android.appwidget.action.APPWIDGET_CONFIGURE', exported=true}, Activity{name='a2dp.Vol.main', action='android.intent.action.MAIN', exported=true}]
+
+File already downloaded: android_jars/android-28.jar
+
