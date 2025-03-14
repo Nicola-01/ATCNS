@@ -138,8 +138,6 @@ public class FilteredControlFlowGraph {
             Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), unit.toString());
             graph.addVertex(vertex);
 
-            /*
-            // todo to fix
             Graph<Map.Entry<String, String>, DefaultEdge> methodGraph = expandMethodCall(vertex, 0, 0);
             if (methodGraph == null) continue;
 
@@ -151,7 +149,6 @@ public class FilteredControlFlowGraph {
             for (DefaultEdge methodEdge : methodGraph.edgeSet())
                 graph.addEdge(methodGraph.getEdgeSource(methodEdge), methodGraph.getEdgeTarget(methodEdge));
 
-             */
         }
 
         for (Unit unit : fullGraph) {
@@ -337,16 +334,18 @@ public class FilteredControlFlowGraph {
      */
     private Graph<Map.Entry<String, String>, DefaultEdge> expandMethodCall(Map.Entry<String, String> node, int parametersCount, int depth) {
         Matcher matcher = patternMethodCall.matcher(node.getValue());
-        if (!matcher.find() || node.getValue().startsWith("lookupswitch") || depth == 5) return null;
+        if (!matcher.find() || node.getValue().startsWith("lookupswitch") || depth == 1) return null;
 
         String className = matcher.group("objectType");
         String methodName = matcher.group("method");
+        String argumentsType = matcher.group("argumentType").replace(",", ", ");
         String arguments = matcher.group("argument");
         String assignation = matcher.group("assignation");
 
         List<String> argumentList = Arrays.asList(arguments.split(",\\s*"));
-        if (otherMethods.containsKey(className + "." + methodName)) {
-            ExceptionalUnitGraph graph = otherMethods.get(className + "." + methodName);
+        String getGraph = className + "." + methodName + "-(" + argumentsType + ")";
+        if (otherMethods.containsKey(getGraph)) {
+            ExceptionalUnitGraph graph = otherMethods.get(getGraph);
             return addMethodGraphToGraph(graph, assignation, argumentList, parametersCount, depth);
         }
         return null;
@@ -371,22 +370,23 @@ public class FilteredControlFlowGraph {
 
         for (Unit unit : graph) {
             String line = unit.toString();
-            System.out.println(line);
+//            System.out.println(line);
 
             if (line.contains(" := @parameter")) {
                 String parameterName = line.split(" := @parameter")[0];
                 line = "$m" + parameterIndex + " = " + argumentList.get(parametersCount);
+//                line = String.format("%s = %s", parameterName, argumentList.get(parametersCount));
                 parametersCount++;
 
                 methodParameter.add(Map.entry(parameterName, "$m" + parameterIndex));
                 parameterIndex++;
-            } else {
+            }
+            else {
                 for (Map.Entry<String, String> param : methodParameter)
                     line = line.replace(param.getKey(), param.getValue());
             }
-            if (assignation != null && line.startsWith("return ")) {
+            if (assignation != null && line.startsWith("return "))
                 line = line.replace("return ", assignation + " = ");
-            }
 
             Map.Entry<String, String> vertex = Map.entry("node" + unit.hashCode(), line);
             methodGraph.addVertex(vertex);

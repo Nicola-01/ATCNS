@@ -25,7 +25,7 @@ import java.util.*;
  * a graph of execution paths for further symbolic execution using Z3.
  */
 public class IntentAnalysis {
-    
+
     public static class GlobalVariablesInfo {
         private String type;
         private String value;
@@ -38,7 +38,7 @@ public class IntentAnalysis {
         public String getType() {
             return type;
         }
-    
+
         public String getValue() {
             return value;
         }
@@ -48,7 +48,7 @@ public class IntentAnalysis {
             return String.format("(%s) = %s", type, value);
         }
     }
-    
+
     /**
      * Constructor that initializes the analysis for a given APK file.
      *
@@ -89,7 +89,9 @@ public class IntentAnalysis {
         // Analyze each CFG to extract Intent-related paths
         for (Map.Entry<String, ExceptionalUnitGraph> entry : graphs.entrySet()) {
 
-            String activityName = entry.getKey().substring(0, entry.getKey().lastIndexOf("."));
+            String methodName = entry.getKey().substring(0, entry.getKey().lastIndexOf("-"));
+
+            String activityName = methodName.substring(0, methodName.lastIndexOf("."));
             String action = null;
             for (ManifestParsing.Activity exportedActivity : exportedActivities) {
                 if (exportedActivity.getName().equals(activityName)) {
@@ -99,7 +101,7 @@ public class IntentAnalysis {
             }
             if (action == null) continue;
 
-            FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), entry.getKey(), graphs, globalVariables);
+            FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), methodName, graphs, globalVariables);
             filteredControlFlowGraph = filteredControlFlowGraph.switchResolver();
 
             if (filteredControlFlowGraph != null) {
@@ -154,8 +156,17 @@ public class IntentAnalysis {
 
                 // Check if the class is an exported activity
 //                if (exportedActivities.contains(className))
-                if (className.startsWith(packageName))
-                    graphs.put(className + "." + method.getName(), new ExceptionalUnitGraph(body));
+                if (className.startsWith(packageName)) {
+                    String substring = "(";
+                    StringBuilder parameterTypes = new StringBuilder("(");
+                    for (int i = 0; i < method.getParameterCount(); i++)
+                        parameterTypes.append(method.getParameterType(i)).append(", ");
+                    if (parameterTypes.length() > 1)
+                        substring = parameterTypes.substring(0, parameterTypes.toString().length() - 2);
+                    substring += ")";
+
+                    graphs.put(className + "." + method.getName() + "-" + substring, new ExceptionalUnitGraph(body));
+                }
             }
         }));
 
@@ -183,7 +194,7 @@ public class IntentAnalysis {
                         String fieldName = field.getName();
                         String fieldValue = resolveFieldValue(field); // Placeholder for the value
                         String fieldType = field.getType().toString();
-                        
+
                         GlobalVariablesInfo info = new IntentAnalysis.GlobalVariablesInfo(fieldType, fieldValue);
                         globalVariables.put(fieldName, info);
                     }
