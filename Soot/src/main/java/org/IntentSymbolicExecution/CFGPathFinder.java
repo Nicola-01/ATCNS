@@ -17,7 +17,7 @@ public class CFGPathFinder {
 
     public CFGPathFinder(FilteredControlFlowGraph graph) {
         this.filteredControlFlowGraph = graph;
-        this.filteredCFG = graph.getFilteredCFG();
+        this.filteredCFG = graph.getFullCFG();
 
     }
 
@@ -189,7 +189,7 @@ public class CFGPathFinder {
         visitedInPath.remove(currentNode);
     }
 
-    public void generateDotFile(List<List<Map.Entry<String, String>>> allPaths, String fileName, String packageName, String activity, String action) {
+    public void generateDotFile(List<List<Map.Entry<String, String>>> allPaths, Map<String, String> filteredNodes, String fileName, String packageName, String activity, String action) {
         try (FileWriter writer = new FileWriter(fileName)) {
 
             writer.write(String.format("# package: %s\n", packageName));
@@ -207,7 +207,10 @@ public class CFGPathFinder {
                 for (Map.Entry<String, String> node : path) {
                     String nodeName = "node" + nodeNumber + "_" + pathNumber;
                     String nodeLabel = node.getValue();
-                    writer.write(String.format("    %s [label=\"%s\"];\n", nodeName, nodeLabel.replace("\"", "\\\"")));
+                    if (filteredNodes.containsKey(node.getKey()))
+                        writer.write(String.format("    %s [label=\"%s\", color=blue];\n", nodeName, nodeLabel.replace("\"", "\\\"")));
+                    else
+                        writer.write(String.format("    %s [label=\"%s\"];\n", nodeName, nodeLabel.replace("\"", "\\\"")));
 
                     if (prevNode != null) {
                         String prevNodeName = "node" + (nodeNumber - 1) + "_" + pathNumber;

@@ -27,6 +27,7 @@ public class FilteredControlFlowGraph {
      */
     private Map<String, String> filteredCFG;
 
+
     private Graph<Map.Entry<String, String>, DefaultEdge> fullGraph;
 
     /**
@@ -61,6 +62,10 @@ public class FilteredControlFlowGraph {
 
 
         this.fullGraph = graphSimplifier(this.fullGraph);
+
+//        FilteredControlFlowGraph switchResolvedCFG = switchResolver();
+//        this.fullGraph = switchResolvedCFG.getFullCFG();
+//        filteredCFG = switchResolvedCFG.filteredCFG();
 //        filteredCFG = this.fullGraph;
         filteredCFG = startFiltering(this.fullGraph);
 
@@ -84,9 +89,13 @@ public class FilteredControlFlowGraph {
      *
      * @return
      */
-    public Graph<Map.Entry<String, String>, DefaultEdge> getFilteredCFG() {
+    public Graph<Map.Entry<String, String>, DefaultEdge> getFullCFG() {
 //        return this.filteredCFG; todo
         return this.fullGraph;
+    }
+
+    public Map<String, String> getFilteredCFG() {
+        return filteredCFG;
     }
 
     /**
@@ -681,6 +690,9 @@ public class FilteredControlFlowGraph {
             String line = node.getValue();
 
             if (line.startsWith("lookupswitch(")) {
+
+                boolean filtered = filteredCFG.containsKey(node.getKey());
+
                 String variableName = line.substring(line.indexOf("(") + 1, line.indexOf(")"));
 
                 String caseString = line.substring(line.indexOf("{") + 1, line.indexOf("default:"));
@@ -756,30 +768,36 @@ public class FilteredControlFlowGraph {
                         switchCFG.fullGraph.addVertex(vertex);
                         switchCFG.fullGraph.addEdge(succEntryList.get(succEntryList.size() - 2), vertex);
                         lastSwitchNode = vertex;
+                        if (filtered)
+                            switchCFG.filteredCFG.put(vertex.getKey(), vertex.getValue());
                     }
                     switchCFG.fullGraph.addVertex(caseNode);
                     switchCFG.fullGraph.addEdge(succEntryList.get(succEntryList.size() - 1), caseNode);
 //                    switchCFG.addToGraph(caseNode, succEntryList.get(succEntryList.size() - 1));
                     nodesToRemove.add(caseNode.getKey());
+                    if (filtered)
+                        switchCFG.filteredCFG.put(caseNode.getKey(), caseNode.getValue());
                 }
 
                 if (defaultNode == null) continue;
 
                 switchCFG.fullGraph.addVertex(defaultNode);
-                switchCFG.fullGraph.addEdge(succEntryList.get(succEntryList.size() - 2), defaultNode);
+                switchCFG.fullGraph.addEdge(succEntryList.get(succEntryList.size() - 1), defaultNode);
+                if (filtered)
+                    switchCFG.filteredCFG.put(defaultNode.getKey(), defaultNode.getValue());
 //                switchCFG.addToGraph(defaultNode, succEntryList.get(succEntryList.size() - 1));
 
             }
 //            else if (!nodesToRemove.contains(node.getKey())) {
-//                switchCFG.addToGraph(node, true);
+////                switchCFG.addToGraph(node, true);
 //
 //                if (firstSwitchNode == null) continue;
 //
 //                List<DefaultEdge> toRemove = new ArrayList<>();
 //                List<DefaultEdge> toAdd = new ArrayList<>();
 //
-//                for (DefaultEdge defaultEdge : switchCFG.filteredCFG.incomingEdgesOf(node)) {
-//                    Map.Entry<String, String> predNode = switchCFG.filteredCFG.getEdgeSource(defaultEdge);
+//                for (DefaultEdge defaultEdge : switchCFG.fullGraph.incomingEdgesOf(node)) {
+//                    Map.Entry<String, String> predNode = switchCFG.fullGraph.getEdgeSource(defaultEdge);
 //                    if (predNode.getKey().equals(firstSwitchNode.getKey())) {
 //                        // Is not possible to modify the graph inside the foreach
 //                        toAdd.add(defaultEdge);
@@ -788,10 +806,10 @@ public class FilteredControlFlowGraph {
 //                }
 //
 //                for (DefaultEdge defaultEdge : toAdd)
-//                    switchCFG.filteredCFG.addEdge(lastSwitchNode, switchCFG.filteredCFG.getEdgeTarget(defaultEdge));
+//                    switchCFG.fullGraph.addEdge(lastSwitchNode, switchCFG.fullGraph.getEdgeTarget(defaultEdge));
 //
 //                for (DefaultEdge defaultEdge : toRemove)
-//                    switchCFG.filteredCFG.removeEdge(defaultEdge);
+//                    switchCFG.fullGraph.removeEdge(defaultEdge);
 //
 //            }
 
