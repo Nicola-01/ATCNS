@@ -51,11 +51,15 @@ public class Main {
             userInput();
         }
         if (args.length == 1) {
-            new IntentAnalysis(args[0], null); // apk path from args
+            File apkFile = new File(args[0]);
+            if (apkFile.exists() && apkFile.isFile())
+                new IntentAnalysis(args[0], null); // apk path from args
+            else
+                System.err.println("Error: The specified APK file does not exist: " + args[0]);
         }
-        else if (args.length == 2) {
-            new IntentAnalysis(args[0], args[1]); // apk path from args
-        }
+//        else if (args.length == 2) {
+//            new IntentAnalysis(args[0], args[1]); // apk path from args
+//        }
         else {
             System.err.println("Invalid number of arguments: " + args.length);
         }
