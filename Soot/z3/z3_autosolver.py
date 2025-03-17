@@ -9,6 +9,16 @@ PARAM_PATTERN = re.compile(
     r'^\$?(\w+)\s*\(([^)]+)\)\s*=\s*\(android\.(?:os\.Bundle|content\.Intent)\)\s*\$?\w+\.get\w+\("([^"]+)"(?:,\s*[^)]+)?\)'
 )
 
+# Regex pattern to capture iterator hasNext() invocations.
+ITERATOR_PATTERN = re.compile(
+    r'^\$?(\w+)\s*=\s*interfaceinvoke\s+\$?\w+\.<java\.util\.Iterator:\s*boolean\s+hasNext\(\)>\(\)'
+)
+
+VAR_DECLARATION_PATTERN = re.compile(
+    r'^(?P<variable>\$?\w[\w\d_]*)\s+\((?P<return_type>[^)]+)\)\s*=\s*\((?P<package>[^)]+)\)\s+'
+    r'(?P<object>\$?\w[\w\d_]*)\.(?P<method>\w+)\((?P<parameter>[^)]*)\)$'
+)
+
 # Mapping for displaying types in the desired format.
 TYPE_MAPPING = {
     "Int": "integer",
@@ -57,23 +67,31 @@ def extract_metadata(dot_path):
     return metadata
 
 def infer_type(variable, value):
-    if value.lower() == "true" or value.lower() == "false":
-        return Bool(variable)
-    if value.startswith('"') and value.endswith('"'):
-        return String(variable)
-    try:
-        int(value)
-        return Int(variable)
-    except ValueError:
-        pass
-    try:
-        float(value)
-        return Real(variable)
-    except ValueError:
-        pass
+    if value.startswith("(") and value.endswith(")"):
+        if "string" in value.lower():
+            return String(variable)
+        if "int" in value.lower():
+            return Int(variable)
+        if "boolean" in value.lower():
+            return Bool(variable)
+    else:
+        if value.lower() == "true" or value.lower() == "false":
+            return Bool(variable)
+        if value.startswith('"') and value.endswith('"'):
+            return String(variable)
+        try:
+            int(value)
+            return Int(variable)
+        except ValueError:
+            pass
+        try:
+            float(value)
+            return Real(variable)
+        except ValueError:
+            pass
+
     return "unknown"
 
-# --- New Helper Function ---
 def get_blue_nodes(graph):
     """
     Returns a list of tuples (node_id, node_data) for nodes with attribute color=blue,
@@ -86,11 +104,12 @@ def get_blue_nodes(graph):
 def parse_intent_params(graph):
     """
     Scans the given subgraph for nodes whose label matches the pattern for parameter
-    definitions, but only processes nodes with color=blue.
+    definitions (and iterator nodes), but only processes nodes with color=blue.
     """
     global intent_params, param_name_map
     for node, data in get_blue_nodes(graph):
         label = data.get('label', '').strip()
+        # First, try matching the normal parameter pattern.
         match = PARAM_PATTERN.match(label)
         if match:
             var, ret_type, param_name = match.groups()
@@ -107,10 +126,19 @@ def parse_intent_params(graph):
                 elif "float" in ret_type.lower():
                     intent_params[var] = Real(var)
                 elif "Serializable" in ret_type.lower():
+                    # You can choose to ignore or handle Serializable types separately.
                     continue
                 else:
                     intent_params[var] = Int(var)
-
+        else:
+            # Check for iterator hasNext() invocations.
+            iterator_match = ITERATOR_PATTERN.match(label)
+            if iterator_match:
+                var = iterator_match.group(1).lstrip('$')
+                if var not in intent_params:
+                    # For hasNext(), we use a Boolean variable.
+                    intent_params[var] = Bool(var)
+                    
 def parse_if(graph):
     """
     Scans the subgraph (only blue nodes) for 'if' nodes, processes the conditions, and
@@ -134,11 +162,24 @@ def parse_if(graph):
                     cond_param, operator, cond_value = op_match.groups()
                     cond_param = cond_param.strip()
                     cond_value = cond_value.strip()
+                    # If the variable is a boolean (for instance, an iterator's hasNext)
+                    # then convert "0" to "False" and "1" to "True".
+                    if (cond_param in intent_params and intent_params[cond_param].sort().name() == "Bool") or \
+                       (cond_param in if_parameters and if_parameters[cond_param].sort().name() == "Bool"):
+                        if cond_value == "0":
+                            cond_value = "False"
+                        elif cond_value == "1":
+                            cond_value = "True"
+                    # If the variable is not yet known, try to infer its type.
                     if cond_param not in if_parameters and cond_param not in intent_params:
                         if_parameters[cond_param] = infer_type(cond_param, cond_value)
+                        #print("Parsing if:")
                         var_condition = search_for_var_declaration(graph, cond_param)
                         if var_condition:
                             conditions.append(var_condition)
+                    
+                    # Reconstruct the condition string with the (possibly transformed) cond_value.
+                    condition = f"{cond_param} {operator} {cond_value}"
                     
                     # Instead of all successors, consider only those successors that are blue.
                     blue_successors = [s for s in graph.successors(node_id)
@@ -164,25 +205,37 @@ def search_for_var_declaration(graph, var_name):
     string if found.
     """
     var_condition = ""
+    #print("searching var_name: ", var_name)
     for node, data in get_blue_nodes(graph):
         label = data.get('label', '').strip()
-        if ' = ' in label and len(label.split(' = ')) == 2 and var_name in label.split(' = ')[0]:
+        
+        if not label.startswith("if") and ' = ' in label and len(label.split(' = ')) == 2 and var_name in label.split(' = ')[0]:
             variable, value = label.split(" = ", 1)
             variable = variable.replace("$", "")
             value = value.replace("$", "") if value.startswith("$") else value
-            if ' ' in variable:
-                continue
+            #print("variable ", variable, " ", value)
+
             if not (' ' in variable):
                 var_condition = f"{variable}=={value}"
+
+            if VAR_DECLARATION_PATTERN.match(label):
+                var, type = variable.split(" ", 1)                
+                if var not in if_parameters and var not in intent_params:
+                    if_parameters[var] = infer_type(var, type)
+
             if '==' in value:
                 var1, var2 = value.split("==")
                 var1 = var1.strip()
                 var2 = var2.strip()
                 if var1 not in intent_params and var1 not in if_parameters:
+                    #print("searching for new condition on " + var1)
                     add_new_condition(graph, var1)
                 if var2 not in intent_params and var2 not in if_parameters:
+                    #print("searching for new condition2 on " + var2)
                     add_new_condition(graph, var2)
                 var_condition = f"{variable}==({var1}=={var2})"
+                #print("print condition", var_condition)
+
     return var_condition
 
 def add_new_condition(graph, var_name):
@@ -191,12 +244,14 @@ def add_new_condition(graph, var_name):
     """
     global intent_params, if_parameters, conditions
     var_condition = search_for_var_declaration(graph, var_name)
+    #print("..." + var_condition)
     if var_condition:
         variable, value = var_condition.split("==")
         if variable not in if_parameters and variable not in intent_params:
             if_parameters[variable] = infer_type(variable, value)
         if var_condition not in conditions:
             conditions.append(var_condition)
+
 
 # ---------------------------
 # MENU: Select a DOT file to analyze
@@ -243,14 +298,17 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
         parse_intent_params(subgraphs[pathName])
         parse_if(subgraphs[pathName])
         parameters = if_parameters | intent_params
+        print(pathName)
         print("Conditions: ", conditions)
         print("Parameters: ", parameters)
+        print("Intent Parameters: ", intent_params)
         solver = Solver() 
         for condition in conditions: 
             solver.add(eval(condition, {"Not": Not, "null": NULL}, parameters))
         
         solution_line = ""
         if solver.check() == sat:
+            print(pathName)
             model = solver.model()
             param_strings = []
             for param, z3_var in sorted(intent_params.items()):
@@ -267,7 +325,7 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
                 param_strings.append(f"{param_name_map.get(param)} ({type_str}) : {value_str}")
             solution_line = " | ".join(param_strings)
             output_file.write(f"{solution_line}\n")
-            print(f"{pathName}\n", solution_line)
+            print(solution_line)
         print("-"*50)
         reset_globals()
         
