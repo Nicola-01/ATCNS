@@ -110,18 +110,21 @@ public class CFGPathFinder {
                 if (matcher.find()) {
                     // Extract the variable name from the assignment.
                     assignedVariable = matcher.group(1);
-                    // Update usage count for this variable.
-                    variableUsageCount.put(assignedVariable, variableUsageCount.getOrDefault(assignedVariable, 0) + 1);
 
-                    // Process the left-hand side (portion before the "=")
-                    String leftSide = codeLine.substring(0, codeLine.indexOf("="));
-                    // Create a new variable name by appending the current count.
-                    String newVariableName = assignedVariable + "_" + variableUsageCount.get(assignedVariable);
-                    // Replace the old variable name with the new one in the left-hand side.
-                    String updatedLeftSide = leftSide.replace(assignedVariable, newVariableName);
+                    if (!assignedVariable.equals("null")) {
+                        // Update usage count for this variable.
+                        variableUsageCount.put(assignedVariable, variableUsageCount.getOrDefault(assignedVariable, 0) + 1);
 
-                    // Update the full code line with the modified left-hand side.
-                    codeLine = codeLine.replace(leftSide, updatedLeftSide);
+                        // Process the left-hand side (portion before the "=")
+                        String leftSide = codeLine.substring(0, codeLine.indexOf("="));
+                        // Create a new variable name by appending the current count.
+                        String newVariableName = assignedVariable + "_" + variableUsageCount.get(assignedVariable);
+                        // Replace the old variable name with the new one in the left-hand side.
+                        String updatedLeftSide = leftSide.replace(assignedVariable, newVariableName);
+
+                        // Update the full code line with the modified left-hand side.
+                        codeLine = codeLine.replace(leftSide, updatedLeftSide);
+                    }
                 }
 
                 // Process variable replacements in the rest of the line.
