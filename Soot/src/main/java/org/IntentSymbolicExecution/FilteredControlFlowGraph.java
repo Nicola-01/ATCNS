@@ -256,8 +256,12 @@ public class FilteredControlFlowGraph {
                         methodParameter.add(Map.entry(parameterName, "$m" + parameterUse));
                         parameterUse++;
                     } else
-                        for (Map.Entry<String, String> param : methodParameter)
-                            line = line.replace(param.getKey(), param.getValue());
+                        for (Map.Entry<String, String> param : methodParameter) {
+                            if (line.endsWith(param.getKey()))
+                                line = line.replace(param.getKey(), param.getValue());
+                            else
+                                line = line.replace(param.getKey() + " ", param.getValue() + " ");
+                        }
 
                     if (assignation != null && (line.startsWith("return ") || (line.startsWith("if") && line.contains("goto return"))))
                         line = line.replace("return ", assignation + " = ");

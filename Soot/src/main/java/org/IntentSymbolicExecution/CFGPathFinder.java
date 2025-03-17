@@ -141,7 +141,11 @@ public class CFGPathFinder {
                         segmentToReplace = codeLine.substring(codeLine.indexOf("="));
                     }
                     // Replace occurrences of the variable in the designated segment.
-                    String updatedSegment = segmentToReplace.replace(var, replacementName);
+                    String updatedSegment = null;
+                    if (segmentToReplace.endsWith(var))
+                        updatedSegment = segmentToReplace.replace(var, replacementName);
+                    else
+                        updatedSegment = segmentToReplace.replace(var + " ", replacementName + " ");
                     // Update the full code line with the replaced segment.
                     codeLine = codeLine.replace(segmentToReplace, updatedSegment);
                 }
