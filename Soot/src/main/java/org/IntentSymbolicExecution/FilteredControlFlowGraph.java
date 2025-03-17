@@ -343,8 +343,11 @@ public class FilteredControlFlowGraph {
                     startAdding = true;
                     filteredNodes.put(nodeName, line);
                     parametersToTrack.add(extraMatcher.group("assignation"));
-
                 }
+
+                Matcher actionMatcher = patterGetAction.matcher(line);
+                if (actionMatcher.find())
+                    parametersToTrack.add(actionMatcher.group(1));
 
                 // Continue adding nodes and edges after the first relevant extra is found
                 if (!startAdding) continue;

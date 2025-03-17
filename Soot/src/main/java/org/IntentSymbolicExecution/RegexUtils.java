@@ -25,7 +25,7 @@ public class RegexUtils {
     /**
      * A regular expression to identify calls to the getAction method.
      */
-    private static final String regexGetAction = "getAction\\(\\)";
+    private static final String regexGetAction = "(\\$\\w+)\\s+\\(([^)]+)\\)\\s*=\\s*\\(([^)]+)\\)\\s*(\\$\\w+)\\.getAction\\(\\)";
     public static final Pattern patterGetAction = Pattern.compile(regexGetAction);
 
     //    private static final String regexEquals = "^(?<assignation>\\$?\\w+)\\s*=\\s*\\w+\\s+(?<object>\\$?\\w+)\\.<java\\.lang\\.String:\\s*boolean\\s*equals\\(java\\.lang\\.Object\\)\\>\\((?<argument>.*)\\)$";
