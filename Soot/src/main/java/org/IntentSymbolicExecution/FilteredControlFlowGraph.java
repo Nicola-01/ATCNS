@@ -185,7 +185,7 @@ public class FilteredControlFlowGraph {
         for (GraphNode vertex : graph.vertexSet()) {
             if (node.equalsKey(vertex)) {
                 int parametersCount = 0;
-                newGraph.addVertex(vertex);
+                newGraph.addNode(vertex);
                 for (GraphNode methodNode : methodGraph.vertexSet()) {
                     String line = methodNode.getValue();
 
@@ -207,10 +207,10 @@ public class FilteredControlFlowGraph {
                     if (assignation != null && (line.startsWith("return ") || (line.startsWith("if") && line.contains("goto return"))))
                         line = line.replace("return ", assignation + " = ");
 
-                    newGraph.addVertex(new GraphNode(methodNode.getKey(), line));
+                    newGraph.addNode(new GraphNode(methodNode.getKey(), line));
                 }
             } else
-                newGraph.addVertex(vertex);
+                newGraph.addNode(vertex);
         }
 
         for (DefaultEdge methodEdge : methodGraph.edgeSet())
@@ -502,13 +502,13 @@ public class FilteredControlFlowGraph {
                         GraphNode vertex = new GraphNode("node" + Math.abs(nodeText.hashCode()), nodeText);
                         succEntryList.add(vertex);
 
-                        switchCFG.fullGraph.addVertex(vertex);
+                        switchCFG.fullGraph.addNode(vertex);
                         switchCFG.fullGraph.addEdge(succEntryList.get(succEntryList.size() - 2), vertex);
 
                         if (filtered)
                             switchCFG.filteredCFG.put(vertex.getKey(), vertex.getValue());
                     }
-                    switchCFG.fullGraph.addVertex(caseNode);
+                    switchCFG.fullGraph.addNode(caseNode);
                     switchCFG.fullGraph.addEdge(succEntryList.get(succEntryList.size() - 1), caseNode); //  no such vertex in graph: {'node1244389716' -> 'if $r2=="*" goto $z0 = $r2 == "*"'}
 
                     if (filtered)
@@ -517,7 +517,7 @@ public class FilteredControlFlowGraph {
 
                 if (defaultNode == null) continue;
 
-                switchCFG.fullGraph.addVertex(defaultNode);
+                switchCFG.fullGraph.addNode(defaultNode);
                 switchCFG.fullGraph.addEdge(succEntryList.get(succEntryList.size() - 1), defaultNode);
                 if (filtered)
                     switchCFG.filteredCFG.put(defaultNode.getKey(), defaultNode.getValue());

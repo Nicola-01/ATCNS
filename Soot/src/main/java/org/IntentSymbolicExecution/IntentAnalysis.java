@@ -105,14 +105,12 @@ public class IntentAnalysis {
 
             FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), methodName, graphs, globalVariables);
             if (filteredControlFlowGraph.haveExtras()) {
+                System.out.println(methodName);
                 System.out.println(filteredControlFlowGraph);
 
                 String fileName = "paths/" + filteredControlFlowGraph.getCompleteMethod() + "_paths.dot";
                 CFGPathFinder pathFinder = new CFGPathFinder(filteredControlFlowGraph);
-                List<List<GraphNode>> allPaths = pathFinder.getAllPaths();
-                //printAllPaths(allPaths);
-
-                pathFinder.generateDotFile(allPaths, filteredControlFlowGraph.getFilteredCFG(), fileName, packageName, activityName, action);
+                pathFinder.generateDotFile(filteredControlFlowGraph.getFilteredCFG(), fileName, packageName, activityName, action);
             }
         }
     }

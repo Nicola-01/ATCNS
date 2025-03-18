@@ -19,6 +19,48 @@ public class CFGPathFinder {
         this.filteredCFG = graph.getFullCFG();
     }
 
+
+    /*public List<List<GraphNode>> getAllPathsIterative() {
+        List<List<GraphNode>> allPaths = new ArrayList<>();
+
+        ControlFlowGraph graph = filteredControlFlowGraph.getFullCFG();
+
+        GraphNode firstNode = graph.getRootsNodes().get(0);
+        allPaths.add(new ArrayList<>(List.of(firstNode)));
+
+        Stack<GraphNode> stack = new Stack<>();
+        stack.push(firstNode);
+
+        while (!stack.isEmpty()) {
+            GraphNode node = stack.pop();
+            Set<GraphNode> preds = graph.getPredecessorNodes(node);
+            List<GraphNode> succs = new ArrayList<>(graph.getSuccessorNodes(node));
+            if (succs.isEmpty()) continue;
+
+            int allPathsSize = allPaths.size();
+            for (int i = 0; i < allPathsSize; i++) {
+
+                List<GraphNode> path = allPaths.get(i);
+
+                if (path.get(path.size() - 1).equals(node)) {
+                    for (int succIndex = 0; succIndex < succs.size() - 1; succIndex++) {
+                        List<GraphNode> newPath = new ArrayList<>(path);
+                        newPath.add(succs.get(succIndex));
+                        allPaths.add(newPath);
+
+                        if(!stack.contains(succs.get(succIndex)))
+                            stack.push(succs.get(succIndex));
+                    }
+                    path.add(succs.get(succs.size() - 1));
+                    if(!stack.contains(succs.get(succs.size() - 1)))
+                        stack.push(succs.get(succs.size() - 1));
+                }
+            }
+        }
+
+        return allPaths;
+    }*/
+
     /**
      * Retrieves all possible paths from start nodes (with no incoming edges) to end nodes (with no outgoing edges).
      *
@@ -72,7 +114,7 @@ public class CFGPathFinder {
             findAllPathsDFS(start, endNodes, currentPath, visitedInPath, allPaths);
         }
 
-        return variableRenaming(allPaths);
+        return allPaths;
 
     }
 
@@ -193,8 +235,18 @@ public class CFGPathFinder {
         visitedInPath.remove(currentNode);
     }
 
-    public void generateDotFile(List<List<GraphNode>> allPaths, Map<String, String> filteredNodes, String fileName, String packageName, String activity, String action) {
+    public void generateDotFile(Map<String, String> filteredNodes, String fileName, String packageName, String activity, String action) {
         try (FileWriter writer = new FileWriter(fileName)) {
+
+            long startTime, endTime;
+            List<List<GraphNode>> allPaths;
+
+            System.out.println("  Start Old allPaths generation");
+            startTime = System.nanoTime(); // Start timing
+//            List<List<GraphNode>> allPaths = variableRenaming(getAllPaths());
+            allPaths = getAllPaths();
+            endTime = System.nanoTime(); // End timing
+            System.out.println("   Old Execution time: " + (endTime - startTime) + " ns");
 
             writer.write(String.format("# package: %s\n", packageName));
             writer.write(String.format("# activity: %s\n", activity));
@@ -202,42 +254,54 @@ public class CFGPathFinder {
 
             int pathNumber = 1;
             writer.write(String.format("digraph paths {\n"));
+            System.out.println("         " + allPaths.size());
+            StringBuilder sb = new StringBuilder();
+
+            int count = 0;
+
             for (List<GraphNode> path : allPaths) {
-                writer.write(String.format("subgraph path_%d {\n", pathNumber));
 
                 int nodeNumber = 1;
                 GraphNode prevNode = null;
 
                 List<String> nodeToHighlight = startFiltering(path);
 
+                if (nodeToHighlight.isEmpty()) continue;
+
+                count++;
+                sb.append(String.format("subgraph path_%d {\n", pathNumber));
                 for (GraphNode node : path) {
                     String nodeName = "node" + nodeNumber + "_" + pathNumber;
-                    String nodeLabel = node.getValue();
+                    String nodeLabel = node.getValue().replace("\"", "\\\"");
+
                     if (nodeToHighlight.contains(node.getKey()))
-                        writer.write(String.format("    %s [label=\"%s\", color=blue];\n", nodeName, nodeLabel.replace("\"", "\\\"")));
+                        sb.append(String.format("    %s [label=\"%s\", color=blue];\n", nodeName, nodeLabel));
                     else
-                        writer.write(String.format("    %s [label=\"%s\"];\n", nodeName, nodeLabel.replace("\"", "\\\"")));
+                        sb.append(String.format("    %s [label=\"%s\"];\n", nodeName, nodeLabel));
 
                     if (prevNode != null) {
                         String prevNodeName = "node" + (nodeNumber - 1) + "_" + pathNumber;
 
-                        String ifLable = "";
+                        String ifLabel = "";
                         if (prevNode.getValue().startsWith("if") && prevNode.getValue().contains(" goto ")) {
                             String ifTrueNode = prevNode.getValue().split(" goto ")[1];
-                            ifLable = String.format(" [label=\"%s\"]", ifTrueNode.equals(nodeLabel));
+                            ifLabel = String.format(" [label=\"%s\"]", ifTrueNode.equals(nodeLabel));
                         }
 
-                        writer.write(String.format("    %s -> %s%s;\n", prevNodeName, nodeName, ifLable));
+                        sb.append(String.format("    %s -> %s%s;\n", prevNodeName, nodeName, ifLabel));
                     }
 
                     prevNode = node;
                     nodeNumber++;
                 }
 
-                writer.write("}\n\n"); // Close the current subgraph
+                sb.append("}\n\n"); // Close the current subgraph
                 pathNumber++;
             }
-            writer.write("}\n");
+            sb.append("}\n");
+
+            writer.write(sb.toString());
+            System.out.println("  End New allPaths generation, path number: " + count);
         } catch (IOException e) {
             System.err.println("Error writing DOT file: " + e.getMessage());
         }
