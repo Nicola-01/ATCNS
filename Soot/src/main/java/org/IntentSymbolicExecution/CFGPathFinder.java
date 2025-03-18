@@ -5,20 +5,18 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
+import static org.IntentSymbolicExecution.RegexUtils.*;
 
-import static org.IntentSymbolicExecution.RegexUtils.assignationPattern;
+import org.IntentSymbolicExecution.ControlFlowGraph.GraphNode;
 
 public class CFGPathFinder {
 
-    private FilteredControlFlowGraph filteredControlFlowGraph;
-    private Graph<Map.Entry<String, String>, DefaultEdge> filteredCFG;
+    private final FilteredControlFlowGraph filteredControlFlowGraph;
+    private final ControlFlowGraph filteredCFG;
 
     public CFGPathFinder(FilteredControlFlowGraph graph) {
         this.filteredControlFlowGraph = graph;
         this.filteredCFG = graph.getFullCFG();
-
     }
 
     /**
@@ -26,12 +24,12 @@ public class CFGPathFinder {
      *
      * @return A list of all paths, where each path is a list of nodes (Map.Entry) in the order they are traversed.
      */
-    public List<List<Map.Entry<String, String>>> getAllPaths() {
+    public List<List<GraphNode>> getAllPaths() {
         // Find start nodes (nodes with no predecessors)
-        List<Map.Entry<String, String>> startNodes = filteredControlFlowGraph.getRootsNodes(filteredCFG);
+        List<GraphNode> startNodes = filteredCFG.getRootsNodes();
 
         // Find end nodes (nodes with no successors)
-        List<Map.Entry<String, String>> endNodes = filteredControlFlowGraph.getLeafNodes(filteredCFG);
+        List<GraphNode> endNodes = filteredCFG.getLeafNodes();
 
         // Debug print edges for all nodes with node numbers
         /*System.out.println("\n=== DEBUG EDGE CONNECTIONS ===");
@@ -67,10 +65,10 @@ public class CFGPathFinder {
         }*/
 
         // Rest of the code remains the same...
-        List<List<Map.Entry<String, String>>> allPaths = new ArrayList<>();
-        for (Map.Entry<String, String> start : startNodes) {
-            LinkedList<Map.Entry<String, String>> currentPath = new LinkedList<>();
-            Set<Map.Entry<String, String>> visitedInPath = new HashSet<>();
+        List<List<GraphNode>> allPaths = new ArrayList<>();
+        for (GraphNode start : startNodes) {
+            LinkedList<GraphNode> currentPath = new LinkedList<>();
+            Set<GraphNode> visitedInPath = new HashSet<>();
             findAllPathsDFS(start, endNodes, currentPath, visitedInPath, allPaths);
         }
 
@@ -91,17 +89,17 @@ public class CFGPathFinder {
      * @param allPaths the original list of paths, where each path is a list of Map.Entry objects (key: identifier, value: code line)
      * @return a new list of paths with the variables renamed sensibly
      */
-    private List<List<Map.Entry<String, String>>> variableRenaming(List<List<Map.Entry<String, String>>> allPaths) {
-        List<List<Map.Entry<String, String>>> updatedPaths = new ArrayList<>();
+    private List<List<GraphNode>> variableRenaming(List<List<GraphNode>> allPaths) {
+        List<List<GraphNode>> updatedPaths = new ArrayList<>();
 
         // Iterate over each path (list of entries)
-        for (List<Map.Entry<String, String>> path : allPaths) {
+        for (List<GraphNode> path : allPaths) {
             // Map to store the usage count for each variable in the current path
             Map<String, Integer> variableUsageCount = new HashMap<>();
-            List<Map.Entry<String, String>> updatedPath = new ArrayList<>();
+            List<GraphNode> updatedPath = new ArrayList<>();
 
             // Process each code entry in the path
-            for (Map.Entry<String, String> entry : path) {
+            for (GraphNode entry : path) {
                 String codeLine = entry.getValue();
                 String assignedVariable = "";
 
@@ -150,7 +148,7 @@ public class CFGPathFinder {
                     codeLine = codeLine.replace(segmentToReplace, updatedSegment);
                 }
                 // Add the updated entry with the modified code line to the updated path.
-                updatedPath.add(Map.entry(entry.getKey(), codeLine));
+                updatedPath.add(new GraphNode(entry.getKey(), codeLine));
             }
             // Add the fully updated path to the collection of updated paths.
             updatedPaths.add(updatedPath);
@@ -169,11 +167,11 @@ public class CFGPathFinder {
      * @param visitedInPath Set of nodes visited in the current path to prevent cycles.
      * @param allPaths      List to collect all valid paths found.
      */
-    private void findAllPathsDFS(Map.Entry<String, String> currentNode,
-                                 List<Map.Entry<String, String>> endNodes,
-                                 LinkedList<Map.Entry<String, String>> currentPath,
-                                 Set<Map.Entry<String, String>> visitedInPath,
-                                 List<List<Map.Entry<String, String>>> allPaths) {
+    private void findAllPathsDFS(GraphNode currentNode,
+                                 List<GraphNode> endNodes,
+                                 LinkedList<GraphNode> currentPath,
+                                 Set<GraphNode> visitedInPath,
+                                 List<List<GraphNode>> allPaths) {
         // Add current node to the path and mark as visited
         currentPath.add(currentNode);
         visitedInPath.add(currentNode);
@@ -183,10 +181,9 @@ public class CFGPathFinder {
             allPaths.add(new ArrayList<>(currentPath));
         } else {
             // Recur for all adjacent nodes not yet visited in the current path
-            for (DefaultEdge edge : filteredCFG.outgoingEdgesOf(currentNode)) {
-                Map.Entry<String, String> neighbor = filteredCFG.getEdgeTarget(edge);
-                if (!visitedInPath.contains(neighbor)) {
-                    findAllPathsDFS(neighbor, endNodes, currentPath, visitedInPath, allPaths);
+            for (GraphNode succ : filteredCFG.getSuccessorNodes(currentNode)) {
+                if (!visitedInPath.contains(succ)) {
+                    findAllPathsDFS(succ, endNodes, currentPath, visitedInPath, allPaths);
                 }
             }
         }
@@ -196,7 +193,7 @@ public class CFGPathFinder {
         visitedInPath.remove(currentNode);
     }
 
-    public void generateDotFile(List<List<Map.Entry<String, String>>> allPaths, Map<String, String> filteredNodes, String fileName, String packageName, String activity, String action) {
+    public void generateDotFile(List<List<GraphNode>> allPaths, Map<String, String> filteredNodes, String fileName, String packageName, String activity, String action) {
         try (FileWriter writer = new FileWriter(fileName)) {
 
             writer.write(String.format("# package: %s\n", packageName));
@@ -205,16 +202,18 @@ public class CFGPathFinder {
 
             int pathNumber = 1;
             writer.write(String.format("digraph paths {\n"));
-            for (List<Map.Entry<String, String>> path : allPaths) {
+            for (List<GraphNode> path : allPaths) {
                 writer.write(String.format("subgraph path_%d {\n", pathNumber));
 
                 int nodeNumber = 1;
-                Map.Entry<String, String> prevNode = null;
+                GraphNode prevNode = null;
 
-                for (Map.Entry<String, String> node : path) {
+                List<String> nodeToHighlight = startFiltering(path);
+
+                for (GraphNode node : path) {
                     String nodeName = "node" + nodeNumber + "_" + pathNumber;
                     String nodeLabel = node.getValue();
-                    if (filteredNodes.containsKey(node.getKey()))
+                    if (nodeToHighlight.contains(node.getKey()))
                         writer.write(String.format("    %s [label=\"%s\", color=blue];\n", nodeName, nodeLabel.replace("\"", "\\\"")));
                     else
                         writer.write(String.format("    %s [label=\"%s\"];\n", nodeName, nodeLabel.replace("\"", "\\\"")));
@@ -242,6 +241,78 @@ public class CFGPathFinder {
         } catch (IOException e) {
             System.err.println("Error writing DOT file: " + e.getMessage());
         }
+    }
+
+    private List<String> startFiltering(List<GraphNode> path) {
+        // Initialize a map to keep track of parameters that we need to monitor during the analysis.
+        // The map's key represents the parameter's name, and the value represents its associated type.
+//        Map<String, String> parametersToTrack = new HashMap<>();
+        HashSet<String> parametersToTrack = new HashSet<>();
+
+        // Map with the filtered Nodes
+        List<String> filteredNodes = new ArrayList<>();
+
+        // Store the count of parameters to track at the beginning of the loop.
+        // This helps in detecting when we've finished processing all relevant parameters.
+        int startParametersCount;
+
+        // A flag to determine when we should start adding vertices to the filtered control flow graph.
+        // Initially, we don't add any vertices until we've encountered the first relevant Intent or Bundle operation.
+        boolean startAdding; // Start adding vertices after the root node
+
+        do {
+            startParametersCount = parametersToTrack.size();
+
+            startAdding = false;
+
+            // Iterate through the units in the graph
+            for (GraphNode node : path) {
+                String nodeName = node.getKey();
+                String line = node.getValue();
+
+                // Match lines containing getExtra methods in Intent or Bundle objects
+                Matcher extraMatcher = patternExtra.matcher(line);
+                if (extraMatcher.find()) {
+                    startAdding = true;
+                    filteredNodes.add(nodeName);
+                    parametersToTrack.add(extraMatcher.group("assignation"));
+                }
+
+                Matcher actionMatcher = patterGetAction.matcher(line);
+                if (actionMatcher.find())
+                    parametersToTrack.add(actionMatcher.group(1));
+
+                // Continue adding nodes and edges after the first relevant extra is found
+                if (!startAdding) continue;
+
+                // Check if any saved parameters are used in the current unit
+                if (parametersToTrack.stream().anyMatch(line::contains)) {
+                    filteredNodes.add(nodeName);
+//
+//                    // Start tracking the new parameter (that depends on a saved parameter)
+//                    String newParameterName = line.split(" = ")[0];
+//                    // Case: $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>(i0)
+//                    // It stores $r2 in parametersToTrack
+//                    if (newParameterName.split(" ").length == 1) {
+//                        parametersToTrack.add(newParameterName);
+//                        continue;
+//                    }
+//
+//                    String[] newParametersName = line.split("\\.<")[0].split(" ");
+//                    // Case: specialinvoke $r9.<java.math.BigInteger: void <init>(java.lang.String)>($r2)
+//                    // It stores $r9 in parametersToTrack
+//                    if (newParametersName.length == 2) {
+//                        newParameterName = newParametersName[1];
+//                        parametersToTrack.add(newParameterName);
+//                        continue;
+//                    }
+                }
+            }
+        }
+        // Continue the loop until no new parameters are tracked, meaning we have processed all relevant parameters.
+        while (startParametersCount < parametersToTrack.size());
+
+        return filteredNodes;
     }
 
 }

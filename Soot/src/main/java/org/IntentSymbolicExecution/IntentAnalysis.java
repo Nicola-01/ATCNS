@@ -17,6 +17,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+import org.IntentSymbolicExecution.ControlFlowGraph.GraphNode;
+
 /**
  * This class performs static analysis on an APK file to
  * analyze Intent-related operations in their methods.
@@ -103,16 +105,11 @@ public class IntentAnalysis {
 
             FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), methodName, graphs, globalVariables);
             if (filteredControlFlowGraph.haveExtras()) {
-
-//                System.out.println("filteredControlFlowGraph\n" + filteredControlFlowGraph);
-//
-                filteredControlFlowGraph = filteredControlFlowGraph.switchResolver();
-
-                System.out.println("switchResolver\n" + filteredControlFlowGraph);
+                System.out.println(filteredControlFlowGraph);
 
                 String fileName = "paths/" + filteredControlFlowGraph.getCompleteMethod() + "_paths.dot";
                 CFGPathFinder pathFinder = new CFGPathFinder(filteredControlFlowGraph);
-                List<List<Map.Entry<String, String>>> allPaths = pathFinder.getAllPaths();
+                List<List<GraphNode>> allPaths = pathFinder.getAllPaths();
                 //printAllPaths(allPaths);
 
                 pathFinder.generateDotFile(allPaths, filteredControlFlowGraph.getFilteredCFG(), fileName, packageName, activityName, action);
