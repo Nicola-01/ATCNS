@@ -636,7 +636,7 @@ public class FilteredControlFlowGraph {
                 String returnedType = matcher.group("returnedType");
                 String method = matcher.group("method");
                 String argument = matcher.group("argument");
-                if (method.equals("equals"))
+                if (method.equals("equals") || method.equals("areEqual"))
                     newNodeLabel = String.format("%s = %s == %s", assignation, object, argument);
                 else if ((invoke.equals("virtualinvoke") || invoke.equals("specialinvoke")) && object != null && assignation != null)
                     newNodeLabel = String.format("%s (%s) = (%s) %s.%s(%s)", assignation, returnedType, objectType, object, method, argument);
@@ -653,8 +653,10 @@ public class FilteredControlFlowGraph {
                 String type = matcher2.group(3);
                 String varName = matcher2.group(4);
                 String newObject = matcher2.group(5);
-                newNodeLabel = String.format("(%s) (%s)this.%s = %s", type, thisObject, varName, newObject);
-                nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
+                if (!thisObject.contains("if ")) {
+                    newNodeLabel = String.format("(%s) (%s)this.%s = %s", type, thisObject, varName, newObject);
+                    nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
+                }
             } else if (matcher3.find()) {
                 String assignation = matcher3.group(1);
                 String object = matcher3.group(2);
