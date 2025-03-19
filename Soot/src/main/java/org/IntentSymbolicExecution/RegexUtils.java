@@ -42,6 +42,16 @@ public class RegexUtils {
     private static final String globalVariablesRegex = "^(?<variable>\\S+)\\s*=\\s*<(?<package>[^:>]+):\\s+(?<type>\\S+)\\s+(?<varname>[^>]+)>$";
     public static final Pattern globalVariablesPattern = Pattern.compile(globalVariablesRegex);
 
+    // regex for: <this_object>.<<package>: <type> <var_name> = <new_object_name>
+    private static final String thisCallRegex = "^([^\\.]+)\\.\\<([^:]+):\\s*(\\S+)\\s+([^>]+)\\>\\s*=\\s*(.+)$";
+    public static final Pattern thisCallPattern = Pattern.compile(thisCallRegex);
+
+    private static final String variableCallRegex = "^(.*?) = (\\w+).<([^:]+): ([^:]+) (\\w+)>$";
+    public static final Pattern variableCallPattern = Pattern.compile(variableCallRegex);
+
+    private static final String voidMethodCallRegex = "^(\\w+)\\s+([\\$\\w]+)\\.<([^:]+):\\s+void\\s+([^()]+)\\(([^)]*)\\)>\\(([^)]*)\\)$";
+    public static final Pattern voidMethodCallPattern = Pattern.compile(voidMethodCallRegex);
+
     // Private constructor to prevent instantiation
     private RegexUtils() {
     }

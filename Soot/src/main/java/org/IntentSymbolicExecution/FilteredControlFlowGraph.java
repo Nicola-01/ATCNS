@@ -625,6 +625,9 @@ public class FilteredControlFlowGraph {
             String newNodeLabel;
 
             Matcher matcher = patternMethodCall.matcher(nodeLabel);
+            Matcher matcher2 = thisCallPattern.matcher(nodeLabel);
+            Matcher matcher3 = variableCallPattern.matcher(nodeLabel);
+            Matcher mathcer4 = voidMethodCallPattern.matcher(nodeLabel);
             if (matcher.find()) {
                 String assignation = matcher.group("assignation");
                 String invoke = matcher.group("invoke");
@@ -635,7 +638,7 @@ public class FilteredControlFlowGraph {
                 String argument = matcher.group("argument");
                 if (method.equals("equals"))
                     newNodeLabel = String.format("%s = %s == %s", assignation, object, argument);
-                else if (invoke.equals("virtualinvoke") && object != null)
+                else if ((invoke.equals("virtualinvoke") || invoke.equals("specialinvoke")) && object != null && assignation != null)
                     newNodeLabel = String.format("%s (%s) = (%s) %s.%s(%s)", assignation, returnedType, objectType, object, method, argument);
                 else if (invoke != null && object == null && assignation != null)
                     newNodeLabel = String.format("%s (%s) = (%s).%s(%s)", assignation, returnedType, objectType, method, argument);
@@ -644,6 +647,33 @@ public class FilteredControlFlowGraph {
                 else
                     newNodeLabel = nodeLabel;
                 nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
+            } else if (matcher2.find()) {
+                String thisObject = matcher2.group(1);
+                //String packageName = matcher2.group(2);
+                String type = matcher2.group(3);
+                String varName = matcher2.group(4);
+                String newObject = matcher2.group(5);
+                newNodeLabel = String.format("(%s) (%s)this.%s = %s", type, thisObject, varName, newObject);
+                nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
+            } else if (matcher3.find()) {
+                String assignation = matcher3.group(1);
+                String object = matcher3.group(2);
+                String objectType = matcher3.group(3);
+                String returnedType = matcher3.group(4);
+                String varName = matcher3.group(5);
+                if (object.equals("r0"))
+                    newNodeLabel = String.format("%s (%s) = (%s)this.%s", assignation, returnedType, object, varName);
+                else
+                    newNodeLabel = String.format("%s (%s) = (%s) %s.%s", assignation, returnedType, objectType, object, varName);
+                nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
+            } else if (mathcer4.find()) {
+                String object = mathcer4.group(2);
+                String objectType = mathcer4.group(3);
+                String method = mathcer4.group(4);
+                //String paramsType = mathcer4.group(5);
+                String params = mathcer4.group(6);
+                newNodeLabel = String.format("(%s) %s.%s(%s)", objectType, object, method, params);
+                nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel)); 
             }
         }
 

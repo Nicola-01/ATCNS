@@ -2,7 +2,14 @@ import re
 import os
 import networkx as nx
 import pygraphviz as pgv
-from z3 import Int, String, Bool, Real, Solver, sat, Not, StringVal
+from z3 import Int, String, Bool, Real, Solver, sat, Not, StringVal, DeclareSort, Const
+
+# Declare a new uninterpreted sort for serializable types.
+SerializableSort = DeclareSort('Serializable')
+NULL_SERIALIZABLE = Const("null_serializable", SerializableSort)
+
+# Define a Z3 constant representing null for strings.
+NULL = StringVal("null")
 
 # Regular expression pattern for matching the parameter definition in the node label.
 PARAM_PATTERN = re.compile(
@@ -25,14 +32,13 @@ TYPE_MAPPING = {
     "String": "string",
     "Bool": "boolean",
     "Real": "float",
-    "Char": "char"
+    "Char": "char",
+    "Serializable": "serializable"
 }
 
 intent_params, param_name_map, if_parameters = {}, {}, {}
 conditions = []
 
-# Define a Z3 constant representing null for strings.
-NULL = StringVal("null")
 
 def reset_globals():
     """Reset global variables for each new subgraph."""
@@ -67,6 +73,7 @@ def extract_metadata(dot_path):
     return metadata
 
 def infer_type(variable, value):
+    # If value is in the form "(...)" we try to infer from the text inside.
     if value.startswith("(") and value.endswith(")"):
         if "string" in value.lower():
             return String(variable)
@@ -74,6 +81,8 @@ def infer_type(variable, value):
             return Int(variable)
         if "boolean" in value.lower():
             return Bool(variable)
+        if "serializable" in value.lower():
+            return Const(variable, SerializableSort)
     else:
         if value.lower() == "true" or value.lower() == "false":
             return Bool(variable)
@@ -125,20 +134,12 @@ def parse_intent_params(graph):
                     intent_params[var] = Bool(var)
                 elif "float" in ret_type.lower():
                     intent_params[var] = Real(var)
-                elif "Serializable" in ret_type.lower():
-                    # You can choose to ignore or handle Serializable types separately.
-                    continue
+                elif "serializable" in ret_type.lower():
+                    # Instead of ignoring, create a custom type for serializable.
+                    intent_params[var] = Const(var, SerializableSort)
                 else:
                     intent_params[var] = Int(var)
-        else:
-            # Check for iterator hasNext() invocations.
-            iterator_match = ITERATOR_PATTERN.match(label)
-            if iterator_match:
-                var = iterator_match.group(1).lstrip('$')
-                if var not in intent_params:
-                    # For hasNext(), we use a Boolean variable.
-                    intent_params[var] = Bool(var)
-                    
+
 def parse_if(graph):
     """
     Scans the subgraph (only blue nodes) for 'if' nodes, processes the conditions, and
@@ -147,7 +148,6 @@ def parse_if(graph):
     """
     global if_parameters, conditions
     blue_nodes = get_blue_nodes(graph)
-    blue_node_ids = {node for node, _ in blue_nodes}
     
     for node_id, data in blue_nodes:
         label = data.get('label', '').strip()
@@ -170,10 +170,14 @@ def parse_if(graph):
                             cond_value = "False"
                         elif cond_value == "1":
                             cond_value = "True"
+                    # If the variable is serializable, replace "null" with "null_serializable".
+                    if (cond_param in intent_params and intent_params[cond_param].sort().name() == "Serializable") or \
+                       (cond_param in if_parameters and if_parameters[cond_param].sort().name() == "Serializable"):
+                        cond_value = cond_value.replace("null", "null_serializable")
+                    
                     # If the variable is not yet known, try to infer its type.
                     if cond_param not in if_parameters and cond_param not in intent_params:
                         if_parameters[cond_param] = infer_type(cond_param, cond_value)
-                        #print("Parsing if:")
                         var_condition = search_for_var_declaration(graph, cond_param)
                         if var_condition:
                             conditions.append(var_condition)
@@ -205,7 +209,6 @@ def search_for_var_declaration(graph, var_name):
     string if found.
     """
     var_condition = ""
-    #print("searching var_name: ", var_name)
     for node, data in get_blue_nodes(graph):
         label = data.get('label', '').strip()
         
@@ -213,7 +216,6 @@ def search_for_var_declaration(graph, var_name):
             variable, value = label.split(" = ", 1)
             variable = variable.replace("$", "")
             value = value.replace("$", "") if value.startswith("$") else value
-            #print("variable ", variable, " ", value)
 
             if not (' ' in variable):
                 var_condition = f"{variable}=={value}"
@@ -228,13 +230,18 @@ def search_for_var_declaration(graph, var_name):
                 var1 = var1.strip()
                 var2 = var2.strip()
                 if var1 not in intent_params and var1 not in if_parameters:
-                    #print("searching for new condition on " + var1)
                     add_new_condition(graph, var1)
                 if var2 not in intent_params and var2 not in if_parameters:
-                    #print("searching for new condition2 on " + var2)
                     add_new_condition(graph, var2)
                 var_condition = f"{variable}==({var1}=={var2})"
-                #print("print condition", var_condition)
+
+            # Check for iterator hasNext() invocations.
+            iterator_match = ITERATOR_PATTERN.match(label)
+            if iterator_match:
+                var = iterator_match.group(1).lstrip('$')
+                if var not in if_parameters and var not in intent_params:
+                    if_parameters[var] = Bool(var)
+                    return
 
     return var_condition
 
@@ -244,7 +251,6 @@ def add_new_condition(graph, var_name):
     """
     global intent_params, if_parameters, conditions
     var_condition = search_for_var_declaration(graph, var_name)
-    #print("..." + var_condition)
     if var_condition:
         variable, value = var_condition.split("==")
         if variable not in if_parameters and variable not in intent_params:
@@ -303,8 +309,9 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
         print("Parameters: ", parameters)
         print("Intent Parameters: ", intent_params)
         solver = Solver() 
+        # When evaluating conditions, we include our special null constants.
         for condition in conditions: 
-            solver.add(eval(condition, {"Not": Not, "null": NULL}, parameters))
+            solver.add(eval(condition, {"Not": Not, "null": NULL, "null_serializable": NULL_SERIALIZABLE}, parameters))
         
         solution_line = ""
         if solver.check() == sat:
@@ -322,7 +329,12 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
                         value_str = f'{value}'
                     else:
                         value_str = str(value)
-                param_strings.append(f"{param_name_map.get(param)} ({type_str}) : {value_str}")
+                # If the variable is serializable, also include conditions involving it.
+                if sort_name == "Serializable":
+                    serializable_conditions = [cond for cond in conditions if param in cond]
+                    if serializable_conditions:
+                        value_str += " | Conditions: " + ", ".join(serializable_conditions)
+                param_strings.append(f"{param_name_map.get(param, param)} ({type_str}) : {value_str}")
             solution_line = " | ".join(param_strings)
             output_file.write(f"{solution_line}\n")
             print(solution_line)

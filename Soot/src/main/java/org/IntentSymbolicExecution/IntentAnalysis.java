@@ -174,7 +174,7 @@ public class IntentAnalysis {
 
         // Run all Soot transformations
         PackManager.v().runPacks();
-        PackManager.v().writeOutput();
+        //PackManager.v().writeOutput();
 
         return graphs;
     }
