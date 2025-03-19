@@ -189,7 +189,7 @@ public class CFGPathFinder {
                     String updatedSegment = segmentToReplace.replace(replaceRegex, replacementName);
 
                     // Update the full code line with the replaced segment.
-                    codeLine = codeLine.replaceAll(segmentToReplace, updatedSegment);
+                    codeLine = codeLine.replace(segmentToReplace, updatedSegment);
                 }
                 // Add the updated entry with the modified code line to the updated path.
                 updatedPath.add(new GraphNode(entry.getKey(), codeLine));
