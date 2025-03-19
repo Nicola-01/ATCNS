@@ -96,6 +96,7 @@ public class IntentAnalysis {
         for (Map.Entry<String, ExceptionalUnitGraph> entry : graphs.entrySet()) {
 
             String methodName = entry.getKey().substring(0, entry.getKey().lastIndexOf("-"));
+            String attributes = entry.getKey().substring(entry.getKey().lastIndexOf("-") + 1);
 
             String activityName = methodName.substring(0, methodName.lastIndexOf("."));
             String action = null;
@@ -107,7 +108,7 @@ public class IntentAnalysis {
             }
             if (action == null) continue;
 
-            FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), methodName, graphs, globalVariables);
+            FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), methodName, attributes, graphs, globalVariables);
             if (filteredControlFlowGraph.haveExtras()) {
                 System.out.println(methodName + "\n\n" + filteredControlFlowGraph);
 
