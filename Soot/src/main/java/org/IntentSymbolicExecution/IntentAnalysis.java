@@ -107,8 +107,7 @@ public class IntentAnalysis {
 
             FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), methodName, graphs, globalVariables);
             if (filteredControlFlowGraph.haveExtras()) {
-                System.out.println(methodName);
-                System.out.println(filteredControlFlowGraph);
+                System.out.println(methodName + "\n\n" + filteredControlFlowGraph);
 
                 String fileName = "paths/" + filteredControlFlowGraph.getCompleteMethod() + "_paths.dot";
                 CFGPathFinder pathFinder = new CFGPathFinder(filteredControlFlowGraph);

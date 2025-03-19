@@ -149,45 +149,40 @@ public class CFGPathFinder {
                 Matcher matcher = assignationPattern.matcher(codeLine);
                 if (matcher.find()) {
                     // Extract the variable name from the assignment.
-                    assignedVariable = matcher.group(1);
+                    assignedVariable = matcher.group("assignation");
 
-                    if (!assignedVariable.equals("null")) {
-                        // Update usage count for this variable.
-                        variableUsageCount.put(assignedVariable, variableUsageCount.getOrDefault(assignedVariable, 0) + 1);
+                    // Update usage count for this variable.
+                    variableUsageCount.put(assignedVariable, variableUsageCount.getOrDefault(assignedVariable, 0) + 1);
+                    // Create a new variable name by appending the current count.
+                    String newVariableName = assignedVariable + "_" + variableUsageCount.get(assignedVariable);
 
-                        // Process the left-hand side (portion before the "=")
-                        String leftSide = codeLine.substring(0, codeLine.indexOf("="));
-                        // Create a new variable name by appending the current count.
-                        String newVariableName = assignedVariable + "_" + variableUsageCount.get(assignedVariable);
-                        // Replace the old variable name with the new one in the left-hand side.
-                        String updatedLeftSide = leftSide.replace(assignedVariable, newVariableName);
+                    // Update the full code line with the modified left-hand side.
 
-                        // Update the full code line with the modified left-hand side.
-                        codeLine = codeLine.replace(leftSide, updatedLeftSide);
-                    }
+                    String replaceRegex = String.format("(?<!\\w)%s(?!\\d)", assignedVariable.replace("$","\\$"));
+                    newVariableName = newVariableName.replace("$","\\$");
+                    codeLine = codeLine.replaceFirst(replaceRegex, newVariableName);
                 }
 
                 // Process variable replacements in the rest of the line.
                 for (String var : variableUsageCount.keySet()) {
                     // By default, the replacement uses the current count.
                     String replacementName = String.format("%s_%d", var, variableUsageCount.get(var));
-                    String segmentToReplace = codeLine;
+//                    String segmentToReplace = codeLine;
 
                     if (var.equals(assignedVariable)) {
                         // For the right-hand side, use the previous count (if the assignment was processed)
                         replacementName = String.format("%s_%d", var, variableUsageCount.get(var) - 1)
                                 .replace('-', '_');
                         // Only consider the portion after the equal sign.
-                        segmentToReplace = codeLine.substring(codeLine.indexOf("="));
+//                        segmentToReplace = codeLine.substring(codeLine.indexOf("="));
                     }
+
                     // Replace occurrences of the variable in the designated segment.
-                    String updatedSegment = null;
-                    if (segmentToReplace.endsWith(var))
-                        updatedSegment = segmentToReplace.replace(var, replacementName);
-                    else
-                        updatedSegment = segmentToReplace.replace(var + " ", replacementName + " ");
+                    String replaceRegex = String.format("(?<!\\w)%s(?![\\d_])", var.replace("$","\\$"));
+                    replacementName = replacementName.replace("$","\\$");
+
                     // Update the full code line with the replaced segment.
-                    codeLine = codeLine.replace(segmentToReplace, updatedSegment);
+                    codeLine = codeLine.replaceAll(replaceRegex, replacementName);
                 }
                 // Add the updated entry with the modified code line to the updated path.
                 updatedPath.add(new GraphNode(entry.getKey(), codeLine));
@@ -321,9 +316,11 @@ public class CFGPathFinder {
             startParametersCount = parametersToTrack.size();
 
             startAdding = false;
+            boolean addNextNode = false;
 
             // Iterate through the units in the graph
-            for (GraphNode node : path) {
+            for (int i = 0; i < path.size(); i++) {
+                GraphNode node = path.get(i);
                 String nodeName = node.getKey();
                 String line = node.getValue();
 
@@ -343,27 +340,25 @@ public class CFGPathFinder {
                 if (!startAdding) continue;
 
                 // Check if any saved parameters are used in the current unit
-                if (parametersToTrack.stream().anyMatch(line::contains)) {
+                if (parametersToTrack.stream().anyMatch(line::contains) || addNextNode) {
                     filteredNodes.add(nodeName);
-//
-//                    // Start tracking the new parameter (that depends on a saved parameter)
-//                    String newParameterName = line.split(" = ")[0];
-//                    // Case: $r2 = staticinvoke <java.lang.String: java.lang.String valueOf(int)>(i0)
-//                    // It stores $r2 in parametersToTrack
-//                    if (newParameterName.split(" ").length == 1) {
-//                        parametersToTrack.add(newParameterName);
-//                        continue;
-//                    }
-//
-//                    String[] newParametersName = line.split("\\.<")[0].split(" ");
-//                    // Case: specialinvoke $r9.<java.math.BigInteger: void <init>(java.lang.String)>($r2)
-//                    // It stores $r9 in parametersToTrack
-//                    if (newParametersName.length == 2) {
-//                        newParameterName = newParametersName[1];
-//                        parametersToTrack.add(newParameterName);
-//                        continue;
-//                    }
+
+                    Matcher matcher = assignationPattern.matcher(line);
+                    if (matcher.find()) {
+                        String newParameterName = matcher.group("assignation");
+                        parametersToTrack.add(newParameterName);
+                    }
+
+                    String[] newParametersName = line.split("\\.<")[0].split(" ");
+                    // Case: specialinvoke $r9.<java.math.BigInteger: void <init>(java.lang.String)>($r2)
+                    // It stores $r9 in parametersToTrack
+                    if (newParametersName.length == 2) {
+                        String newParameterName = newParametersName[1];
+                        parametersToTrack.add(newParameterName);
+                    }
                 }
+
+                addNextNode = line.startsWith("if") && filteredNodes.contains(nodeName);
             }
         }
         // Continue the loop until no new parameters are tracked, meaning we have processed all relevant parameters.

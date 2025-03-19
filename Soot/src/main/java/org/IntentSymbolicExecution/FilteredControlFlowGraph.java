@@ -273,16 +273,16 @@ public class FilteredControlFlowGraph {
                     } else {
                         // Replace parameter names in the line if they were tracked.
                         for (Map.Entry<String, String> param : methodParameter) {
-                            if (line.endsWith(param.getKey()))
-                                line = line.replace(param.getKey(), param.getValue());
-                            else
-                                line = line.replace(param.getKey() + " ", param.getValue() + " ");
+                            String replaceRegex = String.format("(?<!\\w)%s(?!\\d)", param.getKey().replace("$","\\$"));
+                            String replacementName = param.getValue().replace("$","\\$");
+                            line = line.replaceAll(replaceRegex, replacementName);
                         }
                     }
 
                     // Replace return statements with assignation if applicable.
                     if (assignation != null && (line.startsWith("return ") || (line.startsWith("if") && line.contains("goto return"))))
-                        line = line.replace("return ", assignation + " = ");
+                        line = line.replace("return ", String.format("%s (return.%s) = ", assignation, assignation));
+//                        line = line.replace("return ", assignation + " (return.) = ");
 
                     newGraph.addNode(new GraphNode(methodNode.getKey(), line));
                 }
@@ -673,7 +673,8 @@ public class FilteredControlFlowGraph {
             String color = "";
             if (filteredCFG.containsKey(v.getKey()))
                 color = ", color=blue";
-            dotGraph.append(String.format("%s [label=\"%s\"%s];\n", nodeName, v.getValue().replace("\"", "\\\""), color));
+            String label = v.getValue().replace("\\", "\\\\").replace("\"", "\\\"");
+            dotGraph.append(String.format("%s [label=\"%s\"%s];\n", nodeName, label, color));
         }
 
         // Add edges between nodes.
