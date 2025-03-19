@@ -238,15 +238,8 @@ public class CFGPathFinder {
     public void generateDotFile(Map<String, String> filteredNodes, String fileName, String packageName, String activity, String action) {
         try (FileWriter writer = new FileWriter(fileName)) {
 
-            long startTime, endTime;
-            List<List<GraphNode>> allPaths;
 
-            System.out.println("  Start Old allPaths generation");
-            startTime = System.nanoTime(); // Start timing
-//            List<List<GraphNode>> allPaths = variableRenaming(getAllPaths());
-            allPaths = getAllPaths();
-            endTime = System.nanoTime(); // End timing
-            System.out.println("   Old Execution time: " + (endTime - startTime) + " ns");
+            List<List<GraphNode>> allPaths = variableRenaming(getAllPaths());
 
             writer.write(String.format("# package: %s\n", packageName));
             writer.write(String.format("# activity: %s\n", activity));
