@@ -258,7 +258,7 @@ public class CFGPathFinder {
             for (int pathIndex = 0; pathIndex < renamedAllPaths.size(); pathIndex++) {
 
                 List<GraphNode> path = renamedAllPaths.get(pathIndex);
-                List<String> nodeToHighlight = startFiltering(path);
+                List<String> nodeToHighlight = filteredNodes(path);
                 if (nodeToHighlight.isEmpty()) continue;
 
                 count++;
@@ -302,7 +302,7 @@ public class CFGPathFinder {
         }
     }
 
-    private List<String> startFiltering(List<GraphNode> path) {
+    private List<String> filteredNodes(List<GraphNode> path) {
         // Initialize a map to keep track of parameters that we need to monitor during the analysis.
         // The map's key represents the parameter's name, and the value represents its associated type.
 //        Map<String, String> parametersToTrack = new HashMap<>();
@@ -322,7 +322,6 @@ public class CFGPathFinder {
         do {
             startParametersCount = parametersToTrack.size();
 
-            startAdding = false;
             boolean addNextNode = false;
 
             // Iterate through the units in the graph
@@ -333,18 +332,12 @@ public class CFGPathFinder {
 
                 // Match lines containing getExtra methods in Intent or Bundle objects
                 Matcher extraMatcher = patternExtra.matcher(line);
-                if (extraMatcher.find()) {
-                    startAdding = true;
-                    filteredNodes.add(nodeName);
+                if (extraMatcher.find())
                     parametersToTrack.add(extraMatcher.group("assignation"));
-                }
 
                 Matcher actionMatcher = patterGetAction.matcher(line);
                 if (actionMatcher.find())
                     parametersToTrack.add(actionMatcher.group(1));
-
-                // Continue adding nodes and edges after the first relevant extra is found
-                if (!startAdding) continue;
 
                 // Check if any saved parameters are used in the current unit
                 if (parametersToTrack.stream().anyMatch(line::contains) || addNextNode) {

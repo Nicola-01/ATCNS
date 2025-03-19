@@ -362,8 +362,11 @@ public class FilteredControlFlowGraph {
 
                 // Check for getAction operations.
                 Matcher actionMatcher = patterGetAction.matcher(line);
-                if (actionMatcher.find())
+                if (actionMatcher.find()){
+                    startAdding = true;
+                    filteredNodes.put(nodeName, line);
                     parametersToTrack.add(actionMatcher.group(1));
+                }
 
                 // If we have not started adding nodes, continue to next node.
                 if (!startAdding) continue;
