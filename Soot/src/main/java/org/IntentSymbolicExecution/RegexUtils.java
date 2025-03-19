@@ -32,7 +32,7 @@ public class RegexUtils {
     private static final String methodCallRegex = "^(?:(?<assignation>\\$?\\w+)\\s*=\\s*)?(?<invoke>\\w+)\\s+((?<object>\\$?\\w+)\\.)?\\<(?<objectType>[^:]+):\\s*(?<returnedType>[^:]+)\\s+(?<method>\\w+)\\((?<argumentType>.*?)\\)\\>\\((?<argument>.*?)\\)$";
     public static final Pattern patternMethodCall = Pattern.compile(methodCallRegex);
 
-    private static final String assignationRegex = "^(?<assignation>[\\w\\$]+)\\s*(?<type>\\([\\w\\.]+\\))?\\s*=";
+    private static final String assignationRegex = "^(?<assignation>[\\w\\$]+)\\s*(?<type>\\([\\w\\.\\$]+\\))?\\s*=";
     public static final Pattern assignationPattern = Pattern.compile(assignationRegex);
 
     public static final String variableRenamingRegex = "(?<!\\w)%s(?![\\d_])";
