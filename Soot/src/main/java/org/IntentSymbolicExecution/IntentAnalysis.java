@@ -111,7 +111,7 @@ public class IntentAnalysis {
 
                 String fileName = "paths/" + filteredControlFlowGraph.getCompleteMethod() + "_paths.dot";
                 CFGPathFinder pathFinder = new CFGPathFinder(filteredControlFlowGraph);
-                pathFinder.generateDotFile(filteredControlFlowGraph.getFilteredCFG(), fileName, packageName, activityName, action);
+                pathFinder.generateDotFile(fileName, packageName, activityName, action);
             }
         }
     }
@@ -232,7 +232,7 @@ public class IntentAnalysis {
         SootClass declaringClass = field.getDeclaringClass();
         if (declaringClass.declaresMethodByName("<clinit>")) {
             SootMethod clinit = declaringClass.getMethodByName("<clinit>");
-            Body body = clinit.retrieveActiveBody(); 
+            Body body = clinit.retrieveActiveBody();
 
             // Look for statements assigning a value to this field
             for (Unit unit : body.getUnits()) {

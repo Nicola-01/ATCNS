@@ -151,20 +151,26 @@ public class CFGPathFinder {
                     // Extract the variable name from the assignment.
                     assignedVariable = matcher.group("assignation");
 
-                    // Update usage count for this variable.
-                    variableUsageCount.put(assignedVariable, variableUsageCount.getOrDefault(assignedVariable, 0) + 1);
-                    // Create a new variable name by appending the current count.
-                    String newVariableName = assignedVariable + "_" + variableUsageCount.get(assignedVariable);
+                    if (!assignedVariable.equals("null")) { // assignedVariable is "null" e.g. null (void) = method..
+                        // Update usage count for this variable.
+                        variableUsageCount.put(assignedVariable, variableUsageCount.getOrDefault(assignedVariable, 0) + 1);
+                        // Create a new variable name by appending the current count.
+                        String newVariableName = assignedVariable + "_" + variableUsageCount.get(assignedVariable);
 
-                    // Update the full code line with the modified left-hand side.
+                        // Update the full code line with the modified left-hand side.
 
-                    String replaceRegex = String.format(variableRenamingRegex, assignedVariable.replace("$","\\$"));
-                    newVariableName = newVariableName.replace("$","\\$");
-                    codeLine = codeLine.replaceFirst(replaceRegex, newVariableName);
+                        String replaceRegex = String.format(variableRenamingRegex, assignedVariable.replace("$", "\\$"));
+                        newVariableName = newVariableName.replace("$", "\\$");
+                        codeLine = codeLine.replaceFirst(replaceRegex, newVariableName);
+                    }
                 }
 
                 // Process variable replacements in the rest of the line.
                 for (String var : variableUsageCount.keySet()) {
+                    String segmentToReplace = codeLine;
+                    if (codeLine.contains(" goto "))
+                        segmentToReplace = codeLine.substring(0, codeLine.indexOf(" goto "));
+
                     // By default, the replacement uses the current count.
                     String replacementName = String.format("%s_%d", var, variableUsageCount.get(var));
 //                    String segmentToReplace = codeLine;
@@ -174,26 +180,18 @@ public class CFGPathFinder {
                         replacementName = String.format("%s_%d", var, variableUsageCount.get(var) - 1)
                                 .replace('-', '_');
                         // Only consider the portion after the equal sign.
-//                        segmentToReplace = codeLine.substring(codeLine.indexOf("="));
                     }
 
                     // Replace occurrences of the variable in the designated segment.
-                    String replaceRegex = String.format(variableRenamingRegex, var.replace("$","\\$"));
-                    replacementName = replacementName.replace("$","\\$");
+                    String replaceRegex = String.format(variableRenamingRegex, var.replace("$", "\\$"));
+                    replacementName = replacementName.replace("$", "\\$");
+
+                    String updatedSegment = segmentToReplace.replace(replaceRegex, replacementName);
 
                     // Update the full code line with the replaced segment.
-                    codeLine = codeLine.replaceAll(replaceRegex, replacementName);
+                    codeLine = codeLine.replaceAll(segmentToReplace, updatedSegment);
                 }
                 // Add the updated entry with the modified code line to the updated path.
-                if (!updatedPath.isEmpty()) {
-                    String preNodeValue = updatedPath.get(updatedPath.size() - 1).getValue();
-                    if (preNodeValue.contains(entry.getValue())) { // goto node
-                        preNodeValue = preNodeValue.replace(entry.getValue(), codeLine);
-                        updatedPath.remove(updatedPath.size() - 1);
-                        updatedPath.add(new GraphNode(entry.getKey(), preNodeValue));
-                    }
-
-                }
                 updatedPath.add(new GraphNode(entry.getKey(), codeLine));
             }
             // Add the fully updated path to the collection of updated paths.
@@ -239,11 +237,12 @@ public class CFGPathFinder {
         visitedInPath.remove(currentNode);
     }
 
-    public void generateDotFile(Map<String, String> filteredNodes, String fileName, String packageName, String activity, String action) {
+    public void generateDotFile(String fileName, String packageName, String activity, String action) {
         try (FileWriter writer = new FileWriter(fileName)) {
 
 
-            List<List<GraphNode>> allPaths = variableRenaming(getAllPaths());
+            List<List<GraphNode>> allPaths = getAllPaths();
+            List<List<GraphNode>> renamedAllPaths = variableRenaming(allPaths);
 
             writer.write(String.format("# package: %s\n", packageName));
             writer.write(String.format("# activity: %s\n", activity));
@@ -251,24 +250,22 @@ public class CFGPathFinder {
 
             int pathNumber = 1;
             writer.write(String.format("digraph paths {\n"));
-            System.out.println("         " + allPaths.size());
+            System.out.println("         " + renamedAllPaths.size());
             StringBuilder sb = new StringBuilder();
 
             int count = 0;
 
-            for (List<GraphNode> path : allPaths) {
+            for (int pathIndex = 0; pathIndex < renamedAllPaths.size(); pathIndex++) {
 
-                int nodeNumber = 1;
-                GraphNode prevNode = null;
-
+                List<GraphNode> path = renamedAllPaths.get(pathIndex);
                 List<String> nodeToHighlight = startFiltering(path);
-
                 if (nodeToHighlight.isEmpty()) continue;
 
                 count++;
                 sb.append(String.format("subgraph path_%d {\n", pathNumber));
-                for (GraphNode node : path) {
-                    String nodeName = "node" + nodeNumber + "_" + pathNumber;
+                for (int nodeNumber = 0; nodeNumber < path.size(); nodeNumber++) {
+                    GraphNode node = path.get(nodeNumber);
+                    String nodeName = "node" + (nodeNumber + 1) + "_" + pathNumber;
                     String nodeLabel = node.getValue().replace("\"", "\\\"");
 
                     if (nodeToHighlight.contains(node.getKey()))
@@ -276,20 +273,21 @@ public class CFGPathFinder {
                     else
                         sb.append(String.format("    %s [label=\"%s\"];\n", nodeName, nodeLabel));
 
-                    if (prevNode != null) {
-                        String prevNodeName = "node" + (nodeNumber - 1) + "_" + pathNumber;
+                    if (nodeNumber > 0) {
+
+                        String originalPrevNodeLabel = allPaths.get(pathIndex).get(nodeNumber - 1).getValue();
+                        String originalLabel = allPaths.get(pathIndex).get(nodeNumber).getValue();
+
+                        String prevNodeName = "node" + (nodeNumber) + "_" + pathNumber;
 
                         String ifLabel = "";
-                        if (prevNode.getValue().startsWith("if") && prevNode.getValue().contains(" goto ")) {
-                            String ifTrueNode = prevNode.getValue().split(" goto ")[1];
-                            ifLabel = String.format(" [label=\"%s\"]", ifTrueNode.equals(nodeLabel));
+                        if (originalPrevNodeLabel.startsWith("if") && originalPrevNodeLabel.contains(" goto ")) {
+                            String ifTrueNode = originalPrevNodeLabel.split(" goto ")[1];
+                            ifLabel = String.format(" [label=\"%s\"]", ifTrueNode.equals(originalLabel));
                         }
 
                         sb.append(String.format("    %s -> %s%s;\n", prevNodeName, nodeName, ifLabel));
                     }
-
-                    prevNode = node;
-                    nodeNumber++;
                 }
 
                 sb.append("}\n\n"); // Close the current subgraph
