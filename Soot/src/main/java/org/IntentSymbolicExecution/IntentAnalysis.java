@@ -1,10 +1,13 @@
 package org.IntentSymbolicExecution;
 
+import org.apache.commons.io.FileUtils;
 import soot.*;
 import soot.jimple.AssignStmt;
 import soot.jimple.DoubleConstant;
 import soot.jimple.FloatConstant;
 import soot.jimple.IntConstant;
+import soot.jimple.InvokeExpr;
+import soot.jimple.InvokeStmt;
 import soot.jimple.LongConstant;
 import soot.jimple.StaticFieldRef;
 import soot.jimple.StringConstant;
@@ -13,9 +16,12 @@ import soot.tagkit.ConstantValueTag;
 import soot.tagkit.Tag;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+
+import org.IntentSymbolicExecution.ControlFlowGraph.GraphNode;
 
 /**
  * This class performs static analysis on an APK file to
@@ -102,16 +108,19 @@ public class IntentAnalysis {
             if (action == null) continue;
 
             FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), methodName, graphs, globalVariables);
-            filteredControlFlowGraph = filteredControlFlowGraph.switchResolver();
+            if (filteredControlFlowGraph.haveExtras()) {
+                System.out.println(methodName + "\n\n" + filteredControlFlowGraph);
 
-            if (filteredControlFlowGraph != null) {
                 String fileName = "paths/" + filteredControlFlowGraph.getCompleteMethod() + "_paths.dot";
                 CFGPathFinder pathFinder = new CFGPathFinder(filteredControlFlowGraph);
-                List<List<Map.Entry<String, String>>> allPaths = pathFinder.getAllPaths();
-                //printAllPaths(allPaths);
-
-                pathFinder.generateDotFile(allPaths, fileName, packageName, activityName, action);
+                pathFinder.generateDotFile(fileName, packageName, activityName, action);
             }
+        }
+
+        try {
+            FileUtils.deleteDirectory(new File("sootOutput"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -133,6 +142,7 @@ public class IntentAnalysis {
 
         // Enable Dexpler for analyzing DEX files
         Options.v().set_src_prec(Options.src_prec_apk);
+        Options.v().set_output_format(Options.output_format_jimple);
     }
 
     /**
@@ -172,6 +182,7 @@ public class IntentAnalysis {
 
         // Run all Soot transformations
         PackManager.v().runPacks();
+        PackManager.v().writeOutput();
 
         return graphs;
     }

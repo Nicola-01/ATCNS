@@ -1,27 +1,26 @@
-Package: com.example.morecomplexapp
-Activity: com.example.morecomplexapp.ExportedActivity
-Action: 
+Package: org.smerty.zooborns
+Activity: org.smerty.zooborns.FullscreenImage
+Action: android.intent.action.VIEW
 
-param2 (integer) : 43 | param1 (string) : "value1"
-param2 (integer) : 101 | param1 (string) : "value1"
-param2 (integer) : 201 | param1 (string) : "value1"
-param2 (integer) : [no lim] | param1 (string) : "value1"
-param2 (integer) : 43 | param1 (string) : "value2"
-param2 (integer) : 101 | param1 (string) : "value2"
-param2 (integer) : 201 | param1 (string) : "value2"
-param2 (integer) : [no lim] | param1 (string) : "value2"
-param2 (integer) : 43 | param1 (string) : "value2"
-param2 (integer) : 43 | param1 (string) : "value3"
-param2 (integer) : 101 | param1 (string) : "value3"
-param2 (integer) : 201 | param1 (string) : "value3"
-param2 (integer) : [no lim] | param1 (string) : "value3"
-param2 (integer) : 43 | param1 (string) : "value3"
-param2 (integer) : 101 | param1 (string) : "value3"
-param2 (integer) : 43 | param1 (string) : ""
-param2 (integer) : 101 | param1 (string) : ""
-param2 (integer) : 201 | param1 (string) : ""
-param2 (integer) : [no lim] | param1 (string) : ""
-param2 (integer) : 43 | param1 (string) : ""
-param2 (integer) : 101 | param1 (string) : ""
-param2 (integer) : 201 | param1 (string) : ""
-param2 (integer) : [no lim] | param1 (string) : ""
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
