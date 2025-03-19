@@ -186,10 +186,10 @@ public class CFGPathFinder {
                     String replaceRegex = String.format(variableRenamingRegex, var.replace("$", "\\$"));
                     replacementName = replacementName.replace("$", "\\$");
 
-                    String updatedSegment = segmentToReplace.replace(replaceRegex, replacementName);
+                    String updatedSegment = segmentToReplace.replaceAll(replaceRegex, Matcher.quoteReplacement(replacementName));
 
                     // Update the full code line with the replaced segment.
-                    codeLine = codeLine.replace(segmentToReplace, updatedSegment);
+                    codeLine = codeLine.replace(segmentToReplace, updatedSegment).replace("\\$", "$");
                 }
                 // Add the updated entry with the modified code line to the updated path.
                 updatedPath.add(new GraphNode(entry.getKey(), codeLine));
