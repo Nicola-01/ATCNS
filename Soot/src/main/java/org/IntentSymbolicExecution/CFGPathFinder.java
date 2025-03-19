@@ -151,7 +151,7 @@ public class CFGPathFinder {
                     // Extract the variable name from the assignment.
                     assignedVariable = matcher.group("assignation");
 
-                    if (!assignedVariable.equals("null")) { // assignedVariable is "null" e.g. null (void) = method..
+                    if (!assignedVariable.equals("null")) { // assignedVariable is "null" e.g. null (void) = method...
                         // Update usage count for this variable.
                         variableUsageCount.put(assignedVariable, variableUsageCount.getOrDefault(assignedVariable, 0) + 1);
                         // Create a new variable name by appending the current count.
@@ -266,7 +266,7 @@ public class CFGPathFinder {
                 for (int nodeNumber = 0; nodeNumber < path.size(); nodeNumber++) {
                     GraphNode node = path.get(nodeNumber);
                     String nodeName = "node" + (nodeNumber + 1) + "_" + pathNumber;
-                    String nodeLabel = node.getValue().replace("\"", "\\\"");
+                    String nodeLabel = node.getValue().replace("\\", "\\\\").replace("\"", "\\\"");
 
                     if (nodeToHighlight.contains(node.getKey()))
                         sb.append(String.format("    %s [label=\"%s\", color=blue];\n", nodeName, nodeLabel));

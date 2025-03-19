@@ -1,5 +1,6 @@
 package org.IntentSymbolicExecution;
 
+import org.apache.commons.io.FileUtils;
 import soot.*;
 import soot.jimple.AssignStmt;
 import soot.jimple.DoubleConstant;
@@ -15,6 +16,7 @@ import soot.tagkit.ConstantValueTag;
 import soot.tagkit.Tag;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -114,6 +116,12 @@ public class IntentAnalysis {
                 pathFinder.generateDotFile(fileName, packageName, activityName, action);
             }
         }
+
+        try {
+            FileUtils.deleteDirectory(new File("sootOutput"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -174,7 +182,7 @@ public class IntentAnalysis {
 
         // Run all Soot transformations
         PackManager.v().runPacks();
-        //PackManager.v().writeOutput();
+        PackManager.v().writeOutput();
 
         return graphs;
     }
