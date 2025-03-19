@@ -273,7 +273,7 @@ public class FilteredControlFlowGraph {
                     } else {
                         // Replace parameter names in the line if they were tracked.
                         for (Map.Entry<String, String> param : methodParameter) {
-                            String replaceRegex = String.format("(?<!\\w)%s(?!\\d)", param.getKey().replace("$","\\$"));
+                            String replaceRegex = String.format(variableRenamingRegex, param.getKey().replace("$","\\$"));
                             String replacementName = param.getValue().replace("$","\\$");
                             line = line.replaceAll(replaceRegex, replacementName);
                         }

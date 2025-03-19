@@ -158,7 +158,7 @@ public class CFGPathFinder {
 
                     // Update the full code line with the modified left-hand side.
 
-                    String replaceRegex = String.format("(?<!\\w)%s(?!\\d)", assignedVariable.replace("$","\\$"));
+                    String replaceRegex = String.format(variableRenamingRegex, assignedVariable.replace("$","\\$"));
                     newVariableName = newVariableName.replace("$","\\$");
                     codeLine = codeLine.replaceFirst(replaceRegex, newVariableName);
                 }
@@ -178,13 +178,22 @@ public class CFGPathFinder {
                     }
 
                     // Replace occurrences of the variable in the designated segment.
-                    String replaceRegex = String.format("(?<!\\w)%s(?![\\d_])", var.replace("$","\\$"));
+                    String replaceRegex = String.format(variableRenamingRegex, var.replace("$","\\$"));
                     replacementName = replacementName.replace("$","\\$");
 
                     // Update the full code line with the replaced segment.
                     codeLine = codeLine.replaceAll(replaceRegex, replacementName);
                 }
                 // Add the updated entry with the modified code line to the updated path.
+                if (!updatedPath.isEmpty()) {
+                    String preNodeValue = updatedPath.get(updatedPath.size() - 1).getValue();
+                    if (preNodeValue.contains(entry.getValue())) { // goto node
+                        preNodeValue = preNodeValue.replace(entry.getValue(), codeLine);
+                        updatedPath.remove(updatedPath.size() - 1);
+                        updatedPath.add(new GraphNode(entry.getKey(), preNodeValue));
+                    }
+
+                }
                 updatedPath.add(new GraphNode(entry.getKey(), codeLine));
             }
             // Add the fully updated path to the collection of updated paths.

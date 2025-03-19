@@ -35,6 +35,8 @@ public class RegexUtils {
     private static final String assignationRegex = "^(?<assignation>[\\w\\$]+)\\s*(?<type>\\([\\w\\.]+\\))?\\s*=";
     public static final Pattern assignationPattern = Pattern.compile(assignationRegex);
 
+    public static final String variableRenamingRegex = "(?<!\\w)%s(?![\\d_])";
+
     public static final Pattern casePattern = Pattern.compile("(?<switchCase>(?<case>case (?<value>.*?)|default): (?<goto>.*?(?<equals>\\\".*?\\\")?));");
 
     private static final String globalVariablesRegex = "^(?<variable>\\S+)\\s*=\\s*<(?<package>[^:>]+):\\s+(?<type>\\S+)\\s+(?<varname>[^>]+)>$";
