@@ -1,0 +1,22 @@
+public final class org.smerty.zooborns.R$layout extends java.lang.Object
+{
+    public static final int main;
+
+    public void <init>()
+    {
+        org.smerty.zooborns.R$layout r0;
+
+        r0 := @this: org.smerty.zooborns.R$layout;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public static void <clinit>()
+    {
+        <org.smerty.zooborns.R$layout: int main> = 2130903040;
+
+        return;
+    }
+}

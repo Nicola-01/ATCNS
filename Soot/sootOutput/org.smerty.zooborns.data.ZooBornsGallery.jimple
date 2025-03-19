@@ -1,0 +1,304 @@
+public class org.smerty.zooborns.data.ZooBornsGallery extends java.lang.Object implements java.io.Serializable
+{
+    private static final java.lang.String TAG;
+    private static final long serialVersionUID;
+    private java.util.ArrayList entries;
+    private java.lang.String etag;
+
+    static void <clinit>()
+    {
+        java.lang.Class $r1;
+        java.lang.String $r0;
+
+        <org.smerty.zooborns.data.ZooBornsGallery: long serialVersionUID> = 1L;
+
+        $r1 = class "Lorg/smerty/zooborns/data/ZooBornsGallery;";
+
+        $r0 = virtualinvoke $r1.<java.lang.Class: java.lang.String getName()>();
+
+        <org.smerty.zooborns.data.ZooBornsGallery: java.lang.String TAG> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.smerty.zooborns.data.ZooBornsGallery r0;
+        java.util.ArrayList $r1;
+
+        r0 := @this: org.smerty.zooborns.data.ZooBornsGallery;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        $r1 = new java.util.ArrayList;
+
+        specialinvoke $r1.<java.util.ArrayList: void <init>()>();
+
+        r0.<org.smerty.zooborns.data.ZooBornsGallery: java.util.ArrayList entries> = $r1;
+
+        return;
+    }
+
+    public final boolean addEntry(org.smerty.zooborns.data.ZooBornsEntry)
+    {
+        org.smerty.zooborns.data.ZooBornsGallery r0;
+        org.smerty.zooborns.data.ZooBornsEntry $r1;
+        boolean $z0;
+        java.util.ArrayList $r2;
+
+        r0 := @this: org.smerty.zooborns.data.ZooBornsGallery;
+
+        $r1 := @parameter0: org.smerty.zooborns.data.ZooBornsEntry;
+
+        $r2 = r0.<org.smerty.zooborns.data.ZooBornsGallery: java.util.ArrayList entries>;
+
+        $z0 = virtualinvoke $r2.<java.util.ArrayList: boolean add(java.lang.Object)>($r1);
+
+        return $z0;
+    }
+
+    public final org.smerty.zooborns.data.ZooBornsEntry get(int)
+    {
+        org.smerty.zooborns.data.ZooBornsGallery r0;
+        int $i0;
+        java.lang.Object $r1;
+        org.smerty.zooborns.data.ZooBornsEntry $r3;
+        java.util.ArrayList $r2;
+
+        r0 := @this: org.smerty.zooborns.data.ZooBornsGallery;
+
+        $i0 := @parameter0: int;
+
+        $r2 = r0.<org.smerty.zooborns.data.ZooBornsGallery: java.util.ArrayList entries>;
+
+        $r1 = virtualinvoke $r2.<java.util.ArrayList: java.lang.Object get(int)>($i0);
+
+        $r3 = (org.smerty.zooborns.data.ZooBornsEntry) $r1;
+
+        return $r3;
+    }
+
+    public final java.util.ArrayList getEntries()
+    {
+        org.smerty.zooborns.data.ZooBornsGallery r0;
+        java.util.ArrayList r1;
+
+        r0 := @this: org.smerty.zooborns.data.ZooBornsGallery;
+
+        r1 = r0.<org.smerty.zooborns.data.ZooBornsGallery: java.util.ArrayList entries>;
+
+        return r1;
+    }
+
+    public final java.lang.String getEtag()
+    {
+        java.lang.String r1;
+        org.smerty.zooborns.data.ZooBornsGallery r0;
+
+        r0 := @this: org.smerty.zooborns.data.ZooBornsGallery;
+
+        r1 = r0.<org.smerty.zooborns.data.ZooBornsGallery: java.lang.String etag>;
+
+        return r1;
+    }
+
+    public final boolean update(java.lang.String) throws java.lang.Exception
+    {
+        org.smerty.zooborns.data.ZooBornsGallery r0;
+        org.smerty.zooborns.data.ZooBornsEntry r3;
+        java.util.ArrayList $r20;
+        short $s2;
+        java.util.regex.Matcher $r18;
+        org.w3c.dom.Document $r6;
+        org.w3c.dom.Node $r8;
+        int i0, $i1;
+        java.lang.String $r1, $r12, $r13, $r14, $r16;
+        boolean $z0;
+        org.w3c.dom.NodeList $r7, $r10;
+        org.smerty.zooborns.data.ZooBornsPhoto $r19;
+        org.smerty.zooborns.feed.FeedFetcher r2;
+        org.w3c.dom.Element r9, r11;
+        java.lang.StringBuilder $r15;
+        java.util.regex.Pattern $r17;
+        org.smerty.zooborns.feed.UpdateStatus $r4, $r5;
+
+        r0 := @this: org.smerty.zooborns.data.ZooBornsGallery;
+
+        $r1 := @parameter0: java.lang.String;
+
+        r2 = new org.smerty.zooborns.feed.FeedFetcher;
+
+        specialinvoke r2.<org.smerty.zooborns.feed.FeedFetcher: void <init>()>();
+
+        $r4 = virtualinvoke r2.<org.smerty.zooborns.feed.FeedFetcher: org.smerty.zooborns.feed.UpdateStatus pull(java.lang.String)>($r1);
+
+        $r5 = <org.smerty.zooborns.feed.UpdateStatus: org.smerty.zooborns.feed.UpdateStatus NOT_MODIFIED>;
+
+        if $r4 != $r5 goto label1;
+
+        return 1;
+
+     label1:
+        $r1 = virtualinvoke r2.<org.smerty.zooborns.feed.FeedFetcher: java.lang.String getEtag()>();
+
+        r0.<org.smerty.zooborns.data.ZooBornsGallery: java.lang.String etag> = $r1;
+
+        $r6 = virtualinvoke r2.<org.smerty.zooborns.feed.FeedFetcher: org.w3c.dom.Document getDoc()>();
+
+        if $r6 != null goto label2;
+
+        $r1 = <org.smerty.zooborns.data.ZooBornsGallery: java.lang.String TAG>;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r1, "update doc was null");
+
+        return 0;
+
+     label2:
+        $r7 = interfaceinvoke $r6.<org.w3c.dom.Document: org.w3c.dom.NodeList getElementsByTagName(java.lang.String)>("entry");
+
+        i0 = 0;
+
+     label3:
+        $i1 = interfaceinvoke $r7.<org.w3c.dom.NodeList: int getLength()>();
+
+        if i0 >= $i1 goto label7;
+
+        $r8 = interfaceinvoke $r7.<org.w3c.dom.NodeList: org.w3c.dom.Node item(int)>(i0);
+
+        $s2 = interfaceinvoke $r8.<org.w3c.dom.Node: short getNodeType()>();
+
+        if $s2 != 1 goto label6;
+
+        r9 = (org.w3c.dom.Element) $r8;
+
+        $r10 = interfaceinvoke r9.<org.w3c.dom.Element: org.w3c.dom.NodeList getElementsByTagName(java.lang.String)>("title");
+
+        $r8 = interfaceinvoke $r10.<org.w3c.dom.NodeList: org.w3c.dom.Node item(int)>(0);
+
+        r11 = (org.w3c.dom.Element) $r8;
+
+        $r10 = interfaceinvoke r11.<org.w3c.dom.Element: org.w3c.dom.NodeList getChildNodes()>();
+
+        $r8 = interfaceinvoke $r10.<org.w3c.dom.NodeList: org.w3c.dom.Node item(int)>(0);
+
+        $r1 = interfaceinvoke $r8.<org.w3c.dom.Node: java.lang.String getNodeValue()>();
+
+        $r10 = interfaceinvoke r9.<org.w3c.dom.Element: org.w3c.dom.NodeList getElementsByTagName(java.lang.String)>("feedburner:origLink");
+
+        $r8 = interfaceinvoke $r10.<org.w3c.dom.NodeList: org.w3c.dom.Node item(int)>(0);
+
+        r11 = (org.w3c.dom.Element) $r8;
+
+        $r10 = interfaceinvoke r11.<org.w3c.dom.Element: org.w3c.dom.NodeList getChildNodes()>();
+
+        $r8 = interfaceinvoke $r10.<org.w3c.dom.NodeList: org.w3c.dom.Node item(int)>(0);
+
+        $r12 = interfaceinvoke $r8.<org.w3c.dom.Node: java.lang.String getNodeValue()>();
+
+        $r10 = interfaceinvoke r9.<org.w3c.dom.Element: org.w3c.dom.NodeList getElementsByTagName(java.lang.String)>("content");
+
+        $r8 = interfaceinvoke $r10.<org.w3c.dom.NodeList: org.w3c.dom.Node item(int)>(0);
+
+        r11 = (org.w3c.dom.Element) $r8;
+
+        $r10 = interfaceinvoke r11.<org.w3c.dom.Element: org.w3c.dom.NodeList getChildNodes()>();
+
+        $r8 = interfaceinvoke $r10.<org.w3c.dom.NodeList: org.w3c.dom.Node item(int)>(0);
+
+        $r13 = interfaceinvoke $r8.<org.w3c.dom.Node: java.lang.String getNodeValue()>();
+
+        if $r1 == null goto label6;
+
+        $i1 = virtualinvoke $r1.<java.lang.String: int length()>();
+
+        if $i1 <= 0 goto label6;
+
+        $r14 = <org.smerty.zooborns.data.ZooBornsGallery: java.lang.String TAG>;
+
+        $r15 = new java.lang.StringBuilder;
+
+        specialinvoke $r15.<java.lang.StringBuilder: void <init>()>();
+
+        $r15 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("Entry Title : ");
+
+        $r15 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r1);
+
+        $r16 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r14, $r16);
+
+        r3 = new org.smerty.zooborns.data.ZooBornsEntry;
+
+        specialinvoke r3.<org.smerty.zooborns.data.ZooBornsEntry: void <init>(java.lang.String,java.lang.String,java.lang.String)>($r12, $r1, $r13);
+
+        $r10 = interfaceinvoke r9.<org.w3c.dom.Element: org.w3c.dom.NodeList getElementsByTagName(java.lang.String)>("content");
+
+        $r1 = <org.smerty.zooborns.data.ZooBornsGallery: java.lang.String TAG>;
+
+        $r15 = new java.lang.StringBuilder;
+
+        specialinvoke $r15.<java.lang.StringBuilder: void <init>()>();
+
+        $r15 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("content tag count : ");
+
+        $i1 = interfaceinvoke $r10.<org.w3c.dom.NodeList: int getLength()>();
+
+        $r15 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i1);
+
+        $r12 = virtualinvoke $r15.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r1, $r12);
+
+        $i1 = interfaceinvoke $r10.<org.w3c.dom.NodeList: int getLength()>();
+
+        if $i1 != 1 goto label5;
+
+        $r8 = interfaceinvoke $r10.<org.w3c.dom.NodeList: org.w3c.dom.Node item(int)>(0);
+
+        $r10 = interfaceinvoke $r8.<org.w3c.dom.Node: org.w3c.dom.NodeList getChildNodes()>();
+
+        $r8 = interfaceinvoke $r10.<org.w3c.dom.NodeList: org.w3c.dom.Node item(int)>(0);
+
+        $r1 = interfaceinvoke $r8.<org.w3c.dom.Node: java.lang.String getNodeValue()>();
+
+        $r17 = staticinvoke <java.util.regex.Pattern: java.util.regex.Pattern compile(java.lang.String,int)>("<img[^>]*src=\"([^\"]*)", 2);
+
+        $r18 = virtualinvoke $r17.<java.util.regex.Pattern: java.util.regex.Matcher matcher(java.lang.CharSequence)>($r1);
+
+     label4:
+        $z0 = virtualinvoke $r18.<java.util.regex.Matcher: boolean find()>();
+
+        if $z0 == 0 goto label5;
+
+        $r1 = virtualinvoke $r18.<java.util.regex.Matcher: java.lang.String group(int)>(1);
+
+        $z0 = virtualinvoke $r1.<java.lang.String: boolean contains(java.lang.CharSequence)>("http://feeds.feedburner.com");
+
+        if $z0 != 0 goto label4;
+
+        $r19 = new org.smerty.zooborns.data.ZooBornsPhoto;
+
+        specialinvoke $r19.<org.smerty.zooborns.data.ZooBornsPhoto: void <init>(java.lang.String)>($r1);
+
+        virtualinvoke r3.<org.smerty.zooborns.data.ZooBornsEntry: void addPhoto(org.smerty.zooborns.data.ZooBornsPhoto)>($r19);
+
+        goto label4;
+
+     label5:
+        $r20 = virtualinvoke r3.<org.smerty.zooborns.data.ZooBornsEntry: java.util.ArrayList getPhotos()>();
+
+        $i1 = virtualinvoke $r20.<java.util.ArrayList: int size()>();
+
+        if $i1 <= 0 goto label6;
+
+        virtualinvoke r0.<org.smerty.zooborns.data.ZooBornsGallery: boolean addEntry(org.smerty.zooborns.data.ZooBornsEntry)>(r3);
+
+     label6:
+        i0 = i0 + 1;
+
+        goto label3;
+
+     label7:
+        return 1;
+    }
+}

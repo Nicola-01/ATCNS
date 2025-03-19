@@ -1,0 +1,14 @@
+public final class org.smerty.zooborns.R extends java.lang.Object
+{
+
+    public void <init>()
+    {
+        org.smerty.zooborns.R r0;
+
+        r0 := @this: org.smerty.zooborns.R;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

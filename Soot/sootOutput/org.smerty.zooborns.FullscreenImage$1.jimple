@@ -1,0 +1,51 @@
+class org.smerty.zooborns.FullscreenImage$1 extends java.lang.Object implements android.content.DialogInterface$OnClickListener
+{
+    final org.smerty.zooborns.FullscreenImage this$0;
+    final org.smerty.zooborns.data.ZooBornsEntry val$entry;
+
+    void <init>(org.smerty.zooborns.FullscreenImage, org.smerty.zooborns.data.ZooBornsEntry)
+    {
+        org.smerty.zooborns.FullscreenImage$1 r0;
+        org.smerty.zooborns.data.ZooBornsEntry $r2;
+        org.smerty.zooborns.FullscreenImage $r1;
+
+        r0 := @this: org.smerty.zooborns.FullscreenImage$1;
+
+        $r1 := @parameter0: org.smerty.zooborns.FullscreenImage;
+
+        $r2 := @parameter1: org.smerty.zooborns.data.ZooBornsEntry;
+
+        r0.<org.smerty.zooborns.FullscreenImage$1: org.smerty.zooborns.FullscreenImage this$0> = $r1;
+
+        r0.<org.smerty.zooborns.FullscreenImage$1: org.smerty.zooborns.data.ZooBornsEntry val$entry> = $r2;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onClick(android.content.DialogInterface, int)
+    {
+        org.smerty.zooborns.FullscreenImage$1 r0;
+        org.smerty.zooborns.FullscreenImage $r2;
+        int $i0;
+        org.smerty.zooborns.data.ZooBornsEntry $r3;
+        android.content.DialogInterface $r1;
+
+        r0 := @this: org.smerty.zooborns.FullscreenImage$1;
+
+        $r1 := @parameter0: android.content.DialogInterface;
+
+        $i0 := @parameter1: int;
+
+        interfaceinvoke $r1.<android.content.DialogInterface: void dismiss()>();
+
+        $r2 = r0.<org.smerty.zooborns.FullscreenImage$1: org.smerty.zooborns.FullscreenImage this$0>;
+
+        $r3 = r0.<org.smerty.zooborns.FullscreenImage$1: org.smerty.zooborns.data.ZooBornsEntry val$entry>;
+
+        virtualinvoke $r2.<org.smerty.zooborns.FullscreenImage: void share(org.smerty.zooborns.data.ZooBornsEntry,int)>($r3, $i0);
+
+        return;
+    }
+}

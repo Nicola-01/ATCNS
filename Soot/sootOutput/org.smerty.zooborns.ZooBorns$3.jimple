@@ -1,0 +1,37 @@
+class org.smerty.zooborns.ZooBorns$3 extends java.lang.Object implements android.content.DialogInterface$OnClickListener
+{
+    final org.smerty.zooborns.ZooBorns this$0;
+
+    void <init>(org.smerty.zooborns.ZooBorns)
+    {
+        org.smerty.zooborns.ZooBorns$3 r0;
+        org.smerty.zooborns.ZooBorns $r1;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns$3;
+
+        $r1 := @parameter0: org.smerty.zooborns.ZooBorns;
+
+        r0.<org.smerty.zooborns.ZooBorns$3: org.smerty.zooborns.ZooBorns this$0> = $r1;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+
+    public void onClick(android.content.DialogInterface, int)
+    {
+        org.smerty.zooborns.ZooBorns$3 r0;
+        int $i0;
+        android.content.DialogInterface $r1;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns$3;
+
+        $r1 := @parameter0: android.content.DialogInterface;
+
+        $i0 := @parameter1: int;
+
+        interfaceinvoke $r1.<android.content.DialogInterface: void cancel()>();
+
+        return;
+    }
+}

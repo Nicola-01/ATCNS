@@ -1,0 +1,596 @@
+public class org.smerty.zooborns.ZooBorns extends android.app.Activity
+{
+    private static final int LARGE_WIDTH;
+    private static final int MEDIUM_WIDTH;
+    public static final int MENU_CLEAR;
+    public static final int MENU_QUIT;
+    public static final int MENU_REFRESH;
+    public static final int MENU_SETTINGS;
+    private static final int SMALL_WIDTH;
+    private static final java.lang.String TAG;
+    private static final int TINY_WIDTH;
+    public int columnWidth;
+    public android.widget.GridView gridview;
+    public org.smerty.zooborns.ImageAdapter imgAdapter;
+    public org.smerty.cache.ImageCache imgCache;
+    public android.app.ProgressDialog progressDialog;
+    private android.content.SharedPreferences settings;
+    private android.os.AsyncTask updatetask;
+    public org.smerty.zooborns.data.ZooBornsGallery zGallery;
+
+    static void <clinit>()
+    {
+        java.lang.Class $r1;
+        java.lang.String $r0;
+
+        <org.smerty.zooborns.ZooBorns: int TINY_WIDTH> = 48;
+
+        <org.smerty.zooborns.ZooBorns: int SMALL_WIDTH> = 64;
+
+        <org.smerty.zooborns.ZooBorns: int MENU_SETTINGS> = 13;
+
+        <org.smerty.zooborns.ZooBorns: int MENU_REFRESH> = 11;
+
+        <org.smerty.zooborns.ZooBorns: int MENU_QUIT> = 10;
+
+        <org.smerty.zooborns.ZooBorns: int MENU_CLEAR> = 12;
+
+        <org.smerty.zooborns.ZooBorns: int MEDIUM_WIDTH> = 96;
+
+        <org.smerty.zooborns.ZooBorns: int LARGE_WIDTH> = 128;
+
+        $r1 = class "Lorg/smerty/zooborns/ZooBorns;";
+
+        $r0 = virtualinvoke $r1.<java.lang.Class: java.lang.String getName()>();
+
+        <org.smerty.zooborns.ZooBorns: java.lang.String TAG> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.smerty.zooborns.ZooBorns r0;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns;
+
+        specialinvoke r0.<android.app.Activity: void <init>()>();
+
+        r0.<org.smerty.zooborns.ZooBorns: int columnWidth> = 128;
+
+        return;
+    }
+
+    static java.lang.String access$000()
+    {
+        java.lang.String r0;
+
+        r0 = <org.smerty.zooborns.ZooBorns: java.lang.String TAG>;
+
+        return r0;
+    }
+
+    static android.content.SharedPreferences access$200(org.smerty.zooborns.ZooBorns)
+    {
+        org.smerty.zooborns.ZooBorns $r0;
+        android.content.SharedPreferences r1;
+
+        $r0 := @parameter0: org.smerty.zooborns.ZooBorns;
+
+        r1 = $r0.<org.smerty.zooborns.ZooBorns: android.content.SharedPreferences settings>;
+
+        return r1;
+    }
+
+    public void onConfigurationChanged(android.content.res.Configuration)
+    {
+        org.smerty.zooborns.ZooBorns r0;
+        android.widget.GridView $r2;
+        android.content.res.Configuration $r1;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns;
+
+        $r1 := @parameter0: android.content.res.Configuration;
+
+        specialinvoke r0.<android.app.Activity: void onConfigurationChanged(android.content.res.Configuration)>($r1);
+
+        $r2 = r0.<org.smerty.zooborns.ZooBorns: android.widget.GridView gridview>;
+
+        if $r2 == null goto label1;
+
+        $r2 = r0.<org.smerty.zooborns.ZooBorns: android.widget.GridView gridview>;
+
+        virtualinvoke r0.<org.smerty.zooborns.ZooBorns: void setContentView(android.view.View)>($r2);
+
+     label1:
+        return;
+    }
+
+    public void onCreate(android.os.Bundle)
+    {
+        android.content.Context $r3;
+        org.smerty.zooborns.ZooBorns r0;
+        android.os.Bundle $r1;
+        android.widget.GridView $r6;
+        org.smerty.zooborns.ZooBorns$1 $r13;
+        org.smerty.zooborns.ImageAdapter $r14;
+        org.smerty.zooborns.data.ZooBornsGallery $r15;
+        android.view.WindowManager $r8;
+        org.smerty.zooborns.ZooBorns$UpdateFeedTask $r17;
+        org.smerty.zooborns.ZooBorns[] $r18;
+        int $i0, $i1;
+        android.view.View $r7;
+        android.view.Display $r9;
+        java.lang.String $r10, $r12;
+        android.os.AsyncTask$Status $r19, $r20;
+        android.app.NotificationManager r5;
+        android.os.AsyncTask $r16;
+        android.content.SharedPreferences $r2;
+        java.lang.Object $r4;
+        java.lang.StringBuilder $r11;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns;
+
+        $r1 := @parameter0: android.os.Bundle;
+
+        specialinvoke r0.<android.app.Activity: void onCreate(android.os.Bundle)>($r1);
+
+        $r2 = r0.<org.smerty.zooborns.ZooBorns: android.content.SharedPreferences settings>;
+
+        if $r2 != null goto label1;
+
+        $r2 = virtualinvoke r0.<org.smerty.zooborns.ZooBorns: android.content.SharedPreferences getSharedPreferences(java.lang.String,int)>("ZooBornsPrefs", 0);
+
+        r0.<org.smerty.zooborns.ZooBorns: android.content.SharedPreferences settings> = $r2;
+
+     label1:
+        $r3 = virtualinvoke r0.<org.smerty.zooborns.ZooBorns: android.content.Context getApplicationContext()>();
+
+        staticinvoke <org.smerty.zooborns.SetupAlarm: void setup(android.content.Context)>($r3);
+
+        $r4 = virtualinvoke r0.<org.smerty.zooborns.ZooBorns: java.lang.Object getSystemService(java.lang.String)>("notification");
+
+        r5 = (android.app.NotificationManager) $r4;
+
+        virtualinvoke r5.<android.app.NotificationManager: void cancelAll()>();
+
+        virtualinvoke r0.<org.smerty.zooborns.ZooBorns: void setContentView(int)>(2130903040);
+
+        $r6 = r0.<org.smerty.zooborns.ZooBorns: android.widget.GridView gridview>;
+
+        if $r6 != null goto label5;
+
+        $r7 = virtualinvoke r0.<org.smerty.zooborns.ZooBorns: android.view.View findViewById(int)>(2131034112);
+
+        $r6 = (android.widget.GridView) $r7;
+
+        r0.<org.smerty.zooborns.ZooBorns: android.widget.GridView gridview> = $r6;
+
+        $r4 = virtualinvoke r0.<org.smerty.zooborns.ZooBorns: java.lang.Object getSystemService(java.lang.String)>("window");
+
+        $r8 = (android.view.WindowManager) $r4;
+
+        $r9 = interfaceinvoke $r8.<android.view.WindowManager: android.view.Display getDefaultDisplay()>();
+
+        $i0 = virtualinvoke $r9.<android.view.Display: int getWidth()>();
+
+        $i1 = r0.<org.smerty.zooborns.ZooBorns: int columnWidth>;
+
+        $i1 = $i0 / $i1;
+
+        if $i1 >= 2 goto label2;
+
+        r0.<org.smerty.zooborns.ZooBorns: int columnWidth> = 96;
+
+     label2:
+        $i1 = r0.<org.smerty.zooborns.ZooBorns: int columnWidth>;
+
+        $i1 = $i0 / $i1;
+
+        if $i1 >= 2 goto label3;
+
+        r0.<org.smerty.zooborns.ZooBorns: int columnWidth> = 64;
+
+     label3:
+        $i1 = r0.<org.smerty.zooborns.ZooBorns: int columnWidth>;
+
+        $i0 = $i0 / $i1;
+
+        if $i0 >= 2 goto label4;
+
+        r0.<org.smerty.zooborns.ZooBorns: int columnWidth> = 48;
+
+     label4:
+        $r10 = <org.smerty.zooborns.ZooBorns: java.lang.String TAG>;
+
+        $r11 = new java.lang.StringBuilder;
+
+        specialinvoke $r11.<java.lang.StringBuilder: void <init>()>();
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("setColumnWidth: width=");
+
+        $i0 = r0.<org.smerty.zooborns.ZooBorns: int columnWidth>;
+
+        $r11 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.StringBuilder append(int)>($i0);
+
+        $r12 = virtualinvoke $r11.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r10, $r12);
+
+        $r6 = r0.<org.smerty.zooborns.ZooBorns: android.widget.GridView gridview>;
+
+        $i0 = r0.<org.smerty.zooborns.ZooBorns: int columnWidth>;
+
+        virtualinvoke $r6.<android.widget.GridView: void setColumnWidth(int)>($i0);
+
+        $r6 = r0.<org.smerty.zooborns.ZooBorns: android.widget.GridView gridview>;
+
+        $r13 = new org.smerty.zooborns.ZooBorns$1;
+
+        specialinvoke $r13.<org.smerty.zooborns.ZooBorns$1: void <init>(org.smerty.zooborns.ZooBorns,org.smerty.zooborns.ZooBorns)>(r0, r0);
+
+        virtualinvoke $r6.<android.widget.GridView: void setOnItemClickListener(android.widget.AdapterView$OnItemClickListener)>($r13);
+
+     label5:
+        $r14 = r0.<org.smerty.zooborns.ZooBorns: org.smerty.zooborns.ImageAdapter imgAdapter>;
+
+        if $r14 != null goto label6;
+
+        $r14 = new org.smerty.zooborns.ImageAdapter;
+
+        specialinvoke $r14.<org.smerty.zooborns.ImageAdapter: void <init>(org.smerty.zooborns.ZooBorns)>(r0);
+
+        r0.<org.smerty.zooborns.ZooBorns: org.smerty.zooborns.ImageAdapter imgAdapter> = $r14;
+
+        $r6 = r0.<org.smerty.zooborns.ZooBorns: android.widget.GridView gridview>;
+
+        $r14 = r0.<org.smerty.zooborns.ZooBorns: org.smerty.zooborns.ImageAdapter imgAdapter>;
+
+        virtualinvoke $r6.<android.widget.GridView: void setAdapter(android.widget.ListAdapter)>($r14);
+
+     label6:
+        $r15 = r0.<org.smerty.zooborns.ZooBorns: org.smerty.zooborns.data.ZooBornsGallery zGallery>;
+
+        if $r15 != null goto label7;
+
+        $r15 = new org.smerty.zooborns.data.ZooBornsGallery;
+
+        specialinvoke $r15.<org.smerty.zooborns.data.ZooBornsGallery: void <init>()>();
+
+        r0.<org.smerty.zooborns.ZooBorns: org.smerty.zooborns.data.ZooBornsGallery zGallery> = $r15;
+
+        $r16 = r0.<org.smerty.zooborns.ZooBorns: android.os.AsyncTask updatetask>;
+
+        if $r16 != null goto label8;
+
+        $r10 = <org.smerty.zooborns.ZooBorns: java.lang.String TAG>;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r10, "startDownloading, task was null, calling execute");
+
+        $r17 = new org.smerty.zooborns.ZooBorns$UpdateFeedTask;
+
+        specialinvoke $r17.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: void <init>(org.smerty.zooborns.ZooBorns,org.smerty.zooborns.ZooBorns$1)>(r0, null);
+
+        $r18 = newarray (org.smerty.zooborns.ZooBorns)[1];
+
+        $r18[0] = r0;
+
+        $r16 = virtualinvoke $r17.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: android.os.AsyncTask execute(java.lang.Object[])>($r18);
+
+        r0.<org.smerty.zooborns.ZooBorns: android.os.AsyncTask updatetask> = $r16;
+
+     label7:
+        $r10 = <org.smerty.zooborns.ZooBorns: java.lang.String TAG>;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r10, "onCreate done.");
+
+        return;
+
+     label8:
+        $r16 = r0.<org.smerty.zooborns.ZooBorns: android.os.AsyncTask updatetask>;
+
+        $r19 = virtualinvoke $r16.<android.os.AsyncTask: android.os.AsyncTask$Status getStatus()>();
+
+        $r20 = <android.os.AsyncTask$Status: android.os.AsyncTask$Status FINISHED>;
+
+        if $r19 != $r20 goto label7;
+
+        $r10 = <org.smerty.zooborns.ZooBorns: java.lang.String TAG>;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r10, "updatetask, task wasn\'t null, status finished, calling execute");
+
+        $r17 = new org.smerty.zooborns.ZooBorns$UpdateFeedTask;
+
+        specialinvoke $r17.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: void <init>(org.smerty.zooborns.ZooBorns,org.smerty.zooborns.ZooBorns$1)>(r0, null);
+
+        $r18 = newarray (org.smerty.zooborns.ZooBorns)[1];
+
+        $r18[0] = r0;
+
+        $r16 = virtualinvoke $r17.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: android.os.AsyncTask execute(java.lang.Object[])>($r18);
+
+        r0.<org.smerty.zooborns.ZooBorns: android.os.AsyncTask updatetask> = $r16;
+
+        goto label7;
+    }
+
+    public boolean onCreateOptionsMenu(android.view.Menu)
+    {
+        android.view.Menu $r1;
+        org.smerty.zooborns.ZooBorns r0;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns;
+
+        $r1 := @parameter0: android.view.Menu;
+
+        interfaceinvoke $r1.<android.view.Menu: android.view.MenuItem add(int,int,int,java.lang.CharSequence)>(0, 13, 0, "Settings");
+
+        interfaceinvoke $r1.<android.view.Menu: android.view.MenuItem add(int,int,int,java.lang.CharSequence)>(0, 12, 0, "Purge Data");
+
+        interfaceinvoke $r1.<android.view.Menu: android.view.MenuItem add(int,int,int,java.lang.CharSequence)>(0, 10, 0, "Exit");
+
+        return 1;
+    }
+
+    public boolean onOptionsItemSelected(android.view.MenuItem)
+    {
+        org.smerty.zooborns.ZooBorns r0;
+        int $i0;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r2, $r4;
+        android.view.MenuItem $r1;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns;
+
+        $r1 := @parameter0: android.view.MenuItem;
+
+        $r2 = <org.smerty.zooborns.ZooBorns: java.lang.String TAG>;
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("menu item selected (");
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>($r1);
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(")");
+
+        $r4 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r2, $r4);
+
+        $i0 = interfaceinvoke $r1.<android.view.MenuItem: int getItemId()>();
+
+        lookupswitch($i0)
+        {
+            case 10: goto label2;
+            case 11: goto label1;
+            case 12: goto label3;
+            case 13: goto label4;
+            default: goto label1;
+        };
+
+     label1:
+        return 0;
+
+     label2:
+        virtualinvoke r0.<org.smerty.zooborns.ZooBorns: void finish()>();
+
+        return 1;
+
+     label3:
+        virtualinvoke r0.<org.smerty.zooborns.ZooBorns: void purge()>();
+
+        return 1;
+
+     label4:
+        virtualinvoke r0.<org.smerty.zooborns.ZooBorns: void settings()>();
+
+        return 1;
+    }
+
+    public void purge()
+    {
+        android.content.SharedPreferences$Editor $r3;
+        org.smerty.zooborns.ZooBorns r0;
+        java.io.File r1, $r4;
+        android.content.SharedPreferences $r2;
+        int i0, i1;
+        java.lang.StringBuilder $r5;
+        java.lang.String $r6, $r8;
+        java.io.File[] $r7;
+        boolean $z0;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns;
+
+        $r2 = r0.<org.smerty.zooborns.ZooBorns: android.content.SharedPreferences settings>;
+
+        $r3 = interfaceinvoke $r2.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+        interfaceinvoke $r3.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor remove(java.lang.String)>("etag");
+
+        interfaceinvoke $r3.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+        $r4 = staticinvoke <android.os.Environment: java.io.File getExternalStorageDirectory()>();
+
+        r1 = new java.io.File;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r6 = virtualinvoke $r4.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/.zooborns");
+
+        $r6 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke r1.<java.io.File: void <init>(java.lang.String)>($r6);
+
+        $r7 = virtualinvoke r1.<java.io.File: java.io.File[] listFiles()>();
+
+        i0 = lengthof $r7;
+
+        i1 = 0;
+
+     label1:
+        if i1 >= i0 goto label5;
+
+        r1 = $r7[i1];
+
+        if r1 == null goto label4;
+
+        $r6 = <org.smerty.zooborns.ZooBorns: java.lang.String TAG>;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("CLEAR IT Deleting old image: ");
+
+        $r8 = virtualinvoke r1.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r8 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r6, $r8);
+
+        $z0 = virtualinvoke r1.<java.io.File: boolean delete()>();
+
+        if $z0 != 0 goto label3;
+
+        $r6 = <org.smerty.zooborns.ZooBorns: java.lang.String TAG>;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("purge Can\'t delete: ");
+
+        $r8 = virtualinvoke r1.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r8 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r6, $r8);
+
+     label2:
+        i1 = i1 + 1;
+
+        goto label1;
+
+     label3:
+        $r6 = <org.smerty.zooborns.ZooBorns: java.lang.String TAG>;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(" purgeDeleted: ");
+
+        $r8 = virtualinvoke r1.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r8);
+
+        $r8 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r6, $r8);
+
+        goto label2;
+
+     label4:
+        $r6 = <org.smerty.zooborns.ZooBorns: java.lang.String TAG>;
+
+        $r5 = new java.lang.StringBuilder;
+
+        specialinvoke $r5.<java.lang.StringBuilder: void <init>()>();
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("purge file (");
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.Object)>(r1);
+
+        $r5 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>(") was null?");
+
+        $r8 = virtualinvoke $r5.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r6, $r8);
+
+        goto label2;
+
+     label5:
+        virtualinvoke r0.<org.smerty.zooborns.ZooBorns: void finish()>();
+
+        return;
+    }
+
+    public void settings()
+    {
+        org.smerty.zooborns.ZooBorns$3 $r7;
+        org.smerty.zooborns.ZooBorns$2 $r6;
+        org.smerty.zooborns.ZooBorns r0;
+        android.app.AlertDialog $r8;
+        android.widget.CheckBox r2;
+        android.content.SharedPreferences $r4;
+        android.app.AlertDialog$Builder r1, $r5;
+        java.lang.String $r3;
+        boolean $z0;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns;
+
+        $r3 = <org.smerty.zooborns.ZooBorns: java.lang.String TAG>;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r3, "settings dialog");
+
+        $r4 = r0.<org.smerty.zooborns.ZooBorns: android.content.SharedPreferences settings>;
+
+        $z0 = interfaceinvoke $r4.<android.content.SharedPreferences: boolean getBoolean(java.lang.String,boolean)>("notifications", 1);
+
+        r1 = new android.app.AlertDialog$Builder;
+
+        specialinvoke r1.<android.app.AlertDialog$Builder: void <init>(android.content.Context)>(r0);
+
+        r2 = new android.widget.CheckBox;
+
+        specialinvoke r2.<android.widget.CheckBox: void <init>(android.content.Context)>(r0);
+
+        virtualinvoke r2.<android.widget.CheckBox: void setChecked(boolean)>($z0);
+
+        virtualinvoke r2.<android.widget.CheckBox: void setText(java.lang.CharSequence)>("Enable notifications for new ZooBorns photos?");
+
+        virtualinvoke r1.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setView(android.view.View)>(r2);
+
+        $r5 = virtualinvoke r1.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setTitle(java.lang.CharSequence)>("ZooBorns Settings");
+
+        $r6 = new org.smerty.zooborns.ZooBorns$2;
+
+        specialinvoke $r6.<org.smerty.zooborns.ZooBorns$2: void <init>(org.smerty.zooborns.ZooBorns,android.widget.CheckBox)>(r0, r2);
+
+        virtualinvoke $r5.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setPositiveButton(java.lang.CharSequence,android.content.DialogInterface$OnClickListener)>("Save", $r6);
+
+        $r4 = r0.<org.smerty.zooborns.ZooBorns: android.content.SharedPreferences settings>;
+
+        $z0 = interfaceinvoke $r4.<android.content.SharedPreferences: boolean contains(java.lang.String)>("notifications");
+
+        if $z0 == 0 goto label1;
+
+        $r5 = virtualinvoke r1.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setCancelable(boolean)>(1);
+
+        $r7 = new org.smerty.zooborns.ZooBorns$3;
+
+        specialinvoke $r7.<org.smerty.zooborns.ZooBorns$3: void <init>(org.smerty.zooborns.ZooBorns)>(r0);
+
+        virtualinvoke $r5.<android.app.AlertDialog$Builder: android.app.AlertDialog$Builder setNegativeButton(java.lang.CharSequence,android.content.DialogInterface$OnClickListener)>("Cancel", $r7);
+
+     label1:
+        $r8 = virtualinvoke r1.<android.app.AlertDialog$Builder: android.app.AlertDialog create()>();
+
+        virtualinvoke $r8.<android.app.AlertDialog: void show()>();
+
+        return;
+    }
+}

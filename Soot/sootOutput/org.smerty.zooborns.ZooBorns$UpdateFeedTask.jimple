@@ -1,0 +1,643 @@
+class org.smerty.zooborns.ZooBorns$UpdateFeedTask extends android.os.AsyncTask
+{
+    private org.smerty.zooborns.ZooBorns that;
+    final org.smerty.zooborns.ZooBorns this$0;
+
+    private void <init>(org.smerty.zooborns.ZooBorns)
+    {
+        org.smerty.zooborns.ZooBorns $r1;
+        org.smerty.zooborns.ZooBorns$UpdateFeedTask r0;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns$UpdateFeedTask;
+
+        $r1 := @parameter0: org.smerty.zooborns.ZooBorns;
+
+        r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns this$0> = $r1;
+
+        specialinvoke r0.<android.os.AsyncTask: void <init>()>();
+
+        return;
+    }
+
+    void <init>(org.smerty.zooborns.ZooBorns, org.smerty.zooborns.ZooBorns$1)
+    {
+        org.smerty.zooborns.ZooBorns $r1;
+        org.smerty.zooborns.ZooBorns$1 $r2;
+        org.smerty.zooborns.ZooBorns$UpdateFeedTask r0;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns$UpdateFeedTask;
+
+        $r1 := @parameter0: org.smerty.zooborns.ZooBorns;
+
+        $r2 := @parameter1: org.smerty.zooborns.ZooBorns$1;
+
+        specialinvoke r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: void <init>(org.smerty.zooborns.ZooBorns)>($r1);
+
+        return;
+    }
+
+    protected transient java.lang.Integer doInBackground(org.smerty.zooborns.ZooBorns[])
+    {
+        org.smerty.zooborns.data.ZooBornsGallery $r11;
+        java.io.ObjectInputStream r3;
+        org.smerty.zooborns.data.ZooBornsEntry r24;
+        java.lang.Integer $r8;
+        boolean $z0;
+        org.smerty.cache.ImageCache $r19;
+        java.lang.Exception r28;
+        java.lang.StringBuilder $r12;
+        java.lang.Integer[] $r7;
+        org.smerty.zooborns.feed.FeedParseException r16;
+        android.content.SharedPreferences$Editor $r17;
+        java.lang.Throwable $r27, $r30;
+        org.smerty.zooborns.ZooBorns $r6, $r20;
+        org.smerty.zooborns.ZooBorns$UpdateFeedTask r0;
+        java.util.ArrayList $r21;
+        org.smerty.zooborns.ZooBorns[] $r1;
+        java.io.ObjectOutputStream r4;
+        java.lang.String $r10, $r13;
+        org.smerty.zooborns.data.ZooBornsPhoto r26;
+        java.util.Iterator $r22, $r25;
+        java.io.FileOutputStream r18;
+        java.io.IOException r15;
+        java.lang.RuntimeException $r14;
+        java.io.FileInputStream r29;
+        java.io.File r2, r5;
+        android.content.SharedPreferences $r9;
+        java.lang.Object $r23;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns$UpdateFeedTask;
+
+        $r1 := @parameter0: org.smerty.zooborns.ZooBorns[];
+
+        $r6 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        if $r6 != null goto label01;
+
+        $r6 = $r1[0];
+
+        r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that> = $r6;
+
+     label01:
+        $r7 = newarray (java.lang.Integer)[1];
+
+        $r8 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(0);
+
+        $r7[0] = $r8;
+
+        virtualinvoke r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: void publishProgress(java.lang.Object[])>($r7);
+
+     label02:
+        $r6 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns this$0>;
+
+     label03:
+        $r9 = virtualinvoke $r6.<org.smerty.zooborns.ZooBorns: android.content.SharedPreferences getSharedPreferences(java.lang.String,int)>("ZooBornsPrefs", 0);
+
+        $r10 = interfaceinvoke $r9.<android.content.SharedPreferences: java.lang.String getString(java.lang.String,java.lang.String)>("etag", null);
+
+     label04:
+        $r6 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r11 = $r6.<org.smerty.zooborns.ZooBorns: org.smerty.zooborns.data.ZooBornsGallery zGallery>;
+
+     label05:
+        virtualinvoke $r11.<org.smerty.zooborns.data.ZooBornsGallery: boolean update(java.lang.String)>($r10);
+
+        r2 = staticinvoke <android.os.Environment: java.io.File getExternalStorageDirectory()>();
+
+     label06:
+        r5 = new java.io.File;
+
+        $r12 = new java.lang.StringBuilder;
+
+     label07:
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        $r10 = virtualinvoke r2.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r10);
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("/.zooborns");
+
+        $r10 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        specialinvoke r5.<java.io.File: void <init>(java.lang.String)>($r10);
+
+        $z0 = virtualinvoke r5.<java.io.File: boolean isDirectory()>();
+
+     label08:
+        if $z0 != 0 goto label14;
+
+     label09:
+        $z0 = virtualinvoke r5.<java.io.File: boolean mkdir()>();
+
+     label10:
+        if $z0 == 0 goto label19;
+
+     label11:
+        $r10 = staticinvoke <org.smerty.zooborns.ZooBorns: java.lang.String access$000()>();
+
+     label12:
+        $r12 = new java.lang.StringBuilder;
+
+     label13:
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("download mkdir: ");
+
+        $r13 = virtualinvoke r5.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r13);
+
+        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r10, $r13);
+
+     label14:
+        $z0 = virtualinvoke r5.<java.io.File: boolean canWrite()>();
+
+     label15:
+        if $z0 != 0 goto label26;
+
+        $r14 = new java.lang.RuntimeException;
+
+     label16:
+        specialinvoke $r14.<java.lang.RuntimeException: void <init>(java.lang.String)>("storage directory not writable");
+
+     label17:
+        throw $r14;
+
+     label18:
+        r15 := @caughtexception;
+
+        virtualinvoke r15.<java.io.IOException: void printStackTrace()>();
+
+        $r8 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(0);
+
+        return $r8;
+
+     label19:
+        $r10 = staticinvoke <org.smerty.zooborns.ZooBorns: java.lang.String access$000()>();
+
+     label20:
+        $r12 = new java.lang.StringBuilder;
+
+     label21:
+        specialinvoke $r12.<java.lang.StringBuilder: void <init>()>();
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("download mkdir failed: ");
+
+        $r13 = virtualinvoke r5.<java.io.File: java.lang.String getAbsolutePath()>();
+
+        $r12 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r13);
+
+        $r13 = virtualinvoke $r12.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r10, $r13);
+
+     label22:
+        $r14 = new java.lang.RuntimeException;
+
+     label23:
+        specialinvoke $r14.<java.lang.RuntimeException: void <init>(java.lang.String)>("failed to create storage directory");
+
+     label24:
+        throw $r14;
+
+     label25:
+        r16 := @caughtexception;
+
+        $r8 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(0);
+
+        return $r8;
+
+     label26:
+        r2 = new java.io.File;
+
+     label27:
+        specialinvoke r2.<java.io.File: void <init>(java.io.File,java.lang.String)>(r5, "cache.file");
+
+     label28:
+        $r6 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r11 = $r6.<org.smerty.zooborns.ZooBorns: org.smerty.zooborns.data.ZooBornsGallery zGallery>;
+
+     label29:
+        $r10 = virtualinvoke $r11.<org.smerty.zooborns.data.ZooBornsGallery: java.lang.String getEtag()>();
+
+     label30:
+        if $r10 == null goto label47;
+
+     label31:
+        $r17 = interfaceinvoke $r9.<android.content.SharedPreferences: android.content.SharedPreferences$Editor edit()>();
+
+     label32:
+        $r6 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r11 = $r6.<org.smerty.zooborns.ZooBorns: org.smerty.zooborns.data.ZooBornsGallery zGallery>;
+
+     label33:
+        $r10 = virtualinvoke $r11.<org.smerty.zooborns.data.ZooBornsGallery: java.lang.String getEtag()>();
+
+        interfaceinvoke $r17.<android.content.SharedPreferences$Editor: android.content.SharedPreferences$Editor putString(java.lang.String,java.lang.String)>("etag", $r10);
+
+        interfaceinvoke $r17.<android.content.SharedPreferences$Editor: boolean commit()>();
+
+     label34:
+        r18 = new java.io.FileOutputStream;
+
+     label35:
+        specialinvoke r18.<java.io.FileOutputStream: void <init>(java.io.File)>(r2);
+
+     label36:
+        r4 = new java.io.ObjectOutputStream;
+
+     label37:
+        specialinvoke r4.<java.io.ObjectOutputStream: void <init>(java.io.OutputStream)>(r18);
+
+     label38:
+        $r6 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r11 = $r6.<org.smerty.zooborns.ZooBorns: org.smerty.zooborns.data.ZooBornsGallery zGallery>;
+
+        interfaceinvoke r4.<java.io.ObjectOutput: void writeObject(java.lang.Object)>($r11);
+
+     label39:
+        interfaceinvoke r4.<java.io.ObjectOutput: void close()>();
+
+     label40:
+        $r6 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r19 = $r6.<org.smerty.zooborns.ZooBorns: org.smerty.cache.ImageCache imgCache>;
+
+        if $r19 != null goto label41;
+
+        $r6 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r19 = new org.smerty.cache.ImageCache;
+
+        $r20 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        specialinvoke $r19.<org.smerty.cache.ImageCache: void <init>(org.smerty.zooborns.ZooBorns)>($r20);
+
+        $r6.<org.smerty.zooborns.ZooBorns: org.smerty.cache.ImageCache imgCache> = $r19;
+
+     label41:
+        $r6 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r11 = $r6.<org.smerty.zooborns.ZooBorns: org.smerty.zooborns.data.ZooBornsGallery zGallery>;
+
+        $r21 = virtualinvoke $r11.<org.smerty.zooborns.data.ZooBornsGallery: java.util.ArrayList getEntries()>();
+
+        $r22 = virtualinvoke $r21.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label42:
+        $z0 = interfaceinvoke $r22.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label56;
+
+        $r23 = interfaceinvoke $r22.<java.util.Iterator: java.lang.Object next()>();
+
+        r24 = (org.smerty.zooborns.data.ZooBornsEntry) $r23;
+
+        $r21 = virtualinvoke r24.<org.smerty.zooborns.data.ZooBornsEntry: java.util.ArrayList getPhotos()>();
+
+        $r25 = virtualinvoke $r21.<java.util.ArrayList: java.util.Iterator iterator()>();
+
+     label43:
+        $z0 = interfaceinvoke $r25.<java.util.Iterator: boolean hasNext()>();
+
+        if $z0 == 0 goto label42;
+
+        $r23 = interfaceinvoke $r25.<java.util.Iterator: java.lang.Object next()>();
+
+        r26 = (org.smerty.zooborns.data.ZooBornsPhoto) $r23;
+
+        $r6 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r19 = $r6.<org.smerty.zooborns.ZooBorns: org.smerty.cache.ImageCache imgCache>;
+
+        $r10 = virtualinvoke r26.<org.smerty.zooborns.data.ZooBornsPhoto: java.lang.String getUrl()>();
+
+        virtualinvoke $r19.<org.smerty.cache.ImageCache: boolean add(java.lang.String)>($r10);
+
+        goto label43;
+
+     label44:
+        $r27 := @caughtexception;
+
+     label45:
+        interfaceinvoke r4.<java.io.ObjectOutput: void close()>();
+
+        throw $r27;
+
+     label46:
+        r28 := @caughtexception;
+
+        virtualinvoke r28.<java.lang.Exception: void printStackTrace()>();
+
+        $r8 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(0);
+
+        return $r8;
+
+     label47:
+        r29 = new java.io.FileInputStream;
+
+     label48:
+        specialinvoke r29.<java.io.FileInputStream: void <init>(java.io.File)>(r2);
+
+     label49:
+        r3 = new java.io.ObjectInputStream;
+
+     label50:
+        specialinvoke r3.<java.io.ObjectInputStream: void <init>(java.io.InputStream)>(r29);
+
+     label51:
+        $r6 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r23 = interfaceinvoke r3.<java.io.ObjectInput: java.lang.Object readObject()>();
+
+        $r11 = (org.smerty.zooborns.data.ZooBornsGallery) $r23;
+
+        $r6.<org.smerty.zooborns.ZooBorns: org.smerty.zooborns.data.ZooBornsGallery zGallery> = $r11;
+
+     label52:
+        interfaceinvoke r3.<java.io.ObjectInput: void close()>();
+
+     label53:
+        goto label40;
+
+     label54:
+        $r30 := @caughtexception;
+
+     label55:
+        interfaceinvoke r3.<java.io.ObjectInput: void close()>();
+
+        throw $r30;
+
+     label56:
+        $r8 = staticinvoke <java.lang.Integer: java.lang.Integer valueOf(int)>(0);
+
+        return $r8;
+
+        catch java.io.IOException from label03 to label04 with label18;
+        catch java.io.IOException from label05 to label06 with label18;
+        catch java.io.IOException from label07 to label08 with label18;
+        catch java.io.IOException from label09 to label10 with label18;
+        catch java.io.IOException from label11 to label12 with label18;
+        catch java.io.IOException from label13 to label15 with label18;
+        catch java.io.IOException from label16 to label17 with label18;
+        catch org.smerty.zooborns.feed.FeedParseException from label03 to label04 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label05 to label06 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label07 to label08 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label09 to label10 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label11 to label12 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label13 to label15 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label16 to label17 with label25;
+        catch java.lang.Exception from label02 to label06 with label46;
+        catch java.lang.Exception from label07 to label08 with label46;
+        catch java.lang.Exception from label09 to label10 with label46;
+        catch java.lang.Exception from label11 to label12 with label46;
+        catch java.lang.Exception from label13 to label15 with label46;
+        catch java.lang.Exception from label16 to label18 with label46;
+        catch java.io.IOException from label19 to label20 with label18;
+        catch java.io.IOException from label21 to label22 with label18;
+        catch java.io.IOException from label23 to label24 with label18;
+        catch org.smerty.zooborns.feed.FeedParseException from label19 to label20 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label21 to label22 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label23 to label24 with label25;
+        catch java.lang.Exception from label19 to label20 with label46;
+        catch java.lang.Exception from label21 to label22 with label46;
+        catch java.lang.Exception from label23 to label25 with label46;
+        catch java.io.IOException from label27 to label28 with label18;
+        catch java.io.IOException from label29 to label30 with label18;
+        catch java.io.IOException from label31 to label32 with label18;
+        catch java.io.IOException from label33 to label34 with label18;
+        catch java.io.IOException from label35 to label36 with label18;
+        catch java.io.IOException from label37 to label38 with label18;
+        catch org.smerty.zooborns.feed.FeedParseException from label27 to label28 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label29 to label30 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label31 to label32 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label33 to label34 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label35 to label36 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label37 to label38 with label25;
+        catch java.lang.Exception from label27 to label30 with label46;
+        catch java.lang.Exception from label31 to label34 with label46;
+        catch java.lang.Exception from label35 to label36 with label46;
+        catch java.lang.Exception from label37 to label38 with label46;
+        catch java.lang.Throwable from label38 to label39 with label44;
+        catch java.io.IOException from label39 to label40 with label18;
+        catch org.smerty.zooborns.feed.FeedParseException from label39 to label40 with label25;
+        catch java.lang.Exception from label39 to label40 with label46;
+        catch java.io.IOException from label45 to label46 with label18;
+        catch org.smerty.zooborns.feed.FeedParseException from label45 to label46 with label25;
+        catch java.lang.Exception from label45 to label46 with label46;
+        catch java.io.IOException from label48 to label49 with label18;
+        catch java.io.IOException from label50 to label51 with label18;
+        catch org.smerty.zooborns.feed.FeedParseException from label48 to label49 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label50 to label51 with label25;
+        catch java.lang.Exception from label48 to label49 with label46;
+        catch java.lang.Exception from label50 to label51 with label46;
+        catch java.lang.Throwable from label51 to label52 with label54;
+        catch java.io.IOException from label52 to label53 with label18;
+        catch java.io.IOException from label55 to label56 with label18;
+        catch org.smerty.zooborns.feed.FeedParseException from label52 to label53 with label25;
+        catch org.smerty.zooborns.feed.FeedParseException from label55 to label56 with label25;
+        catch java.lang.Exception from label52 to label53 with label46;
+        catch java.lang.Exception from label55 to label56 with label46;
+    }
+
+    protected volatile java.lang.Object doInBackground(java.lang.Object[])
+    {
+        java.lang.Object[] $r2;
+        org.smerty.zooborns.ZooBorns[] $r3;
+        java.lang.Integer $r1;
+        org.smerty.zooborns.ZooBorns$UpdateFeedTask r0;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns$UpdateFeedTask;
+
+        $r2 := @parameter0: java.lang.Object[];
+
+        $r3 = (org.smerty.zooborns.ZooBorns[]) $r2;
+
+        $r1 = virtualinvoke r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: java.lang.Integer doInBackground(org.smerty.zooborns.ZooBorns[])>($r3);
+
+        return $r1;
+    }
+
+    protected void onCancelled()
+    {
+        android.app.ProgressDialog $r2;
+        org.smerty.zooborns.ZooBorns $r1;
+        org.smerty.zooborns.ZooBorns$UpdateFeedTask r0;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns$UpdateFeedTask;
+
+        specialinvoke r0.<android.os.AsyncTask: void onCancelled()>();
+
+        $r1 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r2 = $r1.<org.smerty.zooborns.ZooBorns: android.app.ProgressDialog progressDialog>;
+
+        virtualinvoke $r2.<android.app.ProgressDialog: void dismiss()>();
+
+        return;
+    }
+
+    protected void onPostExecute(java.lang.Integer)
+    {
+        org.smerty.zooborns.ZooBorns $r4;
+        org.smerty.cache.ImageCache $r8;
+        android.app.ProgressDialog $r7;
+        java.lang.Integer $r1;
+        org.smerty.zooborns.ZooBorns$UpdateFeedTask r0;
+        android.content.SharedPreferences $r9;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r2, $r6;
+        android.content.pm.ApplicationInfo $r5;
+        boolean $z0;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns$UpdateFeedTask;
+
+        $r1 := @parameter0: java.lang.Integer;
+
+        $r2 = staticinvoke <org.smerty.zooborns.ZooBorns: java.lang.String access$000()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("onPostExecute ");
+
+        $r4 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r5 = virtualinvoke $r4.<org.smerty.zooborns.ZooBorns: android.content.pm.ApplicationInfo getApplicationInfo()>();
+
+        $r6 = $r5.<android.content.pm.ApplicationInfo: java.lang.String packageName>;
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r6);
+
+        $r6 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r2, $r6);
+
+        $r4 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r7 = $r4.<org.smerty.zooborns.ZooBorns: android.app.ProgressDialog progressDialog>;
+
+        virtualinvoke $r7.<android.app.ProgressDialog: void dismiss()>();
+
+        $r4 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r8 = $r4.<org.smerty.zooborns.ZooBorns: org.smerty.cache.ImageCache imgCache>;
+
+        if $r8 == null goto label1;
+
+        $r4 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r8 = $r4.<org.smerty.zooborns.ZooBorns: org.smerty.cache.ImageCache imgCache>;
+
+        virtualinvoke $r8.<org.smerty.cache.ImageCache: void startDownloading()>();
+
+     label1:
+        $r4 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns this$0>;
+
+        $r9 = staticinvoke <org.smerty.zooborns.ZooBorns: android.content.SharedPreferences access$200(org.smerty.zooborns.ZooBorns)>($r4);
+
+        $z0 = interfaceinvoke $r9.<android.content.SharedPreferences: boolean contains(java.lang.String)>("notifications");
+
+        if $z0 != 0 goto label2;
+
+        $r4 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns this$0>;
+
+        virtualinvoke $r4.<org.smerty.zooborns.ZooBorns: void settings()>();
+
+     label2:
+        return;
+    }
+
+    protected volatile void onPostExecute(java.lang.Object)
+    {
+        java.lang.Object $r1;
+        java.lang.Integer $r2;
+        org.smerty.zooborns.ZooBorns$UpdateFeedTask r0;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns$UpdateFeedTask;
+
+        $r1 := @parameter0: java.lang.Object;
+
+        $r2 = (java.lang.Integer) $r1;
+
+        virtualinvoke r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: void onPostExecute(java.lang.Integer)>($r2);
+
+        return;
+    }
+
+    protected transient void onProgressUpdate(java.lang.Integer[])
+    {
+        org.smerty.zooborns.ZooBorns $r6, $r7;
+        android.app.ProgressDialog $r8;
+        java.lang.Integer $r4;
+        org.smerty.zooborns.ZooBorns$UpdateFeedTask r0;
+        int $i0;
+        java.lang.StringBuilder $r3;
+        java.lang.String $r2, $r5;
+        java.lang.Integer[] $r1;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns$UpdateFeedTask;
+
+        $r1 := @parameter0: java.lang.Integer[];
+
+        $r2 = staticinvoke <org.smerty.zooborns.ZooBorns: java.lang.String access$000()>();
+
+        $r3 = new java.lang.StringBuilder;
+
+        specialinvoke $r3.<java.lang.StringBuilder: void <init>()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>("onProgressUpdate ");
+
+        $r4 = $r1[0];
+
+        $r5 = virtualinvoke $r4.<java.lang.Integer: java.lang.String toString()>();
+
+        $r3 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.StringBuilder append(java.lang.String)>($r5);
+
+        $r5 = virtualinvoke $r3.<java.lang.StringBuilder: java.lang.String toString()>();
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r2, $r5);
+
+        $r4 = $r1[0];
+
+        $i0 = virtualinvoke $r4.<java.lang.Integer: int intValue()>();
+
+        if $i0 != 0 goto label1;
+
+        $r6 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r7 = r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: org.smerty.zooborns.ZooBorns that>;
+
+        $r8 = staticinvoke <android.app.ProgressDialog: android.app.ProgressDialog show(android.content.Context,java.lang.CharSequence,java.lang.CharSequence,boolean,boolean)>($r7, "ZooBorns", "Downloading ZooBorns Feed", 1, 0);
+
+        $r6.<org.smerty.zooborns.ZooBorns: android.app.ProgressDialog progressDialog> = $r8;
+
+     label1:
+        return;
+    }
+
+    protected volatile void onProgressUpdate(java.lang.Object[])
+    {
+        java.lang.Object[] $r1;
+        java.lang.Integer[] $r2;
+        org.smerty.zooborns.ZooBorns$UpdateFeedTask r0;
+
+        r0 := @this: org.smerty.zooborns.ZooBorns$UpdateFeedTask;
+
+        $r1 := @parameter0: java.lang.Object[];
+
+        $r2 = (java.lang.Integer[]) $r1;
+
+        virtualinvoke r0.<org.smerty.zooborns.ZooBorns$UpdateFeedTask: void onProgressUpdate(java.lang.Integer[])>($r2);
+
+        return;
+    }
+}

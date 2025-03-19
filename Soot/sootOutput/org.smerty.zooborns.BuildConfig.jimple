@@ -1,0 +1,15 @@
+public final class org.smerty.zooborns.BuildConfig extends java.lang.Object
+{
+    public static final boolean DEBUG;
+
+    public void <init>()
+    {
+        org.smerty.zooborns.BuildConfig r0;
+
+        r0 := @this: org.smerty.zooborns.BuildConfig;
+
+        specialinvoke r0.<java.lang.Object: void <init>()>();
+
+        return;
+    }
+}

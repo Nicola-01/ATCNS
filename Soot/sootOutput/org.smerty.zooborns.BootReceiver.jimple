@@ -1,0 +1,51 @@
+public class org.smerty.zooborns.BootReceiver extends android.content.BroadcastReceiver
+{
+    private static final java.lang.String TAG;
+
+    static void <clinit>()
+    {
+        java.lang.Class $r1;
+        java.lang.String $r0;
+
+        $r1 = class "Lorg/smerty/zooborns/BootReceiver;";
+
+        $r0 = virtualinvoke $r1.<java.lang.Class: java.lang.String getName()>();
+
+        <org.smerty.zooborns.BootReceiver: java.lang.String TAG> = $r0;
+
+        return;
+    }
+
+    public void <init>()
+    {
+        org.smerty.zooborns.BootReceiver r0;
+
+        r0 := @this: org.smerty.zooborns.BootReceiver;
+
+        specialinvoke r0.<android.content.BroadcastReceiver: void <init>()>();
+
+        return;
+    }
+
+    public void onReceive(android.content.Context, android.content.Intent)
+    {
+        android.content.Context $r1;
+        org.smerty.zooborns.BootReceiver r0;
+        android.content.Intent $r2;
+        java.lang.String $r3;
+
+        r0 := @this: org.smerty.zooborns.BootReceiver;
+
+        $r1 := @parameter0: android.content.Context;
+
+        $r2 := @parameter1: android.content.Intent;
+
+        $r3 = <org.smerty.zooborns.BootReceiver: java.lang.String TAG>;
+
+        staticinvoke <android.util.Log: int d(java.lang.String,java.lang.String)>($r3, "Inside onReceived method.");
+
+        staticinvoke <org.smerty.zooborns.SetupAlarm: void setup(android.content.Context)>($r1);
+
+        return;
+    }
+}

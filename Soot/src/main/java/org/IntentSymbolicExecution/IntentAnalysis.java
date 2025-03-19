@@ -5,6 +5,8 @@ import soot.jimple.AssignStmt;
 import soot.jimple.DoubleConstant;
 import soot.jimple.FloatConstant;
 import soot.jimple.IntConstant;
+import soot.jimple.InvokeExpr;
+import soot.jimple.InvokeStmt;
 import soot.jimple.LongConstant;
 import soot.jimple.StaticFieldRef;
 import soot.jimple.StringConstant;
@@ -133,6 +135,7 @@ public class IntentAnalysis {
 
         // Enable Dexpler for analyzing DEX files
         Options.v().set_src_prec(Options.src_prec_apk);
+        Options.v().set_output_format(Options.output_format_jimple);
     }
 
     /**
@@ -172,6 +175,7 @@ public class IntentAnalysis {
 
         // Run all Soot transformations
         PackManager.v().runPacks();
+        PackManager.v().writeOutput();
 
         return graphs;
     }
@@ -229,7 +233,7 @@ public class IntentAnalysis {
         SootClass declaringClass = field.getDeclaringClass();
         if (declaringClass.declaresMethodByName("<clinit>")) {
             SootMethod clinit = declaringClass.getMethodByName("<clinit>");
-            Body body = clinit.retrieveActiveBody();
+            Body body = clinit.retrieveActiveBody(); 
 
             // Look for statements assigning a value to this field
             for (Unit unit : body.getUnits()) {
