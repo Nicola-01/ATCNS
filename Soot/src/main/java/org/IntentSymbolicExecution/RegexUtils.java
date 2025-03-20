@@ -33,6 +33,7 @@ public class RegexUtils {
     public static final Pattern patternMethodCall = Pattern.compile(methodCallRegex);
 
     private static final String assignationRegex = "^(?<assignation>[\\w\\$]+)\\s*(?<type>\\([\\w\\.\\$]+\\))?\\s*=";
+    //private static final String assignationRegex = "^(?<assignation>(?:\\(\\s*[\\w\\$]+\\s*\\)this\\.\\w+|[\\w\\$]+))\\s*(?<type>\\([\\w\\.\\$]+\\))?\\s*=";
     public static final Pattern assignationPattern = Pattern.compile(assignationRegex);
 
     public static final String variableRenamingRegex = "(?<!\\w)%s(?![\\d_])";

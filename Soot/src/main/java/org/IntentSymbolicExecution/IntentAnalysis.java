@@ -79,7 +79,7 @@ public class IntentAnalysis {
         setupSoot(apkPath, androidJarPath);
         Scene.v().loadNecessaryClasses();
 
-        // Get global variables of the application
+        // Get global variables of the application and print them onto a file
         Map<String, GlobalVariablesInfo> globalVariables = getGlobalVariables(packageName);
         try (FileWriter writer = new FileWriter("globalVariables.txt")) {
             writer.write("\nGLOBAL VARIABLES:\n");
