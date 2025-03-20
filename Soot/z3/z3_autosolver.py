@@ -11,7 +11,12 @@ NULL_SERIALIZABLE = Const("null_serializable", SerializableSort)
 # Define a Z3 constant representing null for strings.
 NULL = StringVal("null")
 
-# Regular expression pattern for matching the parameter definition in the node label.
+# Regex for getAction()
+GETACTION_PATTERN = re.compile(
+    r'^\$?(\w+)\s*\(([^)]+)\)\s*=\s*\(android\.content\.Intent\)\s*\$?\w+\.getAction\(\)'
+)
+
+# Regex pattern for matching the parameter definition in the node label.
 PARAM_PATTERN = re.compile(
     r'^\$?(\w+)\s*\(([^)]+)\)\s*=\s*\(android\.(?:os\.Bundle|content\.Intent)\)\s*\$?\w+\.get\w+\("([^"]+)"(?:,\s*[^)]+)?\)'
 )
@@ -113,12 +118,26 @@ def get_blue_nodes(graph):
 def parse_intent_params(graph):
     """
     Scans the given subgraph for nodes whose label matches the pattern for parameter
-    definitions (and iterator nodes), but only processes nodes with color=blue.
+    definitions (including iterator nodes and getAction()), but only processes nodes with color=blue.
     """
     global intent_params, param_name_map
     for node, data in get_blue_nodes(graph):
         label = data.get('label', '').strip()
-        # First, try matching the normal parameter pattern.
+        # First, check for getAction() nodes.
+        match = GETACTION_PATTERN.match(label)
+        if match:
+            var, ret_type = match.groups()
+            var = var.lstrip('$')
+            if var not in param_name_map:
+                # Here we set the parameter name to "action" (or any identifier you choose).
+                param_name_map[var] = "action"
+            if var not in intent_params:
+                # Typically, getAction() returns a String, so we create a String variable.
+                if "string" in ret_type.lower():
+                    intent_params[var] = String(var)
+            continue  # Skip further processing for this node.
+
+        # try matching the normal parameter pattern.
         match = PARAM_PATTERN.match(label)
         if match:
             var, ret_type, param_name = match.groups()
