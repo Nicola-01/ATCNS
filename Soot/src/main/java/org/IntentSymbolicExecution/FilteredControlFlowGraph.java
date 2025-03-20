@@ -709,7 +709,7 @@ public class FilteredControlFlowGraph {
                 String varName = matcher2.group(4);
                 String newObject = matcher2.group(5);
                 if (!thisObject.contains("if ")) {
-                    newNodeLabel = String.format("(%s) (%s)this.%s = %s", type, thisObject, varName, newObject);
+                    newNodeLabel = String.format("(%s)this.%s (%s) = %s", thisObject, varName, type, newObject);
                     nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
                 }
             } else if (matcher3.find()) {
