@@ -25,7 +25,7 @@ public class FilteredControlFlowGraph {
     /**
      * Maximum recursion depth when expanding method calls.
      */
-    private static final int METHODS_CALL_DEPTH = 0;
+    private static final int METHODS_CALL_DEPTH = 1;
 
     /**
      * The filtered control flow graph.
@@ -75,22 +75,10 @@ public class FilteredControlFlowGraph {
         this.attributes = attributes;
         this.filteredCFG = new HashMap<>();
         // Build the full graph from the ExceptionalUnitGraph.
-        this.fullGraph = new ControlFlowGraph(fullGraph);
-
-        String className = completeMethod.substring(0, completeMethod.lastIndexOf("."));
-        String methodName = completeMethod.substring(completeMethod.lastIndexOf(".") + 1);
-
-        List<String> jimpleCode = getJimpleCode("sootOutput/" + className + ".jimple", methodName + attributes);
-
-        List<String> ifjimpleCode = jimpleCode.stream().filter(s -> s.startsWith("if")).collect(Collectors.toList());
-
-        List<Map.Entry<String, String>> resolvedLabel = findAndResolveLabel(jimpleCode);
+        this.fullGraph = ControlFlowGraph_GotoFixer(fullGraph);
 
         // Resolve method calls by expanding called methods into the graph.
         methodCallResolver();
-
-        // Remove and resolve goto vertices.
-        gotoResolver(ifjimpleCode, resolvedLabel);
 
         // Replace occurrences of global variables.
         replaceGlobalVariables(globalVariables);
@@ -104,6 +92,26 @@ public class FilteredControlFlowGraph {
         // Simplify string switch constructs and resolve switch statements.
         stringSwitchSimplifier();
         switchResolver();
+    }
+
+    /**
+     * @return
+     */
+    private ControlFlowGraph ControlFlowGraph_GotoFixer(ExceptionalUnitGraph originalGraph) {
+
+        ControlFlowGraph graph = new ControlFlowGraph(originalGraph);
+
+        String className = originalGraph.getBody().getMethod().getDeclaringClass().getName();
+        String methodSign = originalGraph.getBody().getMethod().getSubSignature();
+        methodSign = methodSign.substring(methodSign.lastIndexOf(" ") + 1).replace(",", ", ");
+
+        List<String> jimpleCode = getJimpleCode("sootOutput/" + className + ".jimple", methodSign);
+        List<String> ifjimpleCode = jimpleCode.stream().filter(s -> s.startsWith("if")).collect(Collectors.toList());
+        List<Map.Entry<String, String>> resolvedLabel = findAndResolveLabel(jimpleCode);
+
+        // Remove and resolve goto vertices.
+        gotoResolver(graph, ifjimpleCode, resolvedLabel);
+        return graph;
     }
 
     /**
@@ -320,7 +328,7 @@ public class FilteredControlFlowGraph {
             String getGraph = className + "." + methodName + "-(" + argumentsType + ")";
             if (otherMethods.containsKey(getGraph)) {
                 nodes.add(node.getKey());
-                ControlFlowGraph methodGraph = new ControlFlowGraph(otherMethods.get(getGraph));
+                ControlFlowGraph methodGraph = ControlFlowGraph_GotoFixer(otherMethods.get(getGraph));
                 convertedMethodGraph.put(getGraph, methodGraph);
                 nodes.addAll(getCallNode(methodGraph, depth + 1));
             }
@@ -512,23 +520,23 @@ public class FilteredControlFlowGraph {
      * This method searches for nodes with "goto (branch)" in their values, finds the target of the branch,
      * and replaces the branch placeholder with the actual target value.
      */
-    private void gotoResolver(List<String> ifjimpleCode, List<Map.Entry<String, String>> resolvedLabel) {
+    private void gotoResolver(ControlFlowGraph graph, List<String> ifjimpleCode, List<Map.Entry<String, String>> resolvedLabel) {
 
         Set<GraphNode> nodesToRemove = new HashSet<>();
         // Identify nodes that start with "goto".
-        for (GraphNode vertex : fullGraph.vertexSet())
+        for (GraphNode vertex : graph.vertexSet())
             if (vertex.getValue().startsWith("goto"))
                 nodesToRemove.add(vertex);
 
         // Remove each identified node from the graph.
         for (GraphNode node : nodesToRemove)
-            fullGraph.removeVertex(node);
+            graph.removeVertex(node);
 
         int ifCounter = 0;
-        for (GraphNode node : fullGraph.vertexSet()) {
+        for (GraphNode node : graph.vertexSet()) {
             List<GraphNode> gotoNodes = new ArrayList<>();
             // Identify predecessor nodes containing "goto (branch)".
-            for (GraphNode pred : fullGraph.getPredecessorNodes(node)) {
+            for (GraphNode pred : graph.getPredecessorNodes(node)) {
                 if (pred.getValue().contains("goto (branch)"))
                     gotoNodes.add(pred);
             }
@@ -538,20 +546,27 @@ public class FilteredControlFlowGraph {
                 for (GraphNode gotoNode : gotoNodes) {
                     String replace = "";
                     // Find the corresponding successor that matches the current node.
-                    for (GraphNode succ : fullGraph.getSuccessorNodes(gotoNode))
+                    for (GraphNode succ : graph.getSuccessorNodes(gotoNode))
                         if (succ.getKey().equals(node.getKey()))
                             replace = succ.getValue();
-                    fullGraph.replaceVertex(gotoNode.getKey(), gotoNode.getValue().replace("(branch)", replace));
+                    graph.replaceVertex(gotoNode.getKey(), gotoNode.getValue().replace("(branch)", replace));
                 }
             }
 
 
             if (node.getValue().startsWith("if")) {
                 if (gotoNodes.isEmpty()) {
-                    String ifLine = ifjimpleCode.get(ifCounter);
-                    for (Map.Entry<String, String> label : resolvedLabel)
-                        ifLine = ifLine.replace(label.getKey(), label.getValue());
-                    fullGraph.replaceVertex(node.getKey(), ifLine.replaceAll(";+$",""));
+                    try {
+                        String ifLine = ifjimpleCode.get(ifCounter);
+                        for (Map.Entry<String, String> label : resolvedLabel)
+                            ifLine = ifLine.replace(label.getKey(), label.getValue());
+                        graph.replaceVertex(node.getKey(), ifLine.replaceAll(";+$", ""));
+                    } catch (Exception e) {
+                        String ifLine = ifjimpleCode.get(ifCounter);
+                        for (Map.Entry<String, String> label : resolvedLabel)
+                            ifLine = ifLine.replace(label.getKey(), label.getValue());
+                        graph.replaceVertex(node.getKey(), ifLine.replaceAll(";+$", ""));
+                    }
                 }
                 ifCounter++;
             }
