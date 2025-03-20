@@ -5,6 +5,10 @@ import org.IntentSymbolicExecution.IntentAnalysis.GlobalVariablesInfo;
 import org.jgrapht.graph.DefaultEdge;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,6 +44,8 @@ public class FilteredControlFlowGraph {
      */
     private final String completeMethod;
 
+    private final String attributes;
+
     /**
      * A cache of converted method graphs.
      * <p>
@@ -62,12 +68,19 @@ public class FilteredControlFlowGraph {
      * @param otherMethods    A map of other methods and their corresponding control flow graphs for expanding method calls.
      * @param globalVariables A map of global variables used to replace corresponding occurrences in the graph.
      */
-    public FilteredControlFlowGraph(ExceptionalUnitGraph fullGraph, String completeMethod, Map<String, ExceptionalUnitGraph> otherMethods, Map<String, GlobalVariablesInfo> globalVariables) {
+    public FilteredControlFlowGraph(ExceptionalUnitGraph fullGraph, String completeMethod, String attributes,
+                                    Map<String, ExceptionalUnitGraph> otherMethods, Map<String, GlobalVariablesInfo> globalVariables) {
         this.completeMethod = completeMethod;
         this.otherMethods = otherMethods;
+        this.attributes = attributes;
         this.filteredCFG = new HashMap<>();
         // Build the full graph from the ExceptionalUnitGraph.
         this.fullGraph = new ControlFlowGraph(fullGraph);
+
+        String className = completeMethod.substring(0, completeMethod.lastIndexOf("."));
+        String methodName = completeMethod.substring(completeMethod.lastIndexOf(".") + 1);
+
+        List<String> jimpleCode = getJimpleCode("sootOutput/" + className + ".jimple", methodName + attributes);
 
         // Resolve method calls by expanding called methods into the graph.
         methodCallResolver();
@@ -101,7 +114,46 @@ public class FilteredControlFlowGraph {
         this.fullGraph = new ControlFlowGraph(fullGraph);
         this.completeMethod = filteredControlFlowGraph.completeMethod;
         this.otherMethods = filteredControlFlowGraph.otherMethods;
+        this.attributes = filteredControlFlowGraph.attributes;
         this.filteredCFG = new HashMap<>(filteredCFG);
+    }
+
+    public static List<String> getJimpleCode(String filePath, String methodName) {
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(filePath));
+            List<String> methodContent = new ArrayList<>();
+            boolean insideMethod = false;
+            boolean firstLine = true;
+            int braceCount = 0;
+
+            for (String line : lines) {
+                line = line.trim();
+
+                // Check for method signature
+                if (line.endsWith(methodName)) {
+                    insideMethod = true;
+                }
+
+                if (insideMethod) {
+                    if (line.isEmpty()) continue;
+
+                    methodContent.add(line);
+
+                    // Count braces to detect method boundaries
+                    for (char c : line.toCharArray()) {
+                        if (c == '{') braceCount++;
+                        if (c == '}') braceCount--;
+                    }
+
+                    // If braces are balanced and we reach '}', exit
+                    if (methodContent.size() > 1 && braceCount == 0) break;
+                }
+            }
+
+            return methodContent;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -273,8 +325,8 @@ public class FilteredControlFlowGraph {
                     } else {
                         // Replace parameter names in the line if they were tracked.
                         for (Map.Entry<String, String> param : methodParameter) {
-                            String replaceRegex = String.format(variableRenamingRegex, param.getKey().replace("$","\\$"));
-                            String replacementName = param.getValue().replace("$","\\$");
+                            String replaceRegex = String.format(variableRenamingRegex, param.getKey().replace("$", "\\$"));
+                            String replacementName = param.getValue().replace("$", "\\$");
                             line = line.replaceAll(replaceRegex, replacementName);
                         }
                     }
@@ -362,7 +414,7 @@ public class FilteredControlFlowGraph {
 
                 // Check for getAction operations.
                 Matcher actionMatcher = patterGetAction.matcher(line);
-                if (actionMatcher.find()){
+                if (actionMatcher.find()) {
                     startAdding = true;
                     filteredNodes.put(nodeName, line);
                     parametersToTrack.add(actionMatcher.group(1));
@@ -678,7 +730,7 @@ public class FilteredControlFlowGraph {
                 //String paramsType = mathcer4.group(5);
                 String params = mathcer4.group(6);
                 newNodeLabel = String.format("(%s) %s.%s(%s)", objectType, object, method, params);
-                nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel)); 
+                nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
             }
         }
 
