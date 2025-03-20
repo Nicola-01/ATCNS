@@ -627,10 +627,10 @@ public class FilteredControlFlowGraph {
             String nodeLabel = node.getValue();
             String newNodeLabel;
 
-            Matcher matcher = patternMethodCall.matcher(nodeLabel);
-            Matcher matcher2 = thisCallPattern.matcher(nodeLabel);
-            Matcher matcher3 = variableCallPattern.matcher(nodeLabel);
-            Matcher mathcer4 = voidMethodCallPattern.matcher(nodeLabel);
+            Matcher matcher = RegexUtils.patternMethodCall.matcher(nodeLabel);
+            Matcher matcher2 = RegexUtils.thisCallPattern.matcher(nodeLabel);
+            Matcher matcher3 = RegexUtils.variableCallPattern.matcher(nodeLabel);
+            Matcher mathcer4 = RegexUtils.voidMethodCallPattern.matcher(nodeLabel);
             if (matcher.find()) {
                 String assignation = matcher.group("assignation");
                 String invoke = matcher.group("invoke");
