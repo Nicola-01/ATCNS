@@ -79,13 +79,17 @@ public class IntentAnalysis {
         setupSoot(apkPath, androidJarPath);
         Scene.v().loadNecessaryClasses();
 
-        // Get global variables of the application
+        // Get global variables of the application and print them onto a file
         Map<String, GlobalVariablesInfo> globalVariables = getGlobalVariables(packageName);
-        /*System.out.println("\nGLOBAL VARIABLES:");
-        for (Map.Entry<String, GlobalVariablesInfo> entry : globalVariables.entrySet())
-            System.out.println("Variable: " + entry.getKey() + " " + entry.getValue().toString());
-
-        System.out.println();*/
+        try (FileWriter writer = new FileWriter("globalVariables.txt")) {
+            writer.write("\nGLOBAL VARIABLES:\n");
+            for (Map.Entry<String, GlobalVariablesInfo> entry : globalVariables.entrySet()) {
+                writer.write("Variable: " + entry.getKey() + " " + entry.getValue().toString() + "\n");
+            }
+            writer.write("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Compute the Control Flow Graph (CFG) for exported activities
         Map<String, ExceptionalUnitGraph> graphs = getCFGs(exportedActivities, packageName);

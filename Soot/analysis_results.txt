@@ -1,26 +1,6 @@
-Package: org.smerty.zooborns
-Activity: org.smerty.zooborns.FullscreenImage
-Action: android.intent.action.VIEW
+Package: jp.sblo.pandora.aGrep
+Activity: jp.sblo.pandora.aGrep.Search
+Action: android.intent.action.SEARCH
 
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+action (string) : ""
+query (string) : [no lim] | action (string) : "android.intent.action.SEARCH"

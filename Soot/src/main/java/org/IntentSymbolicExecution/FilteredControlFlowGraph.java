@@ -5,13 +5,13 @@ import org.IntentSymbolicExecution.IntentAnalysis.GlobalVariablesInfo;
 import org.jgrapht.graph.DefaultEdge;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.IntentSymbolicExecution.RegexUtils.*;
 
@@ -75,19 +75,10 @@ public class FilteredControlFlowGraph {
         this.attributes = attributes;
         this.filteredCFG = new HashMap<>();
         // Build the full graph from the ExceptionalUnitGraph.
-        this.fullGraph = new ControlFlowGraph(fullGraph);
-
-        String className = completeMethod.substring(0, completeMethod.lastIndexOf("."));
-        String methodName = completeMethod.substring(completeMethod.lastIndexOf(".") + 1);
-
-        List<String> jimpleCode = getJimpleCode("sootOutput/" + className + ".jimple", methodName + attributes);
+        this.fullGraph = ControlFlowGraph_GotoFixer(fullGraph);
 
         // Resolve method calls by expanding called methods into the graph.
         methodCallResolver();
-
-        // Remove and resolve goto vertices.
-        removeGoToVertex();
-        gotoResolver();
 
         // Replace occurrences of global variables.
         replaceGlobalVariables(globalVariables);
@@ -101,6 +92,26 @@ public class FilteredControlFlowGraph {
         // Simplify string switch constructs and resolve switch statements.
         stringSwitchSimplifier();
         switchResolver();
+    }
+
+    /**
+     * @return
+     */
+    private ControlFlowGraph ControlFlowGraph_GotoFixer(ExceptionalUnitGraph originalGraph) {
+
+        ControlFlowGraph graph = new ControlFlowGraph(originalGraph);
+
+        String className = originalGraph.getBody().getMethod().getDeclaringClass().getName();
+        String methodSign = originalGraph.getBody().getMethod().getSubSignature();
+        methodSign = methodSign.substring(methodSign.lastIndexOf(" ") + 1).replace(",", ", ");
+
+        List<String> jimpleCode = getJimpleCode("sootOutput/" + className + ".jimple", methodSign);
+        List<String> ifjimpleCode = jimpleCode.stream().filter(s -> s.startsWith("if")).collect(Collectors.toList());
+        List<Map.Entry<String, String>> resolvedLabel = findAndResolveLabel(jimpleCode);
+
+        // Remove and resolve goto vertices.
+        gotoResolver(graph, ifjimpleCode, resolvedLabel);
+        return graph;
     }
 
     /**
@@ -155,6 +166,45 @@ public class FilteredControlFlowGraph {
             throw new RuntimeException(e);
         }
     }
+
+
+    /**
+     * TODO itkach_aard2_ArticleCollectionActivity_createFromIntent [1]
+     *
+     * @param jimpleCode
+     * @return
+     */
+    private List<Map.Entry<String, String>> findAndResolveLabel(List<String> jimpleCode) {
+        List<Map.Entry<String, String>> label = new ArrayList<>();
+        List<Map.Entry<String, String>> resolvedLabel = new ArrayList<>();
+
+        Pattern labelPattern = Pattern.compile("^label(\\d+):$");
+
+        for (int i = 1; i < jimpleCode.size(); i++) {
+            String line = jimpleCode.get(i);
+            if (labelPattern.matcher(line).matches())
+                label.add(Map.entry(line, jimpleCode.get(i + 1)));
+        }
+
+        for (int i = label.size() - 1; i >= 0; i--) {
+
+            Map.Entry<String, String> entry = label.get(i);
+            String labelName = entry.getKey().substring(0, entry.getKey().length() - 1);
+            String labelValue = entry.getValue().substring(0, entry.getValue().length() - 1);
+
+            for (Map.Entry<String, String> labelEntry : resolvedLabel) {
+                String prevLabelName = labelEntry.getKey();
+                String prevLabelValue = labelEntry.getValue();
+                labelValue = labelValue.replace(prevLabelName, prevLabelValue);
+            }
+            resolvedLabel.add(Map.entry(labelName, labelValue));
+        }
+
+        // Collections.reverse(resolvedLabel);
+
+        return resolvedLabel;
+    }
+
 
     /**
      * Returns the full control flow graph.
@@ -278,7 +328,7 @@ public class FilteredControlFlowGraph {
             String getGraph = className + "." + methodName + "-(" + argumentsType + ")";
             if (otherMethods.containsKey(getGraph)) {
                 nodes.add(node.getKey());
-                ControlFlowGraph methodGraph = new ControlFlowGraph(otherMethods.get(getGraph));
+                ControlFlowGraph methodGraph = ControlFlowGraph_GotoFixer(otherMethods.get(getGraph));
                 convertedMethodGraph.put(getGraph, methodGraph);
                 nodes.addAll(getCallNode(methodGraph, depth + 1));
             }
@@ -470,11 +520,23 @@ public class FilteredControlFlowGraph {
      * This method searches for nodes with "goto (branch)" in their values, finds the target of the branch,
      * and replaces the branch placeholder with the actual target value.
      */
-    private void gotoResolver() {
-        for (GraphNode node : fullGraph.vertexSet()) {
+    private void gotoResolver(ControlFlowGraph graph, List<String> ifjimpleCode, List<Map.Entry<String, String>> resolvedLabel) {
+
+        Set<GraphNode> nodesToRemove = new HashSet<>();
+        // Identify nodes that start with "goto".
+        for (GraphNode vertex : graph.vertexSet())
+            if (vertex.getValue().startsWith("goto"))
+                nodesToRemove.add(vertex);
+
+        // Remove each identified node from the graph.
+        for (GraphNode node : nodesToRemove)
+            graph.removeVertex(node);
+
+        int ifCounter = 0;
+        for (GraphNode node : graph.vertexSet()) {
             List<GraphNode> gotoNodes = new ArrayList<>();
             // Identify predecessor nodes containing "goto (branch)".
-            for (GraphNode pred : fullGraph.getPredecessorNodes(node)) {
+            for (GraphNode pred : graph.getPredecessorNodes(node)) {
                 if (pred.getValue().contains("goto (branch)"))
                     gotoNodes.add(pred);
             }
@@ -484,12 +546,24 @@ public class FilteredControlFlowGraph {
                 for (GraphNode gotoNode : gotoNodes) {
                     String replace = "";
                     // Find the corresponding successor that matches the current node.
-                    for (GraphNode succ : fullGraph.getSuccessorNodes(gotoNode))
+                    for (GraphNode succ : graph.getSuccessorNodes(gotoNode))
                         if (succ.getKey().equals(node.getKey()))
                             replace = succ.getValue();
-                    fullGraph.replaceVertex(gotoNode.getKey(), gotoNode.getValue().replace("(branch)", replace));
+                    graph.replaceVertex(gotoNode.getKey(), gotoNode.getValue().replace("(branch)", replace));
                 }
             }
+
+
+            if (node.getValue().startsWith("if")) {
+                if (gotoNodes.isEmpty()) {
+                    String ifLine = ifjimpleCode.get(ifCounter);
+                    for (Map.Entry<String, String> label : resolvedLabel)
+                        ifLine = ifLine.replace(label.getKey(), label.getValue());
+                    graph.replaceVertex(node.getKey(), ifLine.replaceAll(";+$", ""));
+                }
+                ifCounter++;
+            }
+
         }
     }
 
@@ -515,15 +589,7 @@ public class FilteredControlFlowGraph {
      * These vertices are removed after reconnecting their predecessors to their successors.
      */
     private void removeGoToVertex() {
-        Set<GraphNode> nodesToRemove = new HashSet<>();
-        // Identify nodes that start with "goto".
-        for (GraphNode vertex : fullGraph.vertexSet())
-            if (vertex.getValue().startsWith("goto"))
-                nodesToRemove.add(vertex);
 
-        // Remove each identified node from the graph.
-        for (GraphNode node : nodesToRemove)
-            fullGraph.removeVertex(node);
     }
 
     /**
@@ -679,10 +745,10 @@ public class FilteredControlFlowGraph {
             String nodeLabel = node.getValue();
             String newNodeLabel;
 
-            Matcher matcher = patternMethodCall.matcher(nodeLabel);
-            Matcher matcher2 = thisCallPattern.matcher(nodeLabel);
-            Matcher matcher3 = variableCallPattern.matcher(nodeLabel);
-            Matcher mathcer4 = voidMethodCallPattern.matcher(nodeLabel);
+            Matcher matcher = RegexUtils.patternMethodCall.matcher(nodeLabel);
+            Matcher matcher2 = RegexUtils.thisCallPattern.matcher(nodeLabel);
+            Matcher matcher3 = RegexUtils.variableCallPattern.matcher(nodeLabel);
+            Matcher mathcer4 = RegexUtils.voidMethodCallPattern.matcher(nodeLabel);
             if (matcher.find()) {
                 String assignation = matcher.group("assignation");
                 String invoke = matcher.group("invoke");
@@ -709,7 +775,7 @@ public class FilteredControlFlowGraph {
                 String varName = matcher2.group(4);
                 String newObject = matcher2.group(5);
                 if (!thisObject.contains("if ")) {
-                    newNodeLabel = String.format("(%s) (%s)this.%s = %s", type, thisObject, varName, newObject);
+                    newNodeLabel = String.format("(%s)this.%s (%s) = %s", thisObject, varName, type, newObject);
                     nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
                 }
             } else if (matcher3.find()) {
