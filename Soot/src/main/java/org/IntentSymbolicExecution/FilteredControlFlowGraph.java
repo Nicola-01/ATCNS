@@ -200,7 +200,7 @@ public class FilteredControlFlowGraph {
             resolvedLabel.add(Map.entry(labelName, labelValue));
         }
 
-        Collections.reverse(resolvedLabel);
+        // Collections.reverse(resolvedLabel);
 
         return resolvedLabel;
     }
@@ -556,17 +556,10 @@ public class FilteredControlFlowGraph {
 
             if (node.getValue().startsWith("if")) {
                 if (gotoNodes.isEmpty()) {
-                    try {
-                        String ifLine = ifjimpleCode.get(ifCounter);
-                        for (Map.Entry<String, String> label : resolvedLabel)
-                            ifLine = ifLine.replace(label.getKey(), label.getValue());
-                        graph.replaceVertex(node.getKey(), ifLine.replaceAll(";+$", ""));
-                    } catch (Exception e) {
-                        String ifLine = ifjimpleCode.get(ifCounter);
-                        for (Map.Entry<String, String> label : resolvedLabel)
-                            ifLine = ifLine.replace(label.getKey(), label.getValue());
-                        graph.replaceVertex(node.getKey(), ifLine.replaceAll(";+$", ""));
-                    }
+                    String ifLine = ifjimpleCode.get(ifCounter);
+                    for (Map.Entry<String, String> label : resolvedLabel)
+                        ifLine = ifLine.replace(label.getKey(), label.getValue());
+                    graph.replaceVertex(node.getKey(), ifLine.replaceAll(";+$", ""));
                 }
                 ifCounter++;
             }
