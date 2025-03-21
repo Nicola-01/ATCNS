@@ -2,3 +2,5 @@ Package: jp.sblo.pandora.aGrep
 Activity: jp.sblo.pandora.aGrep.Search
 Action: android.intent.action.SEARCH
 
+action (string) : ""
+query (string) : [no lim] | action (string) : "android.intent.action.SEARCH"
