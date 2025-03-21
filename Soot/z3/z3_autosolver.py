@@ -179,8 +179,8 @@ def parse_if(graph):
                 op_match = op_regex.match(condition)
                 if op_match:
                     cond_param, operator, cond_value = op_match.groups()
-                    cond_param = cond_param.strip()
-                    cond_value = cond_value.strip()
+                    cond_param = cond_param.strip().lstrip("$")
+                    cond_value = cond_value.strip().lstrip("$")
                     # If the variable is a boolean (for instance, an iterator's hasNext)
                     # then convert "0" to "False" and "1" to "True".
                     if (cond_param in intent_params and intent_params[cond_param].sort().name() == "Bool") or \
@@ -197,6 +197,7 @@ def parse_if(graph):
                     # If the variable is not yet known, try to infer its type.
                     if cond_param not in if_parameters and cond_param not in intent_params:
                         if_parameters[cond_param] = infer_type(cond_param, cond_value)
+                        print("cond_param: ", cond_param, " | cond_value: ", cond_value)
                         var_condition = search_for_var_declaration(graph, cond_param)
                         if var_condition:
                             conditions.append(var_condition)
@@ -227,42 +228,50 @@ def search_for_var_declaration(graph, var_name):
     Searches (only in blue nodes) for a declaration of a variable, and returns a condition
     string if found.
     """
-    var_condition = ""
-    for node, data in get_blue_nodes(graph):
-        label = data.get('label', '').strip()
-        
-        if not label.startswith("if") and ' = ' in label and len(label.split(' = ')) == 2 and var_name in label.split(' = ')[0]:
-            variable, value = label.split(" = ", 1)
-            variable = variable.replace("$", "")
-            value = value.replace("$", "") if value.startswith("$") else value
+    def find_var(nodes):
+        var_condition = ""
+        for node, data in nodes:
+            label = data.get('label', '').strip()
+            
+            if not label.startswith("if") and ' = ' in label and len(label.split(' = ')) == 2 and var_name==label.split(' = ')[0].strip().lstrip("$"):
+                variable, value = label.split(" = ", 1)
+                variable = variable.replace("$", "")
+                value = value.replace("$", "") if value.startswith("$") else value
 
-            if not (' ' in variable):
-                var_condition = f"{variable}=={value}"
+                if not (' ' in variable):
+                    var_condition = f"{variable}=={value}"
 
-            if VAR_DECLARATION_PATTERN.match(label):
-                var, type = variable.split(" ", 1)                
-                if var not in if_parameters and var not in intent_params:
-                    if_parameters[var] = infer_type(var, type)
+                if VAR_DECLARATION_PATTERN.match(label):
+                    var, type = variable.split(" ", 1)                
+                    if var not in if_parameters and var not in intent_params:
+                        if_parameters[var] = infer_type(var, type)
 
-            if '==' in value:
-                var1, var2 = value.split("==")
-                var1 = var1.strip()
-                var2 = var2.strip()
-                if var1 not in intent_params and var1 not in if_parameters:
-                    add_new_condition(graph, var1)
-                if var2 not in intent_params and var2 not in if_parameters:
-                    add_new_condition(graph, var2)
-                var_condition = f"{variable}==({var1}=={var2})"
+                if '==' in value:
+                    var1, var2 = value.split("==")
+                    var1 = var1.strip()
+                    var2 = var2.strip()
+                    if var1 not in intent_params and var1 not in if_parameters:
+                        add_new_condition(graph, var1)
+                    if var2 not in intent_params and var2 not in if_parameters:
+                        add_new_condition(graph, var2)
+                    var_condition = f"{variable}==({var1}=={var2})"
 
-            # Check for iterator hasNext() invocations.
-            iterator_match = ITERATOR_PATTERN.match(label)
-            if iterator_match:
-                var = iterator_match.group(1).lstrip('$')
-                if var not in if_parameters and var not in intent_params:
-                    if_parameters[var] = Bool(var)
-                    return
+                # Check for iterator hasNext() invocations.
+                iterator_match = ITERATOR_PATTERN.match(label)
+                if iterator_match:
+                    var = iterator_match.group(1).lstrip('$')
+                    if var not in if_parameters and var not in intent_params:
+                        if_parameters[var] = Bool(var)
+                        return
 
-    return var_condition
+        return var_condition
+    
+    var = find_var(get_blue_nodes(graph))
+
+    if not var:
+        var = find_var(graph.nodes(data=True))
+
+    return var
 
 def add_new_condition(graph, var_name):
     """
