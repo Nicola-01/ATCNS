@@ -749,7 +749,7 @@ public class FilteredControlFlowGraph {
                 String varName = matcher2.group(4);
                 String newObject = matcher2.group(5);
                 if (!thisObject.contains("if ")) {
-                    newNodeLabel = String.format("%s_this.%s (%s) = %s", thisObject, varName, type, newObject);
+                    newNodeLabel = String.format("%s_this_%s (%s) = %s", thisObject, varName, type, newObject);
                     nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
                 }
             } else if (matcher3.find()) {
@@ -759,7 +759,7 @@ public class FilteredControlFlowGraph {
                 String returnedType = matcher3.group(4);
                 String varName = matcher3.group(5);
                 if (object.equals("r0"))
-                    newNodeLabel = String.format("%s (%s) = %s_this.%s", assignation, returnedType, object, varName);
+                    newNodeLabel = String.format("%s (%s) = %s_this_%s", assignation, returnedType, object, varName);
                 else
                     newNodeLabel = String.format("%s (%s) = (%s) %s.%s", assignation, returnedType, objectType, object, varName);
                 nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
