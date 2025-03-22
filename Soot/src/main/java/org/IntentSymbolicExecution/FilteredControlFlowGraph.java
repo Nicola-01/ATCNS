@@ -321,7 +321,9 @@ public class FilteredControlFlowGraph {
 
             String className = matcher.group("objectType");
             String methodName = matcher.group("method");
-            String argumentsType = matcher.group("argumentType").replace(",", ", ");
+            String argumentsType = "";
+            if (matcher.group("argumentType") != null)
+                argumentsType = matcher.group("argumentType").replace(",", ", ");
             // String arguments = matcher.group("argument");
             // String assignation = matcher.group("assignation");
 
@@ -759,7 +761,9 @@ public class FilteredControlFlowGraph {
                 String argument = matcher.group("argument");
                 if (method.equals("equals") || method.equals("areEqual"))
                     newNodeLabel = String.format("%s = %s == %s", assignation, object, argument);
-                else if ((invoke.equals("virtualinvoke") || invoke.equals("specialinvoke")) && object != null && assignation != null)
+                else if (invoke == null)
+                    newNodeLabel = String.format("%s (%s) = %s.%s", assignation, returnedType, object, method);
+                else if ((invoke.equals("virtualinvoke") || invoke.equals("specialinvoke") || invoke.equals("interfaceinvoke")) && object != null && assignation != null)
                     newNodeLabel = String.format("%s (%s) = (%s) %s.%s(%s)", assignation, returnedType, objectType, object, method, argument);
                 else if (invoke != null && object == null && assignation != null)
                     newNodeLabel = String.format("%s (%s) = (%s).%s(%s)", assignation, returnedType, objectType, method, argument);

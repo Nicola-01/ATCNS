@@ -26,9 +26,15 @@ ITERATOR_PATTERN = re.compile(
     r'^\$?(\w+)\s*=\s*interfaceinvoke\s+\$?\w+\.<java\.util\.Iterator:\s*boolean\s+hasNext\(\)>\(\)'
 )
 
-VAR_DECLARATION_PATTERN = re.compile(
+STANDARD_VAR_DECLARATION_PATTERN = re.compile(
     r'^(?P<variable>\$?\w[\w\d_]*)\s+\((?P<return_type>[^)]+)\)\s*=\s*\((?P<package>[^)]+)\)\s+'
     r'(?P<object>\$?\w[\w\d_]*)\.(?P<method>\w+)\((?P<parameter>[^)]*)\)$'
+)
+
+THIS_VAR_DECLARATION_PATTERN = re.compile(
+    r'^(?P<var_name>[\w\$]+)\s*'
+    r'\(\s*(?P<type>[^)]+)\s*\)\s*'
+    r'=\s*\(r0\)this\.(?P<param>[\w\$]+)$'
 )
 
 # Mapping for displaying types in the desired format.
@@ -181,27 +187,39 @@ def parse_if(graph):
                     cond_param, operator, cond_value = op_match.groups()
                     cond_param = cond_param.strip().lstrip("$")
                     cond_value = cond_value.strip().lstrip("$")
-                    # If the variable is a boolean (for instance, an iterator's hasNext)
-                    # then convert "0" to "False" and "1" to "True".
-                    if (cond_param in intent_params and intent_params[cond_param].sort().name() == "Bool") or \
-                       (cond_param in if_parameters and if_parameters[cond_param].sort().name() == "Bool"):
-                        if cond_value == "0":
-                            cond_value = "False"
-                        elif cond_value == "1":
-                            cond_value = "True"
-                    # If the variable is serializable, replace "null" with "null_serializable".
-                    if (cond_param in intent_params and intent_params[cond_param].sort().name() == "Serializable") or \
-                       (cond_param in if_parameters and if_parameters[cond_param].sort().name() == "Serializable"):
-                        cond_value = cond_value.replace("null", "null_serializable")
-                    
+
                     # If the variable is not yet known, try to infer its type.
                     if cond_param not in if_parameters and cond_param not in intent_params:
-                        if_parameters[cond_param] = infer_type(cond_param, cond_value)
-                        print("cond_param: ", cond_param, " | cond_value: ", cond_value)
                         var_condition = search_for_var_declaration(graph, cond_param)
+                        #if cond_param=="z0_4":
+                        #    print("cond_param: ", cond_param, " condition: ", var_condition)
+
                         if var_condition:
                             conditions.append(var_condition)
-                    
+                        # If still cond_param isn't in the dictionaries after the search_var_declaration() function call, insert it    
+                        if cond_param not in if_parameters and cond_param not in intent_params:
+                            if_parameters[cond_param] = infer_type(cond_param, cond_value)
+                
+                    # Case where the if involves 2 variables: i0 == r3
+                    # If cond_value is not a numeric literal, a quoted string or null, assume it's a variable.
+                    if (not cond_value.isdigit() and
+                        not (cond_value.startswith('"') and cond_value.endswith('"')) and 
+                        not cond_value=="null"):
+                        #print("cond_param: ", cond_param, " | cond_value: ", cond_value)
+                        # If not already in parameters, search for its declaration.
+                        if cond_value not in intent_params and cond_value not in if_parameters:
+                            decl = search_for_var_declaration(graph, cond_value)
+                            if decl:
+                                # Assume decl is in the form "var==value" so we extract the value part.
+                                try:
+                                    _, decl_value = decl.split("==")
+                                    decl_value = decl_value.strip()
+                                except Exception:
+                                    decl_value = "0"  # fallback
+                                # Add the variable using inferred type (or default to Int here)
+                                if cond_value not in if_parameters:
+                                    if_parameters[cond_value] = infer_type(cond_value, decl_value)
+
                     # Reconstruct the condition string with the (possibly transformed) cond_value.
                     condition = f"{cond_param} {operator} {cond_value}"
                     
@@ -223,6 +241,30 @@ def parse_if(graph):
                         if condition not in conditions:
                             conditions.append(condition)
 
+                    # If the variable is a boolean (for instance, an iterator's hasNext)
+                    # then convert "0" to "False" and "1" to "True".
+                    if (cond_param in intent_params and intent_params[cond_param].sort().name() == "Bool") or \
+                       (cond_param in if_parameters and if_parameters[cond_param].sort().name() == "Bool"):
+                        print(cond_param)
+                        pattern = rf'(Not\s*\(\s*)?\b{cond_param}\s*==\s*(0|1)'
+    
+                        for idx, cond in enumerate(conditions):
+                            match = re.search(pattern, cond)
+                            if match:
+                                cond_value = match.group(2)  # Capture the 0 or 1
+                                new_literal = "False" if cond_value == "0" else "True"
+
+                                # Replace the matched 0/1 with False/True, keeping other parts intact
+                                new_cond = re.sub(pattern, rf'\1{cond_param} == {new_literal}', cond)
+                                conditions[idx] = new_cond
+                                #cond_value = new_literal
+                                break  # Stop after the first matching condition.
+
+                    # If the variable is serializable, replace "null" with "null_serializable".
+                    if (cond_param in intent_params and intent_params[cond_param].sort().name() == "Serializable") or \
+                       (cond_param in if_parameters and if_parameters[cond_param].sort().name() == "Serializable"):
+                        cond_value = cond_value.replace("null", "null_serializable")
+
 def search_for_var_declaration(graph, var_name):
     """
     Searches (only in blue nodes) for a declaration of a variable, and returns a condition
@@ -232,29 +274,44 @@ def search_for_var_declaration(graph, var_name):
         var_condition = ""
         for node, data in nodes:
             label = data.get('label', '').strip()
-            
-            if not label.startswith("if") and ' = ' in label and len(label.split(' = ')) == 2 and var_name==label.split(' = ')[0].strip().lstrip("$"):
+
+            pattern = re.compile(r'^(?P<var_name>[\w\$]+)\s*\(\s*(?P<type>[^)]+)\s*\)$')
+            if pattern.match(label.split(' = ')[0].strip().lstrip("$")):
+                final_condition = var_name==label.split(' = ')[0].strip().lstrip("$").split(" ")[0]
+            else:
+                final_condition = var_name==label.split(' = ')[0].strip().lstrip("$")
+
+            if not label.startswith("if") and ' = ' in label and len(label.split(' = ')) == 2 and final_condition:
                 variable, value = label.split(" = ", 1)
                 variable = variable.replace("$", "")
                 value = value.replace("$", "") if value.startswith("$") else value
+                #if var_name=="z0_4":
+                #    print(variable, " ", value)
 
-                if not (' ' in variable):
-                    var_condition = f"{variable}=={value}"
-
-                if VAR_DECLARATION_PATTERN.match(label):
-                    var, type = variable.split(" ", 1)                
+                if STANDARD_VAR_DECLARATION_PATTERN.match(label) or THIS_VAR_DECLARATION_PATTERN.match(label):
+                    var, type = variable.split(" ", 1)               
                     if var not in if_parameters and var not in intent_params:
                         if_parameters[var] = infer_type(var, type)
 
-                if '==' in value:
+                elif '==' in value:
+                    # In case there's "==" in the value of the variable, the variable is Bool
+                    if var_name not in if_parameters and var_name not in intent_params:
+                        if_parameters[var_name] = Bool(var_name)
                     var1, var2 = value.split("==")
                     var1 = var1.strip()
                     var2 = var2.strip()
+                    #print("vars: ", var1, var2)
                     if var1 not in intent_params and var1 not in if_parameters:
                         add_new_condition(graph, var1)
                     if var2 not in intent_params and var2 not in if_parameters:
                         add_new_condition(graph, var2)
                     var_condition = f"{variable}==({var1}=={var2})"
+
+                elif not (' ' in variable):
+                    #print("var: ", variable, " value: ", value)
+                    var_condition = f"{variable}=={value}"
+                    if variable not in if_parameters and variable not in intent_params:
+                        if_parameters[variable] = infer_type(variable, value)
 
                 # Check for iterator hasNext() invocations.
                 iterator_match = ITERATOR_PATTERN.match(label)
