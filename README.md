@@ -5,6 +5,9 @@ Project for the course Advanced Topics in Computer and Network Security of the M
 
 [Presentation placeholder](https://www.canva.com/)
 
+## Prerequisite
+avdmanager & sdkmanager
+
 ## Group members
 
 | **[Nicola Busato](https://github.com/Nicola-01)**| **[Jacopo Momesso](https://github.com/JapoMomi1)** |
