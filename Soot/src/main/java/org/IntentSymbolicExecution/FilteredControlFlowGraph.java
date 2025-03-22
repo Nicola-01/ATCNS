@@ -751,28 +751,7 @@ public class FilteredControlFlowGraph {
             Matcher matcher2 = RegexUtils.thisCallPattern.matcher(nodeLabel);
             Matcher matcher3 = RegexUtils.variableCallPattern.matcher(nodeLabel);
             Matcher mathcer4 = RegexUtils.voidMethodCallPattern.matcher(nodeLabel);
-            if (matcher.find()) {
-                String assignation = matcher.group("assignation");
-                String invoke = matcher.group("invoke");
-                String object = matcher.group("object");
-                String objectType = matcher.group("objectType");
-                String returnedType = matcher.group("returnedType");
-                String method = matcher.group("method");
-                String argument = matcher.group("argument");
-                if (method.equals("equals") || method.equals("areEqual"))
-                    newNodeLabel = String.format("%s = %s == %s", assignation, object, argument);
-                else if (invoke == null)
-                    newNodeLabel = String.format("%s (%s) = %s.%s", assignation, returnedType, object, method);
-                else if ((invoke.equals("virtualinvoke") || invoke.equals("specialinvoke") || invoke.equals("interfaceinvoke")) && object != null && assignation != null)
-                    newNodeLabel = String.format("%s (%s) = (%s) %s.%s(%s)", assignation, returnedType, objectType, object, method, argument);
-                else if (invoke != null && object == null && assignation != null)
-                    newNodeLabel = String.format("%s (%s) = (%s).%s(%s)", assignation, returnedType, objectType, method, argument);
-                else if (assignation == null)
-                    newNodeLabel = String.format("(%s) (%s).%s(%s)", returnedType, objectType, method, argument);
-                else
-                    newNodeLabel = nodeLabel;
-                nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
-            } else if (matcher2.find()) {
+            if (matcher2.find()) {
                 String thisObject = matcher2.group(1);
                 //String packageName = matcher2.group(2);
                 String type = matcher2.group(3);
@@ -800,6 +779,27 @@ public class FilteredControlFlowGraph {
                 //String paramsType = mathcer4.group(5);
                 String params = mathcer4.group(6);
                 newNodeLabel = String.format("(%s) %s.%s(%s)", objectType, object, method, params);
+                nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
+            } else if (matcher.find()) {
+                String assignation = matcher.group("assignation");
+                String invoke = matcher.group("invoke");
+                String object = matcher.group("object");
+                String objectType = matcher.group("objectType");
+                String returnedType = matcher.group("returnedType");
+                String method = matcher.group("method");
+                String argument = matcher.group("argument");
+                if (method.equals("equals") || method.equals("areEqual"))
+                    newNodeLabel = String.format("%s = %s == %s", assignation, object, argument);
+                else if (invoke == null)
+                    newNodeLabel = String.format("%s (%s) = %s.%s", assignation, returnedType, object, method);
+                else if ((invoke.equals("virtualinvoke") || invoke.equals("specialinvoke") || invoke.equals("interfaceinvoke")) && object != null && assignation != null)
+                    newNodeLabel = String.format("%s (%s) = (%s) %s.%s(%s)", assignation, returnedType, objectType, object, method, argument);
+                else if (invoke != null && object == null && assignation != null)
+                    newNodeLabel = String.format("%s (%s) = (%s).%s(%s)", assignation, returnedType, objectType, method, argument);
+                else if (assignation == null)
+                    newNodeLabel = String.format("(%s) (%s).%s(%s)", returnedType, objectType, method, argument);
+                else
+                    newNodeLabel = nodeLabel;
                 nodesRelabeled.add(Map.entry(nodeLabel, newNodeLabel));
             }
         }

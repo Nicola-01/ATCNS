@@ -17,7 +17,7 @@ GETACTION_PATTERN = re.compile(
 )
 
 # Regex pattern for matching the parameter definition in the node label.
-PARAM_PATTERN = re.compile(
+INTENT_PARAM_PATTERN = re.compile(
     r'^\$?(\w+)\s*\(([^)]+)\)\s*=\s*\(android\.(?:os\.Bundle|content\.Intent)\)\s*\$?\w+\.get\w+\("([^"]+)"(?:,\s*[^)]+)?\)'
 )
 
@@ -35,6 +35,10 @@ THIS_VAR_DECLARATION_PATTERN = re.compile(
     r'^(?P<var_name>[\w\$]+)\s*'
     r'\(\s*(?P<type>[^)]+)\s*\)\s*'
     r'=\s*\(r0\)this\.(?P<param>[\w\$]+)$'
+)
+
+OPERATOR_PATTERN = re.compile(
+    r'(\w+)\s*(==|<=|>=|<|>|!=)\s*(.+)'
 )
 
 # Mapping for displaying types in the desired format.
@@ -144,7 +148,7 @@ def parse_intent_params(graph):
             continue  # Skip further processing for this node.
 
         # try matching the normal parameter pattern.
-        match = PARAM_PATTERN.match(label)
+        match = INTENT_PARAM_PATTERN.match(label)
         if match:
             var, ret_type, param_name = match.groups()
             var = var.lstrip('$')
@@ -181,8 +185,8 @@ def parse_if(graph):
             match = re.search(r'if\s+(.+?)\s+goto', label)
             if match:
                 condition = match.group(1).lstrip('$')
-                op_regex = re.compile(r'(\w+)\s*(==|<=|>=|<|>|!=)\s*(.+)')
-                op_match = op_regex.match(condition)
+                op_match = OPERATOR_PATTERN.match(condition)
+                
                 if op_match:
                     cond_param, operator, cond_value = op_match.groups()
                     cond_param = cond_param.strip().lstrip("$")
