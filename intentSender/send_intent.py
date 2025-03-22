@@ -1,3 +1,6 @@
+import argparse
+from curses.ascii import ACK
+import os
 import subprocess
 import re
 from itertools import product
@@ -5,19 +8,24 @@ import sys
 
 #python3 send_intent.py ../Soot/z3/analysis_results.txt
 
-def parse_intent_file(file_path):
+def parse_file(file_path):  
+    
     with open(file_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
     
-    # Extract Package, Activity, and Action
-    package = re.search(r'Package:\s*(\S+)', lines[0]).group(1)
-    activity = re.search(r'Activity:\s*(\S+)', lines[1]).group(1)
-    action = re.search(r'Action:\s*(\S+)', lines[2]).group(1)
     
+    metadata = {}
     intents = []
+    metadata_pattern = re.compile(r"(apkFile|sdkVersion|package|activity|action):\s*(.+)")
     param_pattern = re.compile(r'(\w+)\s*\((\w+)\)\s*:\s*"?([^|\n"]+)"?')
     
-    for line in lines[4:]:
+    for line in lines:
+        
+        match = re.match(metadata_pattern, line)
+        if match:
+            key, value = match.groups()
+            metadata[key] = value.strip()
+        
         params = []
         for match in param_pattern.finditer(line):
             
@@ -42,14 +50,13 @@ def parse_intent_file(file_path):
                 'values': values
             })
         
-        intents.append(params)
-    
+        if len(params) > 0:
+            intents.append(params)
+        
     return {
-        'Package': package,
-        'Activity': activity,
-        'Action': action,
-        'Intents': intents
-    }
+        'metadata': metadata,
+        'intents': intents
+        }
     
 def generate_combinations(intent):
     keys = [(param['name'], param['type']) for param in intent]
@@ -64,63 +71,102 @@ def generate_combinations(intent):
         
     return extras
 
-if len(sys.argv) != 2:
-    print("Usage: python send_intent.py <fileDir>")
-    sys.exit(1)
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("apk_path", help="path to app apk file")
+    parser.add_argument("values_path", help="path to relative apk intents values file")
+    args = parser.parse_args()
+    return args
 
-file_path = sys.argv[1]
-    
-# file_path = "../Soot/z3/analysis_results.txt"
-    
-result = parse_intent_file(file_path)
+def launch_app(apk):
+    print("Lauching the app")
+    mainactivity = "{}/{}".format(apk.get_package(), apk.get_main_activity())
+    os.system("adb shell am start -n {act}".format(act=mainactivity))
 
-package = result['Package']
-activity = result['Activity']   
-action = result['Action']
-intents = result['Intents']
-# print(package, activity, action, intents)
+def uninstall(apk):
+    if (os.system("adb shell pm list packages | grep {package}".format(package=apk.get_package())) == 0):
+        print("Uninstalling the app")
+        subprocess.call(["adb", "uninstall", apk.get_package()], stdout=subprocess.DEVNULL)
 
-get_PID = f"adb shell pidof {package}"
-pid = subprocess.run(get_PID, shell=True, check=True, text=True, capture_output=True).stdout.strip()
-# print("PID:", pid)
-
-
-
-# # Add extras if needed
-# for key, value in params.items():
-#     for param, val in value.items():
-#         drozer_command += f" --extra {key} {param} {val}"
-        
-drozer_command = (
-    "drozer console connect --command 'run app.activity.start "
-    f"--component {package} {activity} " )
-
-if action != "":
-    drozer_command += f"--action {action} "   
-
-for intent in intents:
-    extras = generate_combinations(intent)
-    
-    for extra in extras:
-        drozer_command_cpy = drozer_command
-        drozer_command_cpy += extra
-        drozer_command_cpy += "'"
-                    
-        print("Drozer command:", drozer_command_cpy)
-
-        # Execute the command
+def install(apk):
+    print("Installing the app")
+    while True:
         try:
-            subprocess.run("adb logcat -c", shell=True, check=True, text=True)
-            result = subprocess.run(drozer_command_cpy, shell=True, check=True, text=True, capture_output=True)
-            
-            # print("Command executed successfully.")
-            # print("Output:", result.stdout)
+            os.system("adb install -g {apk}".format(apk=apk.get_filename()))
+            break
+        except subprocess.CalledProcessError as err:
+            print('[!] install failed')
+            print(err)
+            print('[!] retrying')
 
-            get_logs = f"adb logcat --pid={pid} -d"
-            # print("Get logs command:", get_logs)
-            logs = subprocess.run(get_logs, shell=True, check=True, text=True, capture_output=True).stdout
-            print(logs)
+def main(args):
+    
+    print("Lauching the emulator")
+    # os.system("~/Android/Sdk/emulator/emulator -avd mobiotsec -no-audio -no-boot-anim -accel on -gpu swiftshader_indirect &")
+
+    file_path = args.values_path
+        
+    # file_path = "../Soot/z3/analysis_results.txt"
+        
+    result = parse_file(file_path)
+
+    metadata = result['metadata']
+    apkFile = metadata['apkFile']
+    sdkVersion = metadata['sdkVersion']
+    package = metadata['package']
+    activity = metadata['activity']   
+    action = metadata['action']
+    
+    intents = result['intents']
+    # print(package, activity, action, intents)
+    
+    apk = ACK(args.apk_path)
+    uninstall(apk)
+    install(apk)
+    launch_app(apk)
+    
+    get_PID = f"adb shell pidof {package}"
+    pid = subprocess.run(get_PID, shell=True, check=True, text=True, capture_output=True).stdout.strip()
+    # print("PID:", pid)
+
+    # # Add extras if needed
+    # for key, value in params.items():
+    #     for param, val in value.items():
+    #         drozer_command += f" --extra {key} {param} {val}"
+            
+    drozer_command = (
+        "drozer console connect --command 'run app.activity.start "
+        f"--component {package} {activity} " )
+
+    if action != "":
+        drozer_command += f"--action {action} "   
+
+    for intent in intents:
+        extras = generate_combinations(intent)
+        
+        for extra in extras:
+            drozer_command_cpy = drozer_command
+            drozer_command_cpy += extra
+            drozer_command_cpy += "'"
+                        
+            print("Drozer command:", drozer_command_cpy)
+
+            # Execute the command
+            try:
+                subprocess.run("adb logcat -c", shell=True, check=True, text=True)
+                result = subprocess.run(drozer_command_cpy, shell=True, check=True, text=True, capture_output=True)
                 
-        except subprocess.CalledProcessError as e:
-            print("Error executing command:", e)
-            print("Error Output:", e.stderr)           
+                # print("Command executed successfully.")
+                # print("Output:", result.stdout)
+
+                get_logs = f"adb logcat --pid={pid} -d"
+                # print("Get logs command:", get_logs)
+                logs = subprocess.run(get_logs, shell=True, check=True, text=True, capture_output=True).stdout
+                print(logs)
+                    
+            except subprocess.CalledProcessError as e:
+                print("Error executing command:", e)
+                print("Error Output:", e.stderr)           
+
+if __name__ == "__main__":
+    main(parse_args())

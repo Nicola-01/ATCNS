@@ -81,11 +81,11 @@ def extract_metadata(dot_path):
     """
     Extracts package, activity, and action from the DOT file header.
     """
-    metadata = {"package": None, "activity": None, "action": None}
+    metadata = {}
     with open(dot_path, "r", encoding="utf-8") as file:
         for line in file:
             if line.startswith("#"):
-                match = re.match(r"#\s*(package|activity|action):\s*(.+)", line)
+                match = re.match(r"#\s*(apkFile|sdkVersion|package|activity|action):\s*(.+)", line)
                 if match:
                     key, value = match.groups()
                     metadata[key] = value.strip()
@@ -411,7 +411,7 @@ metadata = extract_metadata(dot_file)
 
 with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
     for key, value in metadata.items():
-        output_file.write(f"{key.capitalize()}: {value}\n")
+        output_file.write(f"{key}: {value}\n")
     output_file.write("\n")
     
     # Process each subgraph (path).

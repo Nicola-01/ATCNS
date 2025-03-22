@@ -237,13 +237,16 @@ public class CFGPathFinder {
         visitedInPath.remove(currentNode);
     }
 
-    public void generateDotFile(String fileName, String packageName, String activity, String action) {
+    public void generateDotFile(String fileName, String apkFileName, int adkVersion, String packageName, String activity, String action) {
         try (FileWriter writer = new FileWriter(fileName)) {
 
 
             List<List<GraphNode>> allPaths = getAllPaths();
             List<List<GraphNode>> renamedAllPaths = variableRenaming(allPaths);
 
+            writer.write(String.format("# apkFile: %s\n", apkFileName));
+            writer.write(String.format("# sdkVersion: %d\n", adkVersion));
+            writer.write("# -----\n");
             writer.write(String.format("# package: %s\n", packageName));
             writer.write(String.format("# activity: %s\n", activity));
             writer.write(String.format("# action: %s\n", action));

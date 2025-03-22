@@ -134,7 +134,6 @@ public class FilteredControlFlowGraph {
             List<String> lines = Files.readAllLines(Paths.get(filePath));
             List<String> methodContent = new ArrayList<>();
             boolean insideMethod = false;
-            boolean firstLine = true;
             int braceCount = 0;
 
             for (String line : lines) {

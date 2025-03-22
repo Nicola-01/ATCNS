@@ -1,6 +1,5 @@
 package org.IntentSymbolicExecution;
 
-import android.app.Activity;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -14,7 +13,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -144,7 +142,7 @@ public class ManifestParsing {
             }
 
         } catch (IOException | InterruptedException | ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
 
         // Return null if there's an error or manifest is not found
@@ -165,7 +163,7 @@ public class ManifestParsing {
             Process process = processBuilder.start();
             process.waitFor();
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 

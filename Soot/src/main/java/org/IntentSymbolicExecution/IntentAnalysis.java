@@ -65,6 +65,7 @@ public class IntentAnalysis {
     public IntentAnalysis(String apkPath, String androidJarPath) {
         // Parse the APK's AndroidManifest.xml to retrieve metadata
         ManifestParsing manifest = new ManifestParsing(apkPath);
+        String apkName = apkPath.substring(apkPath.lastIndexOf("/")+1);
 
         // Retrieve necessary data from the manifest
         int SDK_Version = manifest.getSDK_Version();
@@ -118,7 +119,8 @@ public class IntentAnalysis {
 
                 String fileName = "paths/" + filteredControlFlowGraph.getCompleteMethod() + "_paths.dot";
                 CFGPathFinder pathFinder = new CFGPathFinder(filteredControlFlowGraph);
-                pathFinder.generateDotFile(fileName, packageName, activityName, action);
+
+                pathFinder.generateDotFile(fileName, apkName, SDK_Version, packageName, activityName, action);
             }
         }
 
