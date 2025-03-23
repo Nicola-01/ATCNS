@@ -1,10 +1,16 @@
 import argparse
-from curses.ascii import ACK
+import time
+from androguard.core.apk import APK
 import os
 import subprocess
 import re
 from itertools import product
 import sys
+
+from emulator import emulator_initialiser
+
+    
+DROZER_APK = APK("drozer-agent.apk")
 
 #python3 send_intent.py ../Soot/z3/analysis_results.txt
 
@@ -38,7 +44,7 @@ def parse_file(file_path):
                 if type == 'string':
                     values = ['""', '"abc"', '"123"', '"abc123"', '"abc 123"', '"abc@123"']
                 elif type == 'integer':
-                    values = [0, 1, -1, 100, -100, 1000, -1000, 2147483647, -2147483648]
+                    values = [0, 1, -1, 2147483647, -2147483648]
                 elif type == 'boolean':
                     values = [True, False]
             else:
@@ -78,13 +84,21 @@ def parse_args():
     args = parser.parse_args()
     return args
 
+def check_app_installed(apk):
+    if (os.system("adb shell pm list packages | grep {package}".format(package=apk.get_package())) == 0):
+        print("App already installed")
+        return True
+    else:
+        print("App not installed")
+        return False
+
 def launch_app(apk):
     print("Lauching the app")
     mainactivity = "{}/{}".format(apk.get_package(), apk.get_main_activity())
     os.system("adb shell am start -n {act}".format(act=mainactivity))
 
 def uninstall(apk):
-    if (os.system("adb shell pm list packages | grep {package}".format(package=apk.get_package())) == 0):
+    if check_app_installed(apk):
         print("Uninstalling the app")
         subprocess.call(["adb", "uninstall", apk.get_package()], stdout=subprocess.DEVNULL)
 
@@ -98,10 +112,28 @@ def install(apk):
             print('[!] install failed')
             print(err)
             print('[!] retrying')
+            
+def stop(apk):
+    os.system("adb shell am force-stop {package}".format(package=apk.get_package()))
+            
+def drozer_in_foreground():
+    launch_app(DROZER_APK)     
+
+def drozer_setup():
+   
+    if not check_app_installed(DROZER_APK):
+        install(DROZER_APK)
+    else:
+        stop(DROZER_APK)
+    
+    launch_app(DROZER_APK)
+    os.system("adb forward tcp:31415 tcp:31415")
+    time.sleep(1)
+    os.system("adb shell input tap 975 1800")
+    
 
 def main(args):
     
-    print("Lauching the emulator")
     # os.system("~/Android/Sdk/emulator/emulator -avd mobiotsec -no-audio -no-boot-anim -accel on -gpu swiftshader_indirect &")
 
     file_path = args.values_path
@@ -117,14 +149,25 @@ def main(args):
     activity = metadata['activity']   
     action = metadata['action']
     
+    print("Lauching the emulator")
+    emulator_initialiser(sdkVersion)
+    
     intents = result['intents']
     # print(package, activity, action, intents)
     
-    apk = ACK(args.apk_path)
+    time.sleep(5)
+    
+    drozer_setup() 
+    
+    time.sleep(1)
+    
+    apk = APK(args.apk_path)
+    check_app_installed(apk)
     uninstall(apk)
     install(apk)
     launch_app(apk)
     
+    time.sleep(1)
     get_PID = f"adb shell pidof {package}"
     pid = subprocess.run(get_PID, shell=True, check=True, text=True, capture_output=True).stdout.strip()
     # print("PID:", pid)
@@ -145,6 +188,8 @@ def main(args):
         extras = generate_combinations(intent)
         
         for extra in extras:
+            drozer_in_foreground()
+            
             drozer_command_cpy = drozer_command
             drozer_command_cpy += extra
             drozer_command_cpy += "'"
