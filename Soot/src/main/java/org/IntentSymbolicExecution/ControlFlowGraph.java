@@ -344,7 +344,7 @@ public class ControlFlowGraph {
         /**
          * Unique identifier for the node.
          */
-        private final String NodeKey;
+        private String NodeKey;
         /**
          * The value or label of the node (typically representing a program statement).
          */
@@ -366,6 +366,15 @@ public class ControlFlowGraph {
          */
         public String getKey() {
             return NodeKey;
+        }
+
+        /**
+         * Sets a new key for the node.
+         *
+         * @param key The new key to set.
+         */
+        public void setKey(String key) {
+            this.NodeKey = key;
         }
 
         /**

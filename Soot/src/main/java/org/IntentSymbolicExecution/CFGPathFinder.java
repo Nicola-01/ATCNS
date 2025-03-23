@@ -258,11 +258,18 @@ public class CFGPathFinder {
 
             int count = 0;
 
+            Set<Integer> highlightNodesList = new HashSet<>(); // Set with the hashcode of previous list, to avoid repetition
+
             for (int pathIndex = 0; pathIndex < renamedAllPaths.size(); pathIndex++) {
 
                 List<GraphNode> path = renamedAllPaths.get(pathIndex);
                 List<String> nodeToHighlight = filteredNodes(path);
                 if (nodeToHighlight.isEmpty()) continue;
+
+                int hashCode = nodeToHighlight.hashCode();
+                if (highlightNodesList.contains(hashCode))
+                    continue;
+                highlightNodesList.add(hashCode);
 
                 count++;
                 sb.append(String.format("subgraph path_%d {\n", pathNumber));

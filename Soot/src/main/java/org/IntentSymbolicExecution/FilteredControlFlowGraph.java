@@ -337,6 +337,12 @@ public class FilteredControlFlowGraph {
         return nodes;
     }
 
+
+    /**
+     * Add a number in the nodeName to uniquifier in, in the method expansion, avoiding problems in graph overlapping
+     */
+    private int expandMethodUniquifier = 1;
+
     /**
      * Integrates a method's control flow graph into the full graph at the given call site.
      * <p>
@@ -356,12 +362,13 @@ public class FilteredControlFlowGraph {
         ControlFlowGraph newGraph = new ControlFlowGraph();
 
         List<Map.Entry<String, String>> methodParameter = new ArrayList<>();
+        List<String> methodNodesKey = new ArrayList<>();
 
         // Iterate over all vertices in the full graph.
         for (GraphNode vertex : graph.vertexSet()) {
+            newGraph.addNode(vertex);
             if (node.equalsKey(vertex)) {
                 int parametersCount = 0;
-                newGraph.addNode(vertex);
                 // Process each node in the called method's graph.
                 for (GraphNode methodNode : methodGraph.vertexSet()) {
                     String line = methodNode.getValue();
@@ -388,9 +395,9 @@ public class FilteredControlFlowGraph {
 //                        line = line.replace("return ", assignation + " (return.) = ");
 
                     newGraph.addNode(new GraphNode(methodNode.getKey(), line));
+                    methodNodesKey.add(methodNode.getKey());
                 }
-            } else
-                newGraph.addNode(vertex);
+            }
         }
 
         // Add edges from the called method's graph into the new graph.
@@ -425,6 +432,12 @@ public class FilteredControlFlowGraph {
             for (GraphNode leaf : leafs)
                 newGraph.addEdge(newGraph.findNodeByKey(leaf.getKey()), nodeSucc);
 
+        for (GraphNode vertex : newGraph.vertexSet()) {
+            if (methodNodesKey.contains(vertex.getKey()))
+                vertex.setKey(vertex.getKey() + expandMethodUniquifier);
+        }
+
+        expandMethodUniquifier++;
         return newGraph;
     }
 
