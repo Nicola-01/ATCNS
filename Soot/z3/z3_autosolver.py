@@ -302,27 +302,24 @@ def search_for_var_declaration(graph, var_name):
                     THIS_VAR_ASSIGNATION_PATTERN.match(label) or \
                     THIS_VAR_DECLARATION_PATTERN.match(label):
                     var, type = variable.split(" ", 1)
-                    #if var_name=="r0_this.mQuery_1":
-                    #    print("ok")             
+                    #if var_name=="":
+                    #    print(variable, " : ", value)             
                     if var not in if_parameters and var not in intent_params:
                         if_parameters[var] = infer_type(var, type)
 
                     if THIS_VAR_ASSIGNATION_PATTERN.match(label):
                         #print("value: ", value)
-                        if value not in if_parameters and value not in intent_params:
-                            add_new_condition(graph, value)
-                            var_condition = f"{var}=={value}"
+                        add_new_condition(graph, value)
+                        var_condition = f"{var}=={value}"
                             #if var=="r11_3":
                             #    print(var_condition)
                     if THIS_VAR_DECLARATION_PATTERN.match(label):
-                        #print("value ok: ", value)
-                        if value not in if_parameters and value not in intent_params:
-                            add_new_condition(graph, value)
-                            var_condition = f"{var}=={value}"
+                        #print("value: ", value)
+                        add_new_condition(graph, value)
+                        var_condition = f"{var}=={value}"
                             #if var=="r0_this.mQuery_1":
                             #    print(var_condition)
-
-                    
+     
                 elif '==' in value:
                     # In case there's "==" in the value of the variable, the variable is Bool
                     if var_name not in if_parameters and var_name not in intent_params:
