@@ -2,7 +2,7 @@ import re
 import os
 import networkx as nx
 import pygraphviz as pgv
-from z3 import Int, String, Bool, Real, Solver, sat, Not, StringVal, DeclareSort, Const
+from z3 import Int, String, Bool, Real, Solver, sat, Not, StringVal, DeclareSort, Const, Length
 
 # Declare a new uninterpreted sort for serializable types.
 SerializableSort = DeclareSort('Serializable')
@@ -46,6 +46,20 @@ THIS_VAR_DECLARATION_PATTERN = re.compile(
 OPERATOR_PATTERN = re.compile(
     r'(\w+)\s*(==|<=|>=|<|>|!=)\s*(.+)'
 )
+
+LENGTH_PATTERN = re.compile(
+    r'^\$?(\w+)\s*\(([^)]+)\)\s*=\s*\(java\.lang\.String\)\s*\$?(\w+)\.length\(\)'
+)
+
+# Operators that have to be inverted if necessary
+INVERT_OPERATOR = ["<=", ">=", "<", ">"]
+# Inverted operator map
+INVERT_OP_MAP = {
+    "<=": ">=",
+    ">=": "<=",
+    "<": ">",
+    ">": "<"
+}
 
 # Mapping for displaying types in the desired format.
 TYPE_MAPPING = {
@@ -190,8 +204,8 @@ def parse_if(graph):
             # Extract condition (the part between "if" and "goto")
             match = re.search(r'if\s+(.+?)\s+goto', label)
             if match:
-                condition = match.group(1).lstrip('$')
-                op_match = OPERATOR_PATTERN.match(condition)
+                match_condition = match.group(1).lstrip('$')
+                op_match = OPERATOR_PATTERN.match(match_condition)
 
                 if op_match:
                     cond_param, operator, cond_value = op_match.groups()
@@ -200,9 +214,8 @@ def parse_if(graph):
 
                     # If the variable is not yet known, try to infer its type.
                     if cond_param not in if_parameters and cond_param not in intent_params:
-                        #if cond_param=="r11_3":
-                        #    print("cond_param: ", cond_param)    
-                        var_condition = search_for_var_declaration(graph, cond_param)
+                        #print("cond_param: ", cond_param, " ", operator, " ", cond_value)    
+                        var_condition, length_condtion = search_for_var_declaration(graph, cond_param, operator, cond_value)
 
                         if var_condition:
                             conditions.append(var_condition)
@@ -215,10 +228,12 @@ def parse_if(graph):
                     if (not cond_value.isdigit() and
                         not (cond_value.startswith('"') and cond_value.endswith('"')) and 
                         not cond_value=="null"):
-                        #print("here")
+                        #print("cond_value: ", cond_value)
                         # If not already in parameters, search for its declaration.
                         if cond_value not in intent_params and cond_value not in if_parameters:
-                            decl = search_for_var_declaration(graph, cond_value)
+                            decl, length_condtion = search_for_var_declaration(graph, var_name=cond_value, operator=operator, cond_value=cond_param, invert_op=True)
+                            if length_condtion:
+                                print(decl, " ", length_condtion)
                             if decl:
                                 # Assume decl is in the form "var==value" so we extract the value part.
                                 try:
@@ -229,10 +244,12 @@ def parse_if(graph):
                                 # Add the variable using inferred type (or default to Int here)
                                 if cond_value not in if_parameters:
                                     if_parameters[cond_value] = infer_type(cond_value, decl_value)
-
-                    # Reconstruct the condition string with the (possibly transformed) cond_value.
-                    condition = f"{cond_param} {operator} {cond_value}"
                     
+                    if not length_condtion:
+                        # Reconstruct the condition string with the (possibly transformed) cond_value.
+                        condition = f"{cond_param} {operator} {cond_value}"
+                        #print("final condition: ", condition)
+                    #print("initial condition: ", condition)
                     # Instead of all successors, consider only those successors that are blue.
                     blue_successors = [s for s in graph.successors(node_id)
                                        if graph.nodes[s].get('color') == 'blue']
@@ -275,13 +292,14 @@ def parse_if(graph):
                        (cond_param in if_parameters and if_parameters[cond_param].sort().name() == "Serializable"):
                         cond_value = cond_value.replace("null", "null_serializable")
 
-def search_for_var_declaration(graph, var_name):
+def search_for_var_declaration(graph, var_name, operator="", cond_value="", invert_op=False):
     """
     Searches (only in blue nodes) for a declaration of a variable, and returns a condition
     string if found.
     """
     def find_var(nodes):
         var_condition = ""
+        length_condition = False
         for node, data in nodes:
             label = data.get('label', '').strip()
 
@@ -295,8 +313,27 @@ def search_for_var_declaration(graph, var_name):
                 variable, value = label.split(" = ", 1)
                 variable = variable.replace("$", "")
                 value = value.replace("$", "") if value.startswith("$") else value
-                #if var_name=="r11_3" or var_name=="r0_this.mQuery_1":
-                    #print(variable, " ", value)
+                #if var_name=="i0_9":
+                #    print(var_name, " ",variable, " ", value)
+
+                if LENGTH_PATTERN.match(label) and var_name==LENGTH_PATTERN.match(label).group(1):
+                    obj_name = LENGTH_PATTERN.match(label).group(3)
+                    #if obj_name=="m4_1":
+                    #    print(obj_name, " ", operator, " ", cond_value)
+                    # Ensure the object is in our parameters dictionary
+                    if obj_name not in intent_params and obj_name not in if_parameters:
+                        # Infer its type from elsewhere or default to String
+                        if_parameters[obj_name] = String(obj_name)
+                    
+                    if invert_op and operator in INVERT_OPERATOR:
+                        len_cond = f"Length({obj_name}) {INVERT_OP_MAP[operator]} {cond_value}"
+                    else:
+                        len_cond = f"Length({obj_name}) {operator} {cond_value}"
+
+                    if not len_cond in conditions:
+                        conditions.append(len_cond)
+                    length_condition = True
+                    break
 
                 if STANDARD_VAR_DECLARATION_PATTERN.match(label) or \
                     THIS_VAR_ASSIGNATION_PATTERN.match(label) or \
@@ -319,7 +356,7 @@ def search_for_var_declaration(graph, var_name):
                         var_condition = f"{var}=={value}"
                             #if var=="r0_this.mQuery_1":
                             #    print(var_condition)
-     
+
                 elif '==' in value:
                     # In case there's "==" in the value of the variable, the variable is Bool
                     if var_name not in if_parameters and var_name not in intent_params:
@@ -348,21 +385,21 @@ def search_for_var_declaration(graph, var_name):
                         if_parameters[var] = Bool(var)
                         return
 
-        return var_condition
+        return var_condition, length_condition
     
-    var = find_var(get_blue_nodes(graph))
+    var, len_cond = find_var(get_blue_nodes(graph))
 
     if not var and (var_name not in intent_params and var_name not in if_parameters):
-        var = find_var(graph.nodes(data=True))
+        var, len_cond = find_var(graph.nodes(data=True))
 
-    return var
+    return var, len_cond
 
 def add_new_condition(graph, var_name):
     """
     Attempts to add a new condition for a variable declaration (only searching blue nodes).
     """
     global intent_params, if_parameters, conditions
-    var_condition = search_for_var_declaration(graph, var_name)
+    var_condition, _ = search_for_var_declaration(graph, var_name)
     #print("var_condition: ", var_condition)
     if var_condition:
         variable, value = var_condition.split("==")
@@ -424,11 +461,11 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
         solver = Solver() 
         # When evaluating conditions, we include our special null constants.
         for condition in conditions: 
-            solver.add(eval(condition, {"Not": Not, "null": NULL, "null_serializable": NULL_SERIALIZABLE}, parameters))
+            solver.add(eval(condition, {"Length": Length, "Not": Not, "null": NULL, "null_serializable": NULL_SERIALIZABLE}, parameters))
         
         solution_line = ""
         if solver.check() == sat:
-            print(pathName)
+            #print(pathName)
             model = solver.model()
             param_strings = []
             for param, z3_var in sorted(intent_params.items()):
@@ -451,7 +488,9 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
             solution_line = " | ".join(param_strings)
             output_file.write(f"{solution_line}\n")
             print(solution_line)
+        else:
+            print("No solution")
         print("-"*50)
         reset_globals()
         
-print("Analysis complete. Results written to 'analysis_results.txt'.")
+print("\nAnalysis complete. Results written to 'analysis_results.txt'.")
