@@ -19,7 +19,7 @@ public class RegexUtils {
 //    private static final String regexBundleExtra = "android.os.Bundle: ([\\w.]+) get\\w*\\(java\\.lang\\.String\\)";
 //    public static final Pattern patternBundleExtra = Pattern.compile(regexBundleExtra);
 
-    private static final String regexExtra = "(?<assignation>[\\w\\$]+) \\((?<assignationType>[\\w.]+)\\) = \\((?<objectType>android\\.os\\.Bundle|android\\.content\\.Intent)\\) (?<variable>\\$\\w+)\\.get(?<extraType>\\w*?)(?:Extra)?\\(\"(?<extraName>.*?)\"(?:,[^)]*)?\\)";
+    private static final String regexExtra = "(?<assignation>[\\w\\$]+) \\((?<assignationType>[\\w.]+)\\) = \\((?<objectType>android\\.os\\.Bundle|android\\.content\\.Intent)\\) (?<variable>[\\$\\w]+)\\.get(?<extraType>\\w*?)(?:Extra)?\\(\"(?<extraName>.*?)\"(?:,[^)]*)?\\)";
     public static final Pattern patternExtra = Pattern.compile(regexExtra);
 
     /**
@@ -36,7 +36,7 @@ public class RegexUtils {
     private static final String assignationRegex = "^(?<assignation>(?:\\s*[\\w\\$]+\\s*_this\\.\\w+|[\\w\\$]+))\\s*(?<type>\\([\\w\\.\\$]+\\))?\\s*=";
     public static final Pattern assignationPattern = Pattern.compile(assignationRegex);
 
-    public static final String variableRenamingRegex = "(?<!\\w)%s(?![\\d_]|\\)this)";
+    public static final String variableRenamingRegex = "(?<!\\w)(\\$?)%s(?![\\d_]|\\)this)";
 
     public static final Pattern casePattern = Pattern.compile("(?<switchCase>(?<case>case (?<value>.*?)|default): (?<goto>.*?(?<equals>\\\".*?\\\")?));");
 

@@ -149,7 +149,7 @@ public class CFGPathFinder {
                 Matcher matcher = assignationPattern.matcher(codeLine);
                 if (matcher.find()) {
                     // Extract the variable name from the assignment.
-                    assignedVariable = matcher.group("assignation");
+                    assignedVariable = matcher.group("assignation").replace("$", "");
 
                     if (!assignedVariable.equals("null")) { // assignedVariable is "null" e.g. null (void) = method...
                         // Update usage count for this variable.
@@ -160,7 +160,7 @@ public class CFGPathFinder {
                         // Update the full code line with the modified left-hand side.
 
                         String replaceRegex = String.format(variableRenamingRegex, assignedVariable.replace("$", "\\$"));
-                        newVariableName = newVariableName.replace("$", "\\$");
+                        newVariableName = newVariableName.replace("$", "");
                         codeLine = codeLine.replaceFirst(replaceRegex, newVariableName);
                     }
                 }
@@ -183,13 +183,13 @@ public class CFGPathFinder {
                     }
 
                     // Replace occurrences of the variable in the designated segment.
-                    String replaceRegex = String.format(variableRenamingRegex, var.replace("$", "\\$"));
-                    replacementName = replacementName.replace("$", "\\$");
+                    String replaceRegex = String.format(variableRenamingRegex, var);
+//                    replacementName = replacementName.replace("$", "");
 
                     String updatedSegment = segmentToReplace.replaceAll(replaceRegex, Matcher.quoteReplacement(replacementName));
 
                     // Update the full code line with the replaced segment.
-                    codeLine = codeLine.replace(segmentToReplace, updatedSegment).replace("\\$", "$");
+                    codeLine = codeLine.replace(segmentToReplace, updatedSegment); // .replace("\\$", "$");
                 }
                 // Add the updated entry with the modified code line to the updated path.
                 updatedPath.add(new GraphNode(entry.getKey(), codeLine));
