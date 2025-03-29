@@ -293,9 +293,10 @@ public class FilteredControlFlowGraph {
             String arguments = matcher.group("argument");
             List<String> argumentList = Arrays.asList(arguments.split(",\\s*"));
             String assignation = matcher.group("assignation");
+            String returnedType = matcher.group("returnedType");
 
             String getGraph = className + "." + methodName + "-(" + argumentsType + ")";
-            fullGraph = addMethodGraphToGraph(fullGraph, convertedMethodGraph.get(getGraph), node, argumentList, assignation, parameterUse);
+            fullGraph = addMethodGraphToGraph(fullGraph, convertedMethodGraph.get(getGraph), node, argumentList, assignation, returnedType, parameterUse);
             parameterUse += argumentList.size();
         }
     }
@@ -354,11 +355,12 @@ public class FilteredControlFlowGraph {
      * @param node         The node in the full graph representing the method call.
      * @param argumentList A list of arguments passed to the method.
      * @param assignation  The assignation string from the method call (if any).
+     * @param returnedType TODO
      * @param parameterUse An index used for parameter naming.
      * @return A new full control flow graph with the method graph integrated.
      */
     private ControlFlowGraph addMethodGraphToGraph(ControlFlowGraph graph, ControlFlowGraph methodGraph, GraphNode node,
-                                                   List<String> argumentList, String assignation, int parameterUse) {
+                                                   List<String> argumentList, String assignation, String returnedType, int parameterUse) {
         ControlFlowGraph newGraph = new ControlFlowGraph();
 
         List<Map.Entry<String, String>> methodParameter = new ArrayList<>();
@@ -391,7 +393,7 @@ public class FilteredControlFlowGraph {
 
                     // Replace return statements with assignation if applicable.
                     if (assignation != null && (line.startsWith("return ") || (line.startsWith("if") && line.contains("goto return"))))
-                        line = line.replace("return ", String.format("%s (return.%s) = ", assignation, assignation));
+                        line = line.replace("return ", String.format("%s (%s) = (return.%s) = ", assignation, returnedType, assignation));
 //                        line = line.replace("return ", assignation + " (return.) = ");
 
                     newGraph.addNode(new GraphNode(methodNode.getKey(), line));
