@@ -393,7 +393,7 @@ public class FilteredControlFlowGraph {
 
                     // Replace return statements with assignation if applicable.
                     if (assignation != null && (line.startsWith("return ") || (line.startsWith("if") && line.contains("goto return"))))
-                        line = line.replace("return ", String.format("%s (%s) = (return.%s) = ", assignation, returnedType, assignation));
+                        line = line.replace("return ", String.format("%s (%s) = (return.%s) ", assignation, returnedType, assignation));
 //                        line = line.replace("return ", assignation + " (return.) = ");
 
                     newGraph.addNode(new GraphNode(methodNode.getKey(), line));

@@ -34,6 +34,11 @@ SIMPLE_VAR_ASSIGNATION = re.compile(
     r'\s*\(\s*(?P<type>[^)]+)\s*\)\s*(?P<object_name>[\w\$\.]+)$'
 )
 
+RETURN_VAR_ASSIGNATION_PATTERN = re.compile(
+    r'^(?P<var_name>[\w\$]+)\s*\(\s*(?P<type>[^)]+)\s*\)\s*=\s*'
+    r'\(return\.(?P<return_var>[\w\$]+)\)\s*(?P<value>.+)$'
+)
+
 THIS_VAR_ASSIGNATION_PATTERN = re.compile(
     r'^(?P<var_name>[\w\$]+)\s*'
     r'\(\s*(?P<type>[^)]+)\s*\)\s*'
@@ -44,6 +49,11 @@ THIS_VAR_DECLARATION_PATTERN = re.compile(
     r'^r0_this_(?P<var_name>[\w\$]+)\s*'  # Matches "r0_this_" and then the variable name
     r'\(\s*(?P<type>[^)]+)\s*\)\s*'         # Matches the type in parentheses, allowing for spaces
     r'=\s*(?P<value>.+)$'                  # Matches "=" followed by the object or value
+)
+
+OPERATION_VAR_ASSIGNATION_PATTERN = re.compile(
+    r'^(?P<var_name>[\w\$]+)\s*=\s*'  
+    r'(?P<operand1>[\w\$]+)\s*(?P<operation>[\+\-\*/%])\s*(?P<operand2>[\w\$]+)\s*$'       
 )
 
 OPERATOR_PATTERN = re.compile(
@@ -243,13 +253,15 @@ def parse_if(graph):
                     cond_param, operator, cond_value = op_match.groups()
                     cond_param = cond_param.strip().lstrip("$")
                     cond_value = cond_value.strip().lstrip("$")
-
+                    length_condition = False
+                    #print("cond_param: ", cond_param, " cond_value: ", cond_value)
                     # If the variable is not yet known, try to infer its type.
                     if cond_param not in if_parameters and cond_param not in intent_params:    
-                        var_condition, length_condtion = search_for_var_declaration(graph, cond_param, operator, cond_value)
+                        var_condition, length_condition = search_for_var_declaration(graph, cond_param, operator, cond_value)
                         #if cond_param=="r4_4":
                         #    print("var_condition: ", var_condition)
-                        if var_condition:
+                        if var_condition and var_condition not in conditions:
+                            #print("var_condition: ", var_condition)
                             conditions.append(var_condition)
                         # If still cond_param isn't in the dictionaries after the search_var_declaration() function call, insert it    
                         if cond_param not in if_parameters and cond_param not in intent_params:
@@ -263,7 +275,7 @@ def parse_if(graph):
                         #print("cond_value: ", cond_value)
                         # If not already in parameters, search for its declaration.
                         if cond_value not in intent_params and cond_value not in if_parameters:
-                            decl, length_condtion = search_for_var_declaration(graph, var_name=cond_value, operator=operator, cond_value=cond_param, invert_op=True)
+                            decl, length_condition = search_for_var_declaration(graph, var_name=cond_value, operator=operator, cond_value=cond_param, invert_op=True)
                             #if length_condtion:
                                 #print(decl, " ", length_condtion)
                             if decl:
@@ -297,7 +309,7 @@ def parse_if(graph):
                             cond_value = f"null_{custom_name}"
                             #print(cond_value)
 
-                    if not length_condtion:
+                    if not length_condition:
                         # Reconstruct the condition string with the (possibly transformed) cond_value.
                         condition = f"{cond_param} {operator} {cond_value}"
                         #print("final condition: ", condition)
@@ -362,13 +374,13 @@ def search_for_var_declaration(graph, var_name, operator="", cond_value="", inve
                 variable, value = label.split(" = ", 1)
                 variable = variable.replace("$", "")
                 value = value.replace("$", "") if value.startswith("$") else value
-                #if var_name=="r4_4":
-                #    print(var_name, " ",variable, " ", value)
-
+                #if var_name=="r11_2":
+                #    print(var_name, " ",variable, ", ", value)
+                    
                 if LENGTH_PATTERN.match(label) and var_name==LENGTH_PATTERN.match(label).group(1):
                     obj_name = LENGTH_PATTERN.match(label).group(3)
-                    #if obj_name=="m4_1":
-                    #    print(obj_name, " ", operator, " ", cond_value)
+                    if obj_name=="r11_2":
+                        print(obj_name, " ", operator, " ", cond_value)
                     # Ensure the object is in our parameters dictionary
                     if obj_name not in intent_params and obj_name not in if_parameters:
                         # Infer its type from elsewhere or default to String
@@ -384,28 +396,51 @@ def search_for_var_declaration(graph, var_name, operator="", cond_value="", inve
                     length_condition = True
                     break
 
-                if STANDARD_VAR_DECLARATION_PATTERN.match(label) or \
+                elif STANDARD_VAR_DECLARATION_PATTERN.match(label) or \
                     PACKAGE_VAR_DECLARATION_PATTERN.match(label) or \
+                    RETURN_VAR_ASSIGNATION_PATTERN.match(label) or \
                     THIS_VAR_ASSIGNATION_PATTERN.match(label) or \
                     THIS_VAR_DECLARATION_PATTERN.match(label):
+                    #if var_name=="r11_2":
+                    #    print(variable, " : ", value)
                     var, type = variable.split(" ", 1)
-                    #if var_name=="r4_4":
-                    #    print(variable, " : ", value)             
+                                 
                     if var not in if_parameters and var not in intent_params:
                         if_parameters[var] = infer_type(var, type)
 
-                    if THIS_VAR_ASSIGNATION_PATTERN.match(label):
+                    if RETURN_VAR_ASSIGNATION_PATTERN.match(label):
+                        return_match = RETURN_VAR_ASSIGNATION_PATTERN.match(label)
+                        if return_match.group("value") != "null":
+                            add_new_condition(graph, return_match.group("value").lstrip("$"))
+                        var_condition = f"{var} == {return_match.group("value")}"
+                    elif THIS_VAR_ASSIGNATION_PATTERN.match(label):
                         #print("value: ", value)
                         add_new_condition(graph, value)
-                        var_condition = f"{var}=={value}"
+                        var_condition = f"{var} == {value}"
                             #if var=="r11_3":
                             #    print(var_condition)
-                    if THIS_VAR_DECLARATION_PATTERN.match(label):
+                    elif THIS_VAR_DECLARATION_PATTERN.match(label):
                         #print("value: ", value)
                         add_new_condition(graph, value)
-                        var_condition = f"{var}=={value}"
+                        var_condition = f"{var} == {value}"
                             #if var=="r0_this.mQuery_1":
                             #    print(var_condition)
+
+                elif OPERATION_VAR_ASSIGNATION_PATTERN.match(label):
+                    operation_match = OPERATION_VAR_ASSIGNATION_PATTERN.match(label)
+                    var = operation_match.group("var_name")
+                    operand1 = operation_match.group("operand1")
+                    operand2 = operation_match.group("operand2")
+                    operation = operation_match.group("operation")
+
+                    if var not in if_parameters or var not in intent_params:
+                        if_parameters[var] = Int(var)
+                    if not operand1.isdigit() and (operand1 not in if_parameters or operand1 not in intent_params):
+                        if_parameters[operand1] = Int(operand1)
+                    if not operand2.isdigit() and (operand2 not in if_parameters or operand2 not in intent_params):
+                        if_parameters[operand2] = Int(operand2)
+
+                    var_condition = f"{var} == {operand1} {operation} {operand2}"
 
                 elif '==' in value:
                     # In case there's "==" in the value of the variable, the variable is Bool
@@ -419,7 +454,7 @@ def search_for_var_declaration(graph, var_name, operator="", cond_value="", inve
                         add_new_condition(graph, var1)
                     if var2 not in intent_params and var2 not in if_parameters:
                         add_new_condition(graph, var2)
-                    var_condition = f"{variable}==({var1}=={var2})"
+                    var_condition = f"{variable} == ({var1}=={var2})"
 
                 elif not (' ' in variable):
                     #print("var: ", variable, " value: ", value)
@@ -427,13 +462,13 @@ def search_for_var_declaration(graph, var_name, operator="", cond_value="", inve
                         type = "(" + SIMPLE_VAR_ASSIGNATION.match(label).group("type") + ")"
                         object_name = SIMPLE_VAR_ASSIGNATION.match(label).group("object_name").lstrip("$")
                         #add_new_condition(graph, object_name)
-                        var_condition = f"{variable}=={object_name}"
+                        var_condition = f"{variable} == {object_name}"
                         if variable not in if_parameters and variable not in intent_params:
                             if_parameters[variable] = infer_type(variable, type)
                         if object_name not in if_parameters and object_name not in intent_params:
                             if_parameters[object_name] = infer_type(object_name, type)
                     else:
-                        var_condition = f"{variable}=={value}"
+                        var_condition = f"{variable} == {value}"
                         if variable not in if_parameters and variable not in intent_params:
                             if_parameters[variable] = infer_type(variable, value)
 
@@ -444,7 +479,8 @@ def search_for_var_declaration(graph, var_name, operator="", cond_value="", inve
                     if var not in if_parameters and var not in intent_params:
                         if_parameters[var] = Bool(var)
                         return
-
+        #if var_condition:
+        #    print(var_condition)    
         return var_condition, length_condition
     
     var, len_cond = find_var(get_blue_nodes(graph))
