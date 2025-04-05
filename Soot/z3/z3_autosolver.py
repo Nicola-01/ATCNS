@@ -2,7 +2,7 @@ import re
 import os
 import networkx as nx
 import pygraphviz as pgv
-from z3 import Int, String, Bool, Real, Solver, sat, Not, StringVal, DeclareSort, Const, Length
+from z3 import Int, String, Bool, Real, Array, Solver, sat, Not, StringVal, DeclareSort, Const, Length, Implies
 
 # Regex for getAction()
 GETACTION_PATTERN = re.compile(
@@ -64,6 +64,18 @@ LENGTH_PATTERN = re.compile(
     r'^\$?(\w+)\s*\(([^)]+)\)\s*=\s*\(java\.lang\.String\)\s*\$?(\w+)\.length\(\)'
 )
 
+ARRAY_DECLARATION_PATTER = re.compile(
+    r'^(?P<var_name>[\w\$]+)\s*=\s*newarray\s*\(\s*(?P<type>[\w\.\$]+)\s*\)\s*\[\s*(?P<length>\d+)\s*\]$'
+)
+
+ARRAY_ELEMENT_ASSIGNATIO_PATTERN = re.compile(
+    r'^(?P<array_name>[\w\$]+)\[\s*(?P<index>\d+)\s*\]\s*=\s*(?P<element_name>[\w\$]+)$'
+)
+
+LENGTHOF_PATTERN = re.compile(
+    r'^(?P<var_name>[\w\$]+)\s*=\s*lengthof\s+(?P<obj_name>[\w\$]+)$'
+)
+
 # Operators that have to be inverted if necessary
 INVERT_OPERATOR = ["<=", ">=", "<", ">"]
 # Inverted operator map
@@ -98,17 +110,24 @@ Z3_CONTEST = {
     "null_serializable": NULL_SERIALIZABLE
 }
 
-intent_params, param_name_map, if_parameters, custom_types = {}, {}, {}, {}
+intent_params, param_name_map, if_parameters, array_params, custom_types = {}, {}, {}, {}, {}
 conditions = []
 
 
 def reset_globals():
     """Reset global variables for each new subgraph."""
-    global intent_params, param_name_map, if_parameters, custom_types, conditions
+    global intent_params, param_name_map, if_parameters, array_params, custom_types, Z3_CONTEST, conditions
     intent_params = {}
     param_name_map = {}
     if_parameters = {}
+    array_params = {}
     custom_types = {}
+    Z3_CONTEST = {
+        "Length": Length, 
+        "Not": Not, 
+        "null": NULL, 
+        "null_serializable": NULL_SERIALIZABLE
+    }
     conditions = []
 
 def parse_dot_file(dot_path):
@@ -135,6 +154,20 @@ def extract_metadata(dot_path):
                 return metadata
     return metadata
 
+def create_z3_custom_object(name):
+    if name not in custom_types:
+        # Create a new custom Z3 sort with a unique name.
+        custom_sort = DeclareSort(f"{name}")
+        null_custom = Const(f"null_{name}", custom_sort)
+        custom_types[name] = (custom_sort, null_custom)
+        if null_custom not in Z3_CONTEST:
+            Z3_CONTEST[f"null_{name}"] = null_custom
+    else:
+        custom_sort, null_custom = custom_types[name]
+        if null_custom not in Z3_CONTEST:
+            Z3_CONTEST[f"null_{name}"] = null_custom
+    return custom_sort
+
 def infer_type(variable, value):
     # If value is in the form "(...)" we try to infer from the text inside.
     if value.startswith("(") and value.endswith(")"):
@@ -147,21 +180,8 @@ def infer_type(variable, value):
         elif "serializable" in value.lower():
             return Const(variable, SerializableSort)
         else:
-            # For any non-default type, use the full text inside the parentheses as the type name.
-            type_name = value[1:-1].strip().replace(".", "_")
-            if type_name not in custom_types:
-                # Create a new custom Z3 sort with a unique name.
-                custom_sort = DeclareSort(f"{type_name}")
-                null_custom = Const(f"null_{type_name}", custom_sort)
-                custom_types[type_name] = (custom_sort, null_custom)
-                if null_custom not in Z3_CONTEST:
-                    Z3_CONTEST[f"null_{type_name}"] = null_custom
-            else:
-                custom_sort, null_custom = custom_types[type_name]
-                if null_custom not in Z3_CONTEST:
-                    Z3_CONTEST[f"null_{type_name}"] = null_custom
-            return Const(variable, custom_sort)
-          
+            return Const(variable, create_z3_custom_object(value[1:-1].strip().replace(".", "_")))
+
     else:
         if value.lower() == "true" or value.lower() == "false":
             return Bool(variable)
@@ -254,18 +274,21 @@ def parse_if(graph):
                     cond_param = cond_param.strip().lstrip("$")
                     cond_value = cond_value.strip().lstrip("$")
                     length_condition = False
-                    #print("cond_param: ", cond_param, " cond_value: ", cond_value)
+                    isArray = False
+                    #if cond_param=="r4_3":
+                    #    print("cond_param: ", cond_param, " cond_value: ", cond_value)
                     # If the variable is not yet known, try to infer its type.
                     if cond_param not in if_parameters and cond_param not in intent_params:    
                         var_condition, length_condition = search_for_var_declaration(graph, cond_param, operator, cond_value)
-                        #if cond_param=="r4_4":
-                        #    print("var_condition: ", var_condition)
+                        if cond_param=="r4_3":
+                            print("var_condition: ", var_condition)
                         if var_condition and var_condition not in conditions:
                             #print("var_condition: ", var_condition)
                             conditions.append(var_condition)
                         # If still cond_param isn't in the dictionaries after the search_var_declaration() function call, insert it    
                         if cond_param not in if_parameters and cond_param not in intent_params:
-                            if_parameters[cond_param] = infer_type(cond_param, cond_value)
+                            if not cond_value == "null":
+                                if_parameters[cond_param] = infer_type(cond_param, cond_value)
                 
                     # Case where the if involves 2 variables: i0 == r3
                     # If cond_value is not a numeric literal, a quoted string or null, assume it's a variable.
@@ -289,11 +312,22 @@ def parse_if(graph):
                                 if cond_value not in if_parameters:
                                     if_parameters[cond_value] = infer_type(cond_value, decl_value)
                     
+                    #print("cond_param: ", cond_param, " cond_value: ", cond_value, " ", cond_param in intent_params, " ", cond_param in if_parameters)
                     # If the variable is serializable, replace "null" with "null_serializable"
                     if (cond_param in intent_params and intent_params[cond_param].sort().name() == "Serializable") or \
                        (cond_param in if_parameters and if_parameters[cond_param].sort().name() == "Serializable"):
-                        if cond_value=="null":
+                        if cond_value.strip() == "null":
                             cond_value = cond_value.replace("null", "null_serializable")
+
+                    # If the variable is alist, replace "null" with 0 and check the length of the array
+                    if (cond_param in array_params and isinstance(array_params[cond_param], list)):
+                        if cond_value.strip() == "null":
+                            length_key = f"length_{cond_param}"
+                            if length_key in if_parameters:
+                                array_name = cond_param
+                                cond_param = length_key
+                                cond_value = cond_value.replace("null", "0")
+                                isArray = True
 
                     # If the variable is a custom object, replace "null" with custom null
                     if (cond_param in intent_params and intent_params[cond_param].sort().name() in custom_types) or \
@@ -312,8 +346,7 @@ def parse_if(graph):
                     if not length_condition:
                         # Reconstruct the condition string with the (possibly transformed) cond_value.
                         condition = f"{cond_param} {operator} {cond_value}"
-                        #print("final condition: ", condition)
-                    #print("initial condition: ", condition)
+                    
                     # Instead of all successors, consider only those successors that are blue.
                     blue_successors = [s for s in graph.successors(node_id)
                                        if graph.nodes[s].get('color') == 'blue']
@@ -374,27 +407,54 @@ def search_for_var_declaration(graph, var_name, operator="", cond_value="", inve
                 variable, value = label.split(" = ", 1)
                 variable = variable.replace("$", "")
                 value = value.replace("$", "") if value.startswith("$") else value
-                #if var_name=="r11_2":
-                #    print(var_name, " ",variable, ", ", value)
+                #if var_name=="r4_3":
+                #    print("var_name: ", var_name, " ",variable, ", ", value)
                     
                 if LENGTH_PATTERN.match(label) and var_name==LENGTH_PATTERN.match(label).group(1):
                     obj_name = LENGTH_PATTERN.match(label).group(3)
-                    if obj_name=="r11_2":
-                        print(obj_name, " ", operator, " ", cond_value)
+                    #if obj_name=="r4_2":
+                    #    print(obj_name, " ", operator, " ", cond_value)
                     # Ensure the object is in our parameters dictionary
                     if obj_name not in intent_params and obj_name not in if_parameters:
                         # Infer its type from elsewhere or default to String
-                        if_parameters[obj_name] = String(obj_name)
+                        #if_parameters[obj_name] = String(obj_name)
+                        var_condition = add_new_condition(graph, obj_name)
                     
-                    if invert_op and operator in INVERT_OPERATOR:
-                        len_cond = f"Length({obj_name}) {INVERT_OP_MAP[operator]} {cond_value}"
+                    if (obj_name in array_params and isinstance(array_params[obj_name], list)):
+                        length = Int(f"{obj_name}_length")
+                        if_parameters[f"{obj_name}_length"] = length
+                        if invert_op and operator in INVERT_OPERATOR:
+                            len_cond = f"{obj_name}_length {INVERT_OP_MAP[operator]} {cond_value}"
+                        else:
+                            len_cond = f"{obj_name}_length {operator} {cond_value}"
                     else:
-                        len_cond = f"Length({obj_name}) {operator} {cond_value}"
+                        if invert_op and operator in INVERT_OPERATOR:
+                            len_cond = f"Length({obj_name}) {INVERT_OP_MAP[operator]} {cond_value}"
+                        else:
+                            len_cond = f"Length({obj_name}) {operator} {cond_value}"
+                        length_condition = True
 
                     if not len_cond in conditions:
                         conditions.append(len_cond)
-                    length_condition = True
                     break
+
+                elif ARRAY_DECLARATION_PATTER.match(label) and var_name==ARRAY_DECLARATION_PATTER.match(label).group("var_name"):
+                    array_match = ARRAY_DECLARATION_PATTER.match(label)
+                    array_type = "(" + array_match.group("type") + ")"
+                    array_length = array_match.group("length")
+
+                    array_elements = find_array_element_assignation(nodes, var_name, array_type, array_length) # array with z3 object of the array
+                    if var_name not in if_parameters and var_name not in intent_params and var_name not in array_params:
+                        array_params[var_name] = array_elements
+                    
+                    if f"length_{var_name}" not in if_parameters and f"length_{var_name}" not in intent_params:
+                        print("here")
+                        if_parameters[f"length_{var_name}"] = Int(f"length_{var_name}")
+
+                elif LENGTHOF_PATTERN.match(label) and var_name==LENGTHOF_PATTERN.match(label).group("var_name"):
+                    # Array case (usually lengthof is used for the length of an array)
+                    if var_name not in if_parameters and var_name not in intent_params:
+                        if_parameters[var_name] = Int(var_name)
 
                 elif STANDARD_VAR_DECLARATION_PATTERN.match(label) or \
                     PACKAGE_VAR_DECLARATION_PATTERN.match(label) or \
@@ -504,6 +564,20 @@ def add_new_condition(graph, var_name):
         if var_condition not in conditions:
             conditions.append(var_condition)
 
+def find_array_element_assignation(nodes, array_name, array_type, array_length):
+    result = [None] * int(array_length)
+    for node, data in nodes:
+        label = data.get('label','')
+        match = ARRAY_ELEMENT_ASSIGNATIO_PATTERN.match(label)
+
+        if match:
+            if match.group("array_name") == array_name:
+                idx = int(match.group("index"))
+                if idx < int(array_length):
+                    element_name = match.group("element_name").lstrip("$")
+                    obj = infer_type(element_name, array_type)
+                    result[idx] = obj
+    return result
 
 # ---------------------------
 # MENU: Select a DOT file to analyze
@@ -549,13 +623,21 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
         pathName = f"path_{i}"
         parse_intent_params(subgraphs[pathName])
         parse_if(subgraphs[pathName])
-        parameters = if_parameters | intent_params
+        parameters = if_parameters | intent_params | array_params
         print(pathName)
-        #print("custom_types: ", custom_types)
-        #print("z3_contest: ", Z3_CONTEST)
+        print("custom_types: ", custom_types)
+        print("z3_contest: ", Z3_CONTEST)
         print("Conditions: ", conditions)
+        print("Arrays: ", array_params)
         print("Parameters: ", parameters)
         print("Intent Parameters: ", intent_params)
+        if i==22 or i==13:
+            for key, z3_obj in parameters.items():
+                if isinstance(z3_obj, list):
+                    print(f"{key} : array")
+                else:
+                    print(f"{z3_obj.decl().name()} : {z3_obj.sort().name()}")
+
         solver = Solver() 
         # When evaluating conditions, we include our special null constants.
         for condition in conditions: 

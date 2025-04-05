@@ -1,0 +1,1229 @@
+Select a file to analyze:
+
+1. itkach.aard2.ArticleCollectionActivity.createFromIntent_paths.dot
+2. itkach.aard2.ArticleCollectionActivity.access$400_paths.dot
+3. itkach.aard2.MainActivity.onCreate_paths.dot
+4. itkach.aard2.MainActivity.onRestoreInstanceState_paths.dot
+5. itkach.aard2.ArticleCollectionActivity.onCreate_paths.dot
+6. itkach.aard2.ArticleCollectionActivity.createFromUri_paths.dot
+
+Enter the number of the file: Selected file: paths/itkach.aard2.ArticleCollectionActivity.createFromIntent_paths.dot
+
+path_1
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'r4_2 == null']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_2
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'i0_2 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_3
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_3', 'Not(i2_2 <= 3)', 'i3_1 == i0_3 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_3': i0_3, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_4
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_3', 'Not(i2_2 <= 3)', 'i3_1 == i0_3 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_3': i0_3, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_5
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_3', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_3': i0_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_6
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'z0_3 == False', 'i3_1 == i0_3 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_3': i0_3, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_7
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'z0_3 == False', 'i3_1 == i0_3 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_3': i0_3, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_8
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'r4_2 == null']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_9
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'Not(r4_2 == null)', 'r4_2_length == 0', 'i0_2 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_10
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_3', 'Not(i2_2 <= 3)', 'i3_1 == i0_3 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_3': i0_3, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_11
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_3', 'Not(i2_2 <= 3)', 'i3_1 == i0_3 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_3': i0_3, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_12
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_3', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_3': i0_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_13
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'z0_3 == False', 'i3_1 == i0_3 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_3': i0_3, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+z0_1 : Bool
+r4_2 : String
+i0_1 : Int
+z0_2 : Bool
+r11_2 : String
+r14_2 : itkach_slob_Slob
+r2_1 : itkach_slob_Slob
+r4_2_length : Int
+i0_2 : Int
+z0_3 : Bool
+i3_1 : Int
+i0_3 : Int
+i2_1 : Int
+r4_1 : String
+r3_1 : String
+r6_1 : Int
+No solution
+--------------------------------------------------
+path_14
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'z0_3 == False', 'i3_1 == i0_3 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_3': i0_3, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_15
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_2 == null']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_16
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(r4_2 == null)', 'r4_2_length == 0', 'i0_2 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_17
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_3', 'Not(i2_2 <= 3)', 'i3_1 == i0_3 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_3': i0_3, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_18
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_3', 'Not(i2_2 <= 3)', 'i3_1 == i0_3 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_3': i0_3, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_19
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_3', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_3': i0_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_20
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'z0_3 == False', 'i3_1 == i0_3 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_3': i0_3, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_21
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_2 == 0)', 'z0_3 == False', 'i3_1 == i0_3 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_2_length': r4_2_length, 'i0_2': i0_2, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_3': i0_3, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_22
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'length_r4_3 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_3': length_r4_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+z0_1 : Bool
+r4_2 : String
+i0_1 : Int
+z0_2 : Bool
+i0_2 : Int
+r11_2 : String
+r1_5 : String
+length_r4_3 : Int
+r4_1 : String
+r3_1 : String
+r6_1 : Int
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_23
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'i0_3 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_24
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_25
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_26
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_27
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_28
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_29
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'length_r4_3 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_30
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'i0_3 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_31
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_32
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_33
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_34
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_35
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_36
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'length_r4_3 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_37
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'i0_3 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_38
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_39
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_40
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_41
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  
+path_42
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'Not(i0_2 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(length_r4_3 == 0)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_3': length_r4_3, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_43
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'r4_2 == null']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_44
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'i0_3 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_45
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_46
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_47
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_48
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_49
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_50
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'r4_2 == null']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_51
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'Not(r4_2 == null)', 'r4_2_length == 0', 'i0_3 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_52
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_53
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_54
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_55
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_56
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_57
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_2 == null']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_58
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(r4_2 == null)', 'r4_2_length == 0', 'i0_3 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_59
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_60
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_61
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_62
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_63
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'i0_1 <= 0', 'z0_2 == False', 'i0_2 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_2': i0_2, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_2_length': r4_2_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_64
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'r4_3 == r10_1', 'r4_3 == null']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_65
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'i0_3 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_66
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_67
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_68
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_69
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_70
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_71
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'r4_3 == null']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_72
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'i0_3 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_73
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_74
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_75
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_76
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_77
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_78
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'r4_3 == null']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_79
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'i0_3 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_80
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_81
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'Not(i2_2 <= 3)', 'i3_1 == i0_4 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_82
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_4', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_83
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_84
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'Not(z0_2 == False)', 'r11_2 == null', 'Not(r11_2 == null)', 'r14_2 == r2_1', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_3 == 0)', 'z0_3 == False', 'i3_1 == i0_4 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'r11_2': r11_2, 'r14_2': r14_2, 'r2_1': r2_1, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_3': i0_3, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_4': i0_4, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_85
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'length_r4_4 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_4': length_r4_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_86
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'i0_4 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_87
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'Not(i2_2 <= 3)', 'i3_1 == i0_5 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_88
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'Not(i2_2 <= 3)', 'i3_1 == i0_5 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_89
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_90
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'z0_3 == False', 'i3_1 == i0_5 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_5': i0_5, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_91
+custom_types:  {'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'r11_2 == null', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'z0_3 == False', 'i3_1 == i0_5 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_5': i0_5, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_92
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'length_r4_4 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_93
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'i0_4 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_94
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'Not(i2_2 <= 3)', 'i3_1 == i0_5 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_95
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'Not(i2_2 <= 3)', 'i3_1 == i0_5 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_96
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_97
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'z0_3 == False', 'i3_1 == i0_5 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_5': i0_5, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_98
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'r14_2 == null_itkach_slob_Slob', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'z0_3 == False', 'i3_1 == i0_5 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_5': i0_5, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_99
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'length_r4_4 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_100
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'i0_4 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_101
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'Not(i2_2 <= 3)', 'i3_1 == i0_5 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_102
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'Not(i2_2 <= 3)', 'i3_1 == i0_5 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_103
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_104
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'z0_3 == False', 'i3_1 == i0_5 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_5': i0_5, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_105
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob), 'java_lang_Object': (java_lang_Object, null_java_lang_Object)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob, 'null_java_lang_Object': null_java_lang_Object}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'Not(i0_3 != 4)', 'r11_2 == r1_5', 'Not(r11_2 == null)', 'r14_2 == r2_3', 'Not(r14_2 == null_itkach_slob_Slob)', 'Not(length_r4_4 == 0)', 'r4_4_length == 0', 'Not(i0_4 == 0)', 'z0_3 == False', 'i3_1 == i0_5 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_5': r1_5, 'r14_2': r14_2, 'r2_3': r2_3, 'length_r4_4': length_r4_4, 'r4_4_length': r4_4_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_5': i0_5, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_106
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'r4_3 == r10_1', 'r4_3 == null']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_107
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'i0_4 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_108
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'Not(i2_2 <= 3)', 'i3_1 == i0_5 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_109
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'Not(i2_2 <= 3)', 'i3_1 == i0_5 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_110
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_111
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'z0_3 == False', 'i3_1 == i0_5 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_5': i0_5, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_112
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'r11_2 == null', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'z0_3 == False', 'i3_1 == i0_5 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_5': i0_5, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_113
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'r4_3 == null']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_114
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'i0_4 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_115
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'Not(i2_2 <= 3)', 'i3_1 == i0_5 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_116
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'Not(i2_2 <= 3)', 'i3_1 == i0_5 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_117
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_118
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'z0_3 == False', 'i3_1 == i0_5 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_5': i0_5, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_119
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'r14_2 == null_itkach_slob_Slob', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'z0_3 == False', 'i3_1 == i0_5 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_5': i0_5, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_120
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'r4_3 == null']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_121
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'i0_4 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_122
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'Not(i2_2 <= 3)', 'i3_1 == i0_5 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_123
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'Not(i2_2 <= 3)', 'i3_1 == i0_5 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_124
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'Not(z0_3 == False)', 'i2_2 == i2_1 - i0_5', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_5': i0_5, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_125
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'z0_3 == False', 'i3_1 == i0_5 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_5': i0_5, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
+var_condition:  r4_3 == r10_1
+path_126
+custom_types:  {'itkach_slob_Slob': (itkach_slob_Slob, null_itkach_slob_Slob)}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable, 'null_itkach_slob_Slob': null_itkach_slob_Slob}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(i0_1 <= 0)', 'z0_2 == False', 'i0_3 != 4', 'r11_2 == r1_2', 'Not(r11_2 == null)', 'r14_2 == r2_2', 'Not(r14_2 == null_itkach_slob_Slob)', 'r4_3 == r10_1', 'Not(r4_3 == null)', 'r4_3_length == 0', 'Not(i0_4 == 0)', 'z0_3 == False', 'i3_1 == i0_5 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'i0_1': i0_1, 'z0_2': z0_2, 'i0_3': i0_3, 'r11_2': r11_2, 'r1_2': r1_2, 'r14_2': r14_2, 'r2_2': r2_2, 'r4_3': r4_3, 'r10_1': r10_1, 'r4_3_length': r4_3_length, 'i0_4': i0_4, 'z0_3': z0_3, 'i3_1': i3_1, 'i0_5': i0_5, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_127
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'r4_2 == null']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_128
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'i0_1 == 0']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'r4_2_length': r4_2_length, 'i0_1': i0_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_129
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_1 == 0)', 'Not(z0_2 == False)', 'i2_2 == i2_1 - i0_2', 'Not(i2_2 <= 3)', 'i3_1 == i0_2 - i2_3', 'Not(i3_1 >= 5)', 'Not(i2_3 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'r4_2_length': r4_2_length, 'i0_1': i0_1, 'z0_2': z0_2, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_2': i0_2, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_130
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_1 == 0)', 'Not(z0_2 == False)', 'i2_2 == i2_1 - i0_2', 'Not(i2_2 <= 3)', 'i3_1 == i0_2 - i2_3', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'r4_2_length': r4_2_length, 'i0_1': i0_1, 'z0_2': z0_2, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_2': i0_2, 'i3_1': i3_1, 'i2_3': i2_3, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_131
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_1 == 0)', 'Not(z0_2 == False)', 'i2_2 == i2_1 - i0_2', 'i2_2 <= 3']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'r4_2_length': r4_2_length, 'i0_1': i0_1, 'z0_2': z0_2, 'i2_2': i2_2, 'i2_1': i2_1, 'i0_2': i0_2, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_132
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_1 == 0)', 'z0_2 == False', 'i3_1 == i0_2 - i2_1', 'Not(i3_1 >= 5)', 'Not(i2_1 > 0)']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'r4_2_length': r4_2_length, 'i0_1': i0_1, 'z0_2': z0_2, 'i3_1': i3_1, 'i0_2': i0_2, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+path_133
+custom_types:  {}
+z3_contest:  {'Length': <function Length at 0x7f1c58ff5a80>, 'Not': <function Not at 0x7f1c58fd68e0>, 'null': "null", 'null_serializable': null_serializable}
+Conditions:  ['z0_1 == (r3_1=="android.intent.action.PROCESS_TEXT")', 'Not(z0_1 == False)', 'Not(r4_2 != null)', 'r4_2 != null', 'Not(r4_2 == null)', 'r4_2_length == 0', 'Not(i0_1 == 0)', 'z0_2 == False', 'i3_1 == i0_2 - i2_1', 'i3_1 >= 5']
+Parameters:  {'z0_1': z0_1, 'r4_2': r4_2, 'r4_2_length': r4_2_length, 'i0_1': i0_1, 'z0_2': z0_2, 'i3_1': i3_1, 'i0_2': i0_2, 'i2_1': i2_1, 'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+Intent Parameters:  {'r4_1': r4_1, 'r3_1': r3_1, 'r6_1': r6_1}
+No solution
+--------------------------------------------------
+cond_param:  r4_3  cond_value:  null
