@@ -793,9 +793,14 @@ public class FilteredControlFlowGraph {
                 String returnedType = matcher.group("returnedType");
                 String method = matcher.group("method");
                 String argument = matcher.group("argument");
-                if (method.equals("equals") || method.equals("areEqual"))
+                if (method.equals("equals") || method.equals("areEqual")) {
                     newNodeLabel = String.format("%s = %s == %s", assignation, object, argument);
-                else if (invoke == null)
+                    if (object == null) {
+                        String arg1 = argument.split(", ")[0];
+                        String arg2 = argument.split(", ")[1];
+                        newNodeLabel = String.format("%s = %s == %s", assignation, arg1, arg2);
+                    }
+                } else if (invoke == null)
                     newNodeLabel = String.format("%s (%s) = %s.%s", assignation, returnedType, object, method);
                 else if ((invoke.equals("virtualinvoke") || invoke.equals("specialinvoke") || invoke.equals("interfaceinvoke")) && object != null && assignation != null)
                     newNodeLabel = String.format("%s (%s) = (%s) %s.%s(%s)", assignation, returnedType, objectType, object, method, argument);
