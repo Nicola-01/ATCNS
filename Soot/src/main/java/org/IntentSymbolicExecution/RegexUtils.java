@@ -29,7 +29,7 @@ public class RegexUtils {
     public static final Pattern patterGetAction = Pattern.compile(regexGetAction);
 
     //private static final String regexEquals = "^(?<assignation>\\$?\\w+)\\s*=\\s*\\w+\\s+(?<object>\\$?\\w+)\\.<java\\.lang\\.String:\\s*boolean\\s*equals\\(java\\.lang\\.Object\\)\\>\\((?<argument>.*)\\)$";
-    private static final String methodCallRegex = "^(?:(?<assignation>\\$?\\w+)\\s*=\\s*)?(?<invoke>\\w+)?\\s+((?<object>\\$?\\w+)\\.)?\\<(?<objectType>[^:]+):\\s*(?<returnedType>[^:]+)\\s+(?<method>\\w+)(\\((?<argumentType>.*?)\\))?\\>(\\((?<argument>.*?)\\))?$";
+    private static final String methodCallRegex = "^(?:(?<assignation>\\$?\\w+)\\s*=\\s*)?(?<invoke>\\w+)?\\s+((?<object>\\$?\\w+)\\.)?\\<(?<objectType>[^:]+):\\s*(?<returnedType>[^:]+)\\s+(?<method>\\w+)(\\((?<argumentType>.*?)\\))\\>(\\((?<argument>.*?)\\))$";
     public static final Pattern patternMethodCall = Pattern.compile(methodCallRegex);
 
 //    private static final String assignationRegex = "^(?<assignation>[\\w\\$]+)\\s*(?<type>\\([\\w\\.\\$]+\\))?\\s*=";
