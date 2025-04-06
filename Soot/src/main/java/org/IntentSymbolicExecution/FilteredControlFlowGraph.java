@@ -140,7 +140,7 @@ public class FilteredControlFlowGraph {
                 line = line.trim();
 
                 // Check for method signature
-                if (line.endsWith(methodName)) {
+                if (line.endsWith(methodName) || line.contains(methodName + " throws ")) {
                     insideMethod = true;
                 }
 
