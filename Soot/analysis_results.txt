@@ -4,27 +4,67 @@ package: itkach.aard2
 activity: itkach.aard2.ArticleCollectionActivity
 action: aard2.lookup
 
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : ""
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : ""
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
-action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
 action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
 action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
 action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
@@ -35,6 +75,14 @@ action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TE
 action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
 action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
 action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | EXTRA_QUERY (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
 action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
 action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
 action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
@@ -45,4 +93,224 @@ action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TE
 action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
 action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
 action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "null" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
 action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : [no lim] | query (string) : "null" | EXTRA_QUERY (string) : "" | android.intent.extra.PROCESS_TEXT (integer) : [no lim]
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | EXTRA_QUERY (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : "null"
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : ""
+action (string) : "android.intent.action.PROCESS_TEXT" | android.intent.extra.TEXT (string) : "null" | query (string) : "null" | EXTRA_QUERY (string) : ""

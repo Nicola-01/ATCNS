@@ -1,0 +1,13 @@
+apkFile: aGrep.apk
+sdkVersion: 21
+package: jp.sblo.pandora.aGrep
+activity: jp.sblo.pandora.aGrep.Search
+action: android.intent.action.SEARCH
+
+query (string) : "null" | action (string) : "android.intent.action.SEARCH"
+query (string) : "" | action (string) : "android.intent.action.SEARCH"
+query (string) : "" | action (string) : "android.intent.action.SEARCH"
+query (string) : "" | action (string) : "android.intent.action.SEARCH"
+query (string) : "" | action (string) : "android.intent.action.SEARCH"
+action (string) : ""
+query (string) : "null" | action (string) : "android.intent.action.SEARCH"
