@@ -1,13 +1,11 @@
-apkFile: aGrep.apk
-sdkVersion: 21
-package: jp.sblo.pandora.aGrep
-activity: jp.sblo.pandora.aGrep.Search
-action: android.intent.action.SEARCH
+apkFile: tomdroid.apk
+sdkVersion: 11
+package: org.tomdroid
+activity: org.tomdroid.ui.Tomdroid
+action: android.intent.action.MAIN
 
-query (string) : "null" | action (string) : "android.intent.action.SEARCH"
-query (string) : "" | action (string) : "android.intent.action.SEARCH"
-query (string) : "" | action (string) : "android.intent.action.SEARCH"
-query (string) : "" | action (string) : "android.intent.action.SEARCH"
-query (string) : "" | action (string) : "android.intent.action.SEARCH"
-action (string) : ""
-query (string) : "null" | action (string) : "android.intent.action.SEARCH"
+org.tomdroid.SHORTCUT_NAME (string) : [no lim] | org.tomdroid.CALLED_FROM_SHORTCUT (boolean) : True
+org.tomdroid.SHORTCUT_NAME (string) : "null" | org.tomdroid.CALLED_FROM_SHORTCUT (boolean) : True
+org.tomdroid.SHORTCUT_NAME (string) : "" | org.tomdroid.CALLED_FROM_SHORTCUT (boolean) : True
+org.tomdroid.SHORTCUT_NAME (string) : [no lim] | org.tomdroid.CALLED_FROM_SHORTCUT (boolean) : False
+action (string) : "android.intent.action.SEARCH"

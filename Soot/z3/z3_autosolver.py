@@ -172,13 +172,13 @@ def infer_type(variable, value):
     # If value is in the form "(...)" we try to infer from the text inside.
     if isinstance(value, str):
         if value.startswith("(") and value.endswith(")"):
-            if "string" in value.lower():
+            if "java.lang.string" in value.lower():
               return String(variable)
-            elif "int" in value.lower():
+            elif "int" == value[1:-1].lower():
               return Int(variable)
             elif "boolean" in value.lower():
               return Bool(variable)
-            elif "serializable" in value.lower():
+            elif "java.io.serializable" in value.lower():
               return Const(variable, SerializableSort)
             else:
               return Const(variable, create_z3_custom_object(value[1:-1].strip().replace(".", "_")))
@@ -455,16 +455,17 @@ def parse_if(graph):
                     if (cond_param in intent_params and intent_params[cond_param].sort().name() == "Bool") or \
                        (cond_param in if_parameters and if_parameters[cond_param].sort().name() == "Bool"):
                         #print(cond_param)
-                        pattern = rf'(Not\s*\(\s*)?\b{cond_param}\s*==\s*(0|1)'
+                        pattern = rf'(Not\s*\(\s*)?\b{cond_param}\s*(==|!=)\s*(0|1)'
     
                         for idx, cond in enumerate(conditions):
                             match = re.search(pattern, cond)
                             if match:
-                                cond_value = match.group(2)  # Capture the 0 or 1
+                                cond_op = match.group(2)    # Capture == or !=
+                                cond_value = match.group(3)  # Capture the 0 or 1
                                 new_literal = "False" if cond_value == "0" else "True"
 
                                 # Replace the matched 0/1 with False/True, keeping other parts intact
-                                new_cond = re.sub(pattern, rf'\1{cond_param} == {new_literal}', cond)
+                                new_cond = re.sub(pattern, rf'\1{cond_param} {cond_op} {new_literal}', cond)
                                 conditions[idx] = new_cond
                                 #cond_value = new_literal
                                 break  # Stop after the first matching condition
@@ -729,7 +730,7 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
         print("Arrays: ", array_params)
         print("Parameters: ", parameters)
         print("Intent Parameters: ", intent_params)
-        if i==7 or i==13:
+        if i==10 or i==2:
             for key, z3_obj in parameters.items():
                 if z3_obj is not None:
                     print(f"{z3_obj.decl().name()} : {z3_obj.sort().name()}")
@@ -750,7 +751,7 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
                 sort_name = z3_var.sort().name()
                 type_str = TYPE_MAPPING.get(sort_name, sort_name)
                 value = model[z3_var]
-                if value is None:
+                if value is None or str(value) == "":
                     value_str = "[no lim]"
                 else:
                     if sort_name == "String":
