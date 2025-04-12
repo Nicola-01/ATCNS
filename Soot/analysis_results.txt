@@ -1,6 +1,11 @@
-apkFile: wikipedia.apk
-sdkVersion: 34
-package: org.wikipedia
-activity: org.wikipedia.main.MainActivity
-action: android.intent.action.MAIN
+apkFile: zooborns.apk
+sdkVersion: 13
+package: org.smerty.zooborns
+activity: org.smerty.zooborns.FullscreenImage
+action: android.intent.action.VIEW
 
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
+currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]

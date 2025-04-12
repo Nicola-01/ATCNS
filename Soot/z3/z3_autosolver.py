@@ -553,12 +553,19 @@ def search_for_var_declaration(graph, var_name, operator="", cond_value="", inve
 
                     if RETURN_VAR_ASSIGNATION_PATTERN.match(label):
                         return_match = RETURN_VAR_ASSIGNATION_PATTERN.match(label)
-                        if return_match.group("value") != "null":
+                        return_value = return_match.group("value")
+                        if  return_value != "null":
                             add_new_condition(graph, return_match.group("value").lstrip("$"))
-                        var_condition = f"{var} == {return_match.group("value")}"
+                        else:
+                            if type[1:-1].replace(".", "_") in custom_types:
+                                return_value = f"null_{type[1:-1].replace(".", "_")}"
+                        var_condition = f"{var} == {return_value}"
                     elif THIS_VAR_ASSIGNATION_PATTERN.match(label):
                         #print("value_1: ", value)
                         add_new_condition(graph, value)
+                        # If value is still not in the parameters array, add it 
+                        if value not in if_parameters and value not in intent_params:
+                            if_parameters[value] = infer_type(value, type)
                         var_condition = f"{var} == {value}"
                             #if var=="r11_3":
                             #    print(var_condition)
@@ -730,7 +737,7 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
         print("Arrays: ", array_params)
         print("Parameters: ", parameters)
         print("Intent Parameters: ", intent_params)
-        if i==10 or i==2:
+        if i==1 or i==2:
             for key, z3_obj in parameters.items():
                 if z3_obj is not None:
                     print(f"{z3_obj.decl().name()} : {z3_obj.sort().name()}")
