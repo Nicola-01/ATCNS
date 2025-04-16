@@ -76,6 +76,10 @@ LENGTHOF_PATTERN = re.compile(
     r'^(?P<var_name>[\w\$]+)\s*=\s*lengthof\s+(?P<obj_name>[\w\$]+)$'
 )
 
+INSTACEOF_PATTERN = re.compile(
+    r'^(?P<variable>[\w\$]+)\s*=\s*(?P<object_name>[\w\$]+)\s+instanceof\s+(?P<full_class_name>[a-zA-Z_][\w\.$]*)$'
+)
+
 # Operators that have to be inverted if necessary
 INVERT_OPERATOR = ["<=", ">=", "<", ">"]
 # Inverted operator map
@@ -469,8 +473,7 @@ def parse_if(graph):
                                 conditions[idx] = new_cond
                                 #cond_value = new_literal
                                 break  # Stop after the first matching condition
-                           
-                            
+                                                       
 def search_for_var_declaration(graph, var_name, operator="", cond_value="", invert_op=False):
     """
     Searches (only in blue nodes) for a declaration of a variable, and returns a condition
@@ -592,6 +595,12 @@ def search_for_var_declaration(graph, var_name, operator="", cond_value="", inve
 
                     var_condition = f"{var} == {operand1} {operation} {operand2}"
 
+                elif INSTACEOF_PATTERN.match(label):
+                    instaceof_match = INSTACEOF_PATTERN.match(label)
+                    variable = instaceof_match.group("variable")
+                    if variable not in if_parameters and variable not in intent_params:
+                        if_parameters[variable] = Bool(variable)
+
                 elif '==' in value:
                     # In case there's "==" in the value of the variable, the variable is Bool
                     if var_name not in if_parameters and var_name not in intent_params:
@@ -615,8 +624,16 @@ def search_for_var_declaration(graph, var_name, operator="", cond_value="", inve
                         var_condition = f"{variable} == {object_name}"
                         if variable not in if_parameters and variable not in intent_params:
                             if_parameters[variable] = infer_type(variable, type)
+                        
                         if object_name not in if_parameters and object_name not in intent_params:
                             if_parameters[object_name] = infer_type(object_name, type)
+                        # Handle case where variable and object_name have different types (i.e. i have to change the type of object_name since there have to be a cast)
+                        else:
+                            if object_name in if_parameters and if_parameters[object_name].sort().name() == "Serializable":
+                                if_parameters[object_name] = infer_type(object_name, type)
+                            elif object_name in intent_params and intent_params[object_name].sort().name() == "Serializable":
+                                intent_params[object_name] = infer_type(object_name, type)
+
                     else:
                         var_condition = f"{variable} == {value}"
                         type = None
@@ -737,7 +754,7 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
         print("Arrays: ", array_params)
         print("Parameters: ", parameters)
         print("Intent Parameters: ", intent_params)
-        if i==1 or i==2:
+        if i==3:
             for key, z3_obj in parameters.items():
                 if z3_obj is not None:
                     print(f"{z3_obj.decl().name()} : {z3_obj.sort().name()}")

@@ -1,11 +1,6 @@
-apkFile: zooborns.apk
-sdkVersion: 13
-package: org.smerty.zooborns
-activity: org.smerty.zooborns.FullscreenImage
+apkFile: jamendo.apk
+sdkVersion: 10
+package: com.teleca.jamendo
+activity: com.teleca.jamendo.activity.BrowsePlaylistActivity
 action: android.intent.action.VIEW
 
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
-currentImageIndex (integer) : [no lim] | cachedImageList (serializable) : [no lim] | gallery (serializable) : [no lim]
