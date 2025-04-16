@@ -159,6 +159,7 @@ def extract_metadata(dot_path):
     return metadata
 
 def create_z3_custom_object(name):
+    name = name.replace("$", "")
     if name not in custom_types:
         # Create a new custom Z3 sort with a unique name.
         custom_sort = DeclareSort(f"{name}")
@@ -392,7 +393,15 @@ def parse_if(graph):
                                 # Add the variable using inferred type (or default to Int here)
                                 if cond_value not in if_parameters:
                                     if_parameters[cond_value] = infer_type(cond_value, decl_value)
-                    
+                                else:
+                                    # If cond_value is inside the dictionary with value None, get the correct type by the cond_param type. They are compared in an if so they must be the same type object
+                                    if if_parameters[cond_value] == None:
+                                        if cond_param in intent_params:
+                                            sort = intent_params[cond_param].sort()
+                                        elif cond_param in if_parameters:
+                                            sort = if_parameters[cond_param].sort()
+                                        if_parameters[cond_value] = Const(cond_value, sort)
+
                     #print("cond_param: ", cond_param, " cond_value: ", cond_value, " ", cond_param in intent_params, " ", cond_param in if_parameters)
                     # If the variable is serializable, replace "null" with "null_serializable"
                     if (cond_param in intent_params and intent_params[cond_param].sort().name() == "Serializable") or \
@@ -613,6 +622,10 @@ def search_for_var_declaration(graph, var_name, operator="", cond_value="", inve
                         add_new_condition(graph, var1)
                     if var2 not in intent_params and var2 not in if_parameters:
                         add_new_condition(graph, var2)
+                        if (var2 in if_parameters and if_parameters[var2] == None) and\
+                           (var1 in if_parameters and if_parameters[var1] != None):
+                           sort = if_parameters[var1].sort()
+                           if_parameters[var2] = Const(var2, sort) 
                     var_condition = f"{variable} == ({var1}=={var2})"
 
                 elif not (' ' in variable):
@@ -684,7 +697,8 @@ def add_new_condition(graph, var_name):
         value = value.strip()
         if variable not in if_parameters and variable not in intent_params:
             if_parameters[variable] = infer_type(variable, value)
-        if var_condition not in conditions:
+        # Do not consider the case when a variable is equal to r0 (i.e. to the this object)
+        if var_condition not in conditions and value != "r0":
             conditions.append(var_condition)
 
 def find_array_element_assignation(nodes, array_name, array_type, array_length):
@@ -754,7 +768,7 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
         print("Arrays: ", array_params)
         print("Parameters: ", parameters)
         print("Intent Parameters: ", intent_params)
-        if i==3:
+        if i==1:
             for key, z3_obj in parameters.items():
                 if z3_obj is not None:
                     print(f"{z3_obj.decl().name()} : {z3_obj.sort().name()}")
