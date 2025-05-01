@@ -23,7 +23,7 @@ def parse_file(file_path):
     metadata = {}
     intents = []
     metadata_pattern = re.compile(r"(apkFile|sdkVersion|package|activity|action):\s*(.+)")
-    param_pattern = re.compile(r'(\w+)\s*\((\w+)\)\s*:\s*"?([^|\n"]+)"?')
+    param_pattern = re.compile(r'([\w.]+)\s*\((\w+)\)\s*:\s*("?[^|\n"]*"?)')
     
     for line in lines:
         
@@ -65,22 +65,23 @@ def parse_file(file_path):
         }
     
 def generate_combinations(intent):
-    keys = [(param['name'], param['type']) for param in intent]
-    values = [param['values'] for param in intent]
-    
-    extras = []
-    
+    keys = [(p['name'], p['type']) for p in intent]
+    values = [p['values'] for p in intent]
+
+    combinations = []
+
     for combination in product(*values):
         parts = []
         for (name, type_), value in zip(keys, combination):
-            if value == "null":
-                parts.append(f"--extra null {name}")
+            if value == '[null]':
+                continue  # omit the extra entirely
+            # elif value == '':
+            #     parts.append(f'--extra {type_} {name} ""')
             else:
-                parts.append(f"--extra {type_} {name} {value}")
-        extra = " ".join(parts)
-        extras.append(extra)
-        
-    return extras
+                parts.append(f'--extra {type_} {name} {value}')
+        combinations.append(" ".join(parts))
+
+    return combinations
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -195,7 +196,6 @@ def main(args):
         
         for extra in extras:
             drozer_in_foreground()
-            
             drozer_command_cpy = drozer_command
             drozer_command_cpy += extra
             drozer_command_cpy += "'"
