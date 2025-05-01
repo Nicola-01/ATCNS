@@ -1,0 +1,7 @@
+apkFile: jamendo.apk
+sdkVersion: 10
+package: com.teleca.jamendo
+activity: com.teleca.jamendo.activity.StarredAlbumsActivity
+action: android.intent.action.VIEW
+
+albums (serializable) : [no lim]

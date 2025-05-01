@@ -1,0 +1,9 @@
+apkFile: jamendo.apk
+sdkVersion: 10
+package: com.teleca.jamendo
+activity: com.teleca.jamendo.activity.PlayerActivity
+action: android.intent.action.VIEW
+
+playlist (com_teleca_jamendo_api_Playlist) : com_teleca_jamendo_api_Playlist!val!0
+handled (boolean) : False
+handled (boolean) : True

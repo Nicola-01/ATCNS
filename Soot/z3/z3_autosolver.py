@@ -716,100 +716,140 @@ def find_array_element_assignation(nodes, array_name, array_type, array_length):
                     result[idx] = obj
     return result
 
-# ---------------------------
-# MENU: Select a DOT file to analyze
-# ---------------------------
-paths_dir = "/home/nicola/Desktop/ATCNS/Soot/paths"
-files = [f for f in os.listdir(paths_dir) if f.endswith('.dot') and os.path.isfile(os.path.join(paths_dir, f))]
 
-if not files:
-    print("No .dot files found in the 'paths' directory.")
-    exit()
+# Base directory containing APK subdirectories
+base_dir = "./paths"
+# Directory for all analysis results
+results_dir = "./"
+results_base = os.path.join(results_dir, "analysis_results")
 
-def display_menu():
-    print("Select a file to analyze:\n")
-    for idx, file in enumerate(files, start=1):
-        print(f"{idx}. {file}")
+def list_subdirs(dir_path):
+    return [d for d in os.listdir(dir_path)
+            if os.path.isdir(os.path.join(dir_path, d))]
 
-selected_index = None
-while selected_index is None:
-    display_menu()
-    try:
-        selection = int(input("\nEnter the number of the file: "))
-        if 1 <= selection <= len(files):
-            selected_index = selection - 1
-        else:
-            print("Invalid selection. Please try again.\n")
-    except ValueError:
-        print("Invalid input. Please enter a valid number.\n")
+def display_menu(options, prompt="Select an option:"):
+    print(prompt)
+    for idx, name in enumerate(options, start=1):
+        print(f"{idx}. {name}")
 
-dot_file = os.path.join(paths_dir, files[selected_index])
-print(f"Selected file: {dot_file}\n")
+def main():
+    # Ensure results directory exists
+    os.makedirs(results_base, exist_ok=True)
 
-# Load the DOT file and extract subgraphs (paths).
-subgraphs = parse_dot_file(dot_file)
-metadata = extract_metadata(dot_file)
+    # 1. List APK directories
+    apks = list_subdirs(base_dir)
+    if not apks:
+        print(f"No subdirectories (APK folders) found in '{base_dir}'.")
+        return
 
-seen_lines = set()
+    # 2. User selects an APK directory
+    selected_idx = None
+    while selected_idx is None:
+        display_menu(apks, prompt="Select the APK directory to analyze:")
+        try:
+            choice = int(input("\nEnter the number of the APK: "))
+            if 1 <= choice <= len(apks):
+                selected_idx = choice - 1
+            else:
+                print("Invalid selection. Please try again.\n")
+        except ValueError:
+            print("Invalid input. Please enter a valid number.\n")
 
-with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
-    for key, value in metadata.items():
-        output_file.write(f"{key}: {value}\n")
-    output_file.write("\n")
-    
-    # Process each subgraph (path).
-    for i in range(1, len(subgraphs) + 1):
-        pathName = f"path_{i}"
-        parse_intent_params(subgraphs[pathName])
-        parse_if(subgraphs[pathName])
-        parameters = if_parameters | intent_params | array_params
-        print(pathName)
-        print("custom_types: ", custom_types)
-        print("z3_contest: ", Z3_CONTEST)
-        print("Conditions: ", conditions)
-        print("Arrays: ", array_params)
-        print("Parameters: ", parameters)
-        print("Intent Parameters: ", intent_params)
+    apk_name = apks[selected_idx]
+    apk_dir = os.path.join(base_dir, apk_name)
+    print(f"\nAnalyzing APK folder: {apk_dir}\n")
 
-        solver = Solver()
-        # When evaluating conditions, we include our special null constants.
-        for condition in conditions:
-            solver.add(eval(condition, Z3_CONTEST, parameters))
-        
-        if solver.check() == sat:
-            model = solver.model()
-            param_strings = []
-            for param, z3_var in sorted(intent_params.items()):
-                sort_name = z3_var.sort().name()
-                type_str = TYPE_MAPPING.get(sort_name, sort_name)
-                value = model[z3_var]
-                if value is None or value == "":
-                    value_str = "[no lim]"
+    # Create a specific results subdirectory for this APK
+    apk_results_dir = os.path.join(results_base, apk_name)
+    os.makedirs(apk_results_dir, exist_ok=True)
+
+    # 3. Collect .dot files in selected APK folder
+    dot_files = [f for f in os.listdir(apk_dir)
+                 if f.endswith('.dot') and os.path.isfile(os.path.join(apk_dir, f))]
+    if not dot_files:
+        print(f"No .dot files found in '{apk_dir}'.")
+        return
+
+    # 4. Process each .dot file individually
+    for dot_filename in dot_files:
+        dot_path = os.path.join(apk_dir, dot_filename)
+        print(f"Processing DOT file: {dot_filename}")
+
+        # Prepare a dedicated output file for this .dot in the results directory
+        base_name = os.path.splitext(dot_filename)[0]
+        output_path = os.path.join(apk_results_dir, f"{base_name}_analysis_results.txt")
+        seen_lines = set()
+
+        with open(output_path, "w", encoding="utf-8") as output_file:
+            # Metadata
+            try:
+                metadata = extract_metadata(dot_path)
+            except Exception as e:
+                print(f"Error extracting metadata: {e}")
+                continue
+
+            for key, value in metadata.items():
+                output_file.write(f"{key}: {value}\n")
+            output_file.write("\n")
+
+            # Parse subgraphs
+            try:
+                subgraphs = parse_dot_file(dot_path)
+            except Exception as e:
+                print(f"Error parsing DOT file: {e}")
+                continue
+
+            # Analyze each path subgraph
+            for idx, path_name in enumerate(subgraphs, start=1):
+                parse_intent_params(subgraphs[path_name])
+                parse_if(subgraphs[path_name])
+                parameters = intent_params | if_parameters | array_params
+
+                print(path_name)
+                print("custom_types: ", custom_types)
+                print("z3_contest: ", Z3_CONTEST)
+                print("Conditions: ", conditions)
+                print("Arrays: ", array_params)
+                print("Parameters: ", parameters)
+                print("Intent Parameters: ", intent_params)
+
+                solver = Solver()
+                for cond in conditions:
+                    solver.add(eval(cond, Z3_CONTEST, parameters))
+
+                if solver.check() == sat:
+                    model = solver.model()
+                    param_strings = []
+                    for param, z3_var in sorted(intent_params.items()):
+                        sort_name = z3_var.sort().name()
+                        type_str = TYPE_MAPPING.get(sort_name, sort_name)
+                        value = model[z3_var]
+                        if value is None or (isinstance(value, str) and value == ""):
+                            value_str = "[no lim]"
+                        else:
+                            if sort_name == "String":
+                                v = str(value)
+                                value_str = v if v != '"null"' else "[null]"
+                            else:
+                                value_str = str(value)
+                        if sort_name == "Serializable":
+                            serial_conds = [c for c in conditions if param in c]
+                            if serial_conds:
+                                value_str += " | Conditions: " + ", ".join(serial_conds)
+                        param_name = param_name_map.get(param, param)
+                        param_strings.append(f"{param_name} ({type_str}) : {value_str}")
+
+                    line = " | ".join(param_strings)
+                    if line not in seen_lines:
+                        seen_lines.add(line)
+                        output_file.write(f"{line}\n")
+                    print(line)
                 else:
-                    if sort_name == "String":
-                        value_str = f'{value}' if str(value) != '"null"' else f'[{str(value).replace('"', "")}]'
-                    else:
-                        value_str = str(value)
-                if sort_name == "Serializable":
-                    serializable_conditions = [
-                        cond for cond in conditions if param in cond
-                    ]
-                    if serializable_conditions:
-                        value_str += " | Conditions: " + ", ".join(serializable_conditions)
-                param_strings.append(f"{param_name_map.get(param, param)} ({type_str}) : {value_str}")
-            
-            solution_line = " | ".join(param_strings)
+                    print(f"{path_name}: No solution")
+                print("-" * 50)
+                reset_globals()
 
-            # only print/write if we haven't seen this exact line before
-            if solution_line not in seen_lines:
-                seen_lines.add(solution_line)
-                output_file.write(f"{solution_line}\n")
-            
-            print(solution_line)
-        else:
-            print("No solution")
-        
-        print("-" * 50)
-        reset_globals()
+        print(f"Completed: results saved to '{output_path}'\n")
 
-print("\nAnalysis complete. Results written to 'analysis_results.txt'.")
+if __name__ == "__main__":
+    main()

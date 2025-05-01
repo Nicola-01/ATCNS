@@ -1,0 +1,7 @@
+apkFile: anymemo.apk
+sdkVersion: 29
+package: org.liberty.android.fantastischmemo
+activity: org.liberty.android.fantastischmemo.ui.AnyMemo
+action: android.intent.action.MAIN
+
+action (string) : [no lim]

@@ -19,6 +19,9 @@ import soot.toolkits.graph.ExceptionalUnitGraph;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import org.IntentSymbolicExecution.ControlFlowGraph.GraphNode;
@@ -97,6 +100,19 @@ public class IntentAnalysis {
 
         System.out.println();
 
+        Path path = Paths.get("paths/" + apkName);  
+
+        if (Files.exists(path)) {
+            System.out.println("Directory already exists.");
+        } else {
+            try {
+                Files.createDirectory(path);
+                System.out.println("Directory created successfully.");
+            } catch (IOException e) {
+                System.out.println("Failed to create directory: " + e.getMessage());
+            }
+        }
+
         // Analyze each CFG to extract Intent-related paths
         for (Map.Entry<String, ExceptionalUnitGraph> entry : graphs.entrySet()) {
 
@@ -117,7 +133,7 @@ public class IntentAnalysis {
             if (filteredControlFlowGraph.haveExtras()) {
                 System.out.println(methodName + "\n\n" + filteredControlFlowGraph);
 
-                String fileName = "paths/" + filteredControlFlowGraph.getCompleteMethod() + "_paths.dot";
+                String fileName = "paths/" + apkName + "/" + filteredControlFlowGraph.getCompleteMethod() + "_paths.dot";
                 CFGPathFinder pathFinder = new CFGPathFinder(filteredControlFlowGraph);
 
                 pathFinder.generateDotFile(fileName, apkName, SDK_Version, packageName, activityName, action);

@@ -1,0 +1,8 @@
+apkFile: anymemo.apk
+sdkVersion: 29
+package: org.liberty.android.fantastischmemo
+activity: org.liberty.android.fantastischmemo.ui.ShareScreen
+action: android.intent.action.SEND
+
+action (string) : [no lim]
+action (string) : "android.intent.action.SEND" | android.intent.extra.SUBJECT (string) : [no lim] | android.intent.extra.TEXT (string) : [no lim]

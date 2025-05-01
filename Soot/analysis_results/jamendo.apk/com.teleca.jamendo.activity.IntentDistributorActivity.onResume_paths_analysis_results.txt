@@ -1,0 +1,8 @@
+apkFile: jamendo.apk
+sdkVersion: 10
+package: com.teleca.jamendo
+activity: com.teleca.jamendo.activity.IntentDistributorActivity
+action: android.intent.action.VIEW
+
+handled (boolean) : False
+handled (boolean) : True

@@ -1,0 +1,7 @@
+apkFile: jamendo.apk
+sdkVersion: 10
+package: com.teleca.jamendo
+activity: com.teleca.jamendo.activity.RadioPlayerActivity
+action: android.intent.action.VIEW
+
+extra_playlistentry (com_teleca_jamendo_api_PlaylistEntry) : com_teleca_jamendo_api_PlaylistEntry!val!0
