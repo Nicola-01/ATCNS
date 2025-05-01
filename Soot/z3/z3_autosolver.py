@@ -303,7 +303,7 @@ def parse_intent_params(graph):
             var, ret_type = match.groups()
             var = var.lstrip('$')
             if var not in param_name_map:
-                # Here we set the parameter name to "action" (or any identifier you choose).
+                # Here we set the parameter name to "action".
                 param_name_map[var] = "action"
             if var not in intent_params:
                 # Typically, getAction() returns a String, so we create a String variable.
@@ -783,11 +783,11 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
                 sort_name = z3_var.sort().name()
                 type_str = TYPE_MAPPING.get(sort_name, sort_name)
                 value = model[z3_var]
-                if value is None or str(value) == "":
+                if value is None or value == "":
                     value_str = "[no lim]"
                 else:
                     if sort_name == "String":
-                        value_str = f'{value}'
+                        value_str = f'{value}' if str(value) != '"null"' else f'[{str(value).replace('"', "")}]'
                     else:
                         value_str = str(value)
                 if sort_name == "Serializable":
