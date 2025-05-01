@@ -763,6 +763,13 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
         parse_intent_params(subgraphs[pathName])
         parse_if(subgraphs[pathName])
         parameters = if_parameters | intent_params | array_params
+        print(pathName)
+        print("custom_types: ", custom_types)
+        print("z3_contest: ", Z3_CONTEST)
+        print("Conditions: ", conditions)
+        print("Arrays: ", array_params)
+        print("Parameters: ", parameters)
+        print("Intent Parameters: ", intent_params)
 
         solver = Solver()
         # When evaluating conditions, we include our special null constants.
@@ -797,7 +804,8 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
             if solution_line not in seen_lines:
                 seen_lines.add(solution_line)
                 output_file.write(f"{solution_line}\n")
-                print(solution_line)
+            
+            print(solution_line)
         else:
             print("No solution")
         
