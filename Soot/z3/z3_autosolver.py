@@ -750,6 +750,8 @@ print(f"Selected file: {dot_file}\n")
 subgraphs = parse_dot_file(dot_file)
 metadata = extract_metadata(dot_file)
 
+seen_lines = set()
+
 with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
     for key, value in metadata.items():
         output_file.write(f"{key}: {value}\n")
@@ -761,28 +763,13 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
         parse_intent_params(subgraphs[pathName])
         parse_if(subgraphs[pathName])
         parameters = if_parameters | intent_params | array_params
-        print(pathName)
-        print("custom_types: ", custom_types)
-        print("z3_contest: ", Z3_CONTEST)
-        print("Conditions: ", conditions)
-        print("Arrays: ", array_params)
-        print("Parameters: ", parameters)
-        print("Intent Parameters: ", intent_params)
-        if i==1:
-            for key, z3_obj in parameters.items():
-                if z3_obj is not None:
-                    print(f"{z3_obj.decl().name()} : {z3_obj.sort().name()}")
-                else:
-                    print(key)
 
-        solver = Solver() 
+        solver = Solver()
         # When evaluating conditions, we include our special null constants.
-        for condition in conditions: 
+        for condition in conditions:
             solver.add(eval(condition, Z3_CONTEST, parameters))
         
-        solution_line = ""
         if solver.check() == sat:
-            #print(pathName)
             model = solver.model()
             param_strings = []
             for param, z3_var in sorted(intent_params.items()):
@@ -796,18 +783,25 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
                         value_str = f'{value}'
                     else:
                         value_str = str(value)
-                # If the variable is serializable, also include conditions involving it.
                 if sort_name == "Serializable":
-                    serializable_conditions = [cond for cond in conditions if param in cond]
+                    serializable_conditions = [
+                        cond for cond in conditions if param in cond
+                    ]
                     if serializable_conditions:
                         value_str += " | Conditions: " + ", ".join(serializable_conditions)
                 param_strings.append(f"{param_name_map.get(param, param)} ({type_str}) : {value_str}")
+            
             solution_line = " | ".join(param_strings)
-            output_file.write(f"{solution_line}\n")
-            print(solution_line)
+
+            # only print/write if we haven't seen this exact line before
+            if solution_line not in seen_lines:
+                seen_lines.add(solution_line)
+                output_file.write(f"{solution_line}\n")
+                print(solution_line)
         else:
             print("No solution")
-        print("-"*50)
-        reset_globals()
         
+        print("-" * 50)
+        reset_globals()
+
 print("\nAnalysis complete. Results written to 'analysis_results.txt'.")
