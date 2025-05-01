@@ -1,5 +1,6 @@
 
 GLOBAL VARIABLES:
+<<<<<<< Updated upstream
 Variable: abc_search_view (int) = 2131492889
 Variable: passwordToggleEnabled (int) = 2130968949
 Variable: AppCompatTheme_listPreferredItemPaddingRight (int) = 79
@@ -3037,4 +3038,31 @@ Variable: mtrl_internal_children_alpha_tag (int) = 2131296414
 Variable: ActionBar_height (int) = 13
 Variable: snap (int) = 2131296476
 Variable: Widget_MaterialComponents_Button_OutlinedButton (int) = 2131689939
+=======
+Variable: purple_200 (int) = 2131034872
+Variable: subtraction (int) = 2131231115
+Variable: number1 (int) = 2131231010
+Variable: number2 (int) = 2131231011
+Variable: data_extraction_rules (int) = 2131886081
+Variable: teal_200 (int) = 2131034887
+Variable: division (int) = 2131230859
+Variable: result (int) = 2131231052
+Variable: operations (int) = 2131231028
+Variable: white (int) = 2131034891
+Variable: teal_700 (int) = 2131034888
+Variable: purple_700 (int) = 2131034874
+Variable: calculate (int) = 2131230810
+Variable: multiplication (int) = 2131230994
+Variable: purple_500 (int) = 2131034873
+Variable: ic_launcher (int) = 2131558400
+Variable: backup_rules (int) = 2131886080
+Variable: addition (int) = 2131230788
+Variable: ic_launcher_round (int) = 2131558401
+Variable: black (int) = 2131034145
+Variable: app_name (int) = 2131689500
+Variable: main_activity (int) = 2131427379
+Variable: ic_launcher_foreground (int) = 2131165330
+Variable: ic_launcher_background (int) = 2131165329
+Variable: Theme_ComplexCalculator (int) = 2131755553
+>>>>>>> Stashed changes
 

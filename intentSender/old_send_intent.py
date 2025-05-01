@@ -1,15 +1,16 @@
 import subprocess
 import re
 from itertools import product
+from emulator import start_emulator
 import sys
 
 def parse_intent_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
     
-    package = re.search(r'Package:\s*(\S+)', lines[0]).group(1)
-    activity = re.search(r'Activity:\s*(\S+)', lines[1]).group(1) if len(lines) > 1 else ""
-    action = re.search(r'Action:\s*(\S+)', lines[2]).group(1) if len(lines) > 2 else ""
+    package = re.search(r'package:\s*(\S+)', lines[2]).group(1)
+    activity = re.search(r'activity:\s*(\S+)', lines[3]).group(1) if len(lines) > 1 else ""
+    action = re.search(r'action:\s*(\S+)', lines[4]).group(1) if len(lines) > 2 else ""
     
     intents = []
     param_pattern = re.compile(r'(\w+)\s*\((\w+)\)\s*:\s*"?([^|\n"]+)"?')

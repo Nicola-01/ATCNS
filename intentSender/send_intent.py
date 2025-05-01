@@ -71,8 +71,13 @@ def generate_combinations(intent):
     extras = []
     
     for combination in product(*values):
-        extra = " ".join(f"--extra {type_} {name} {value}" for (name, type_), value in zip(keys, combination))
-        # print(extra)
+        parts = []
+        for (name, type_), value in zip(keys, combination):
+            if value == "null":
+                parts.append(f"--extra null {name}")
+            else:
+                parts.append(f"--extra {type_} {name} {value}")
+        extra = " ".join(parts)
         extras.append(extra)
         
     return extras
@@ -92,14 +97,15 @@ def check_app_installed(apk):
         print("App not installed")
         return False
 
-def launch_app(apk):
-    print("Lauching the app")
+def launch_app(apk, verbose=True):
+    if verbose:
+        print(f"Lauching the app {apk.get_filename()}")
     mainactivity = "{}/{}".format(apk.get_package(), apk.get_main_activity())
     os.system("adb shell am start -n {act}".format(act=mainactivity))
 
 def uninstall(apk):
     if check_app_installed(apk):
-        print("Uninstalling the app")
+        print(f"Uninstalling the app {apk.get_filename()}")
         subprocess.call(["adb", "uninstall", apk.get_package()], stdout=subprocess.DEVNULL)
 
 def install(apk):
@@ -117,7 +123,7 @@ def stop(apk):
     os.system("adb shell am force-stop {package}".format(package=apk.get_package()))
             
 def drozer_in_foreground():
-    launch_app(DROZER_APK)     
+    launch_app(DROZER_APK, False)     
 
 def drozer_setup():
    
@@ -194,6 +200,7 @@ def main(args):
             drozer_command_cpy += extra
             drozer_command_cpy += "'"
                         
+            print("\n" + "-" * 30 + "\n")
             print("Drozer command:", drozer_command_cpy)
 
             # Execute the command
@@ -211,7 +218,9 @@ def main(args):
                     
             except subprocess.CalledProcessError as e:
                 print("Error executing command:", e)
-                print("Error Output:", e.stderr)           
+                print("Error Output:", e.stderr)   
+                
+            time.sleep(3)        
 
 if __name__ == "__main__":
     main(parse_args())

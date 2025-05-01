@@ -719,7 +719,7 @@ def find_array_element_assignation(nodes, array_name, array_type, array_length):
 # ---------------------------
 # MENU: Select a DOT file to analyze
 # ---------------------------
-paths_dir = "/home/japo/Desktop/ATCNS/Soot/paths"
+paths_dir = "/home/nicola/Desktop/ATCNS/Soot/paths"
 files = [f for f in os.listdir(paths_dir) if f.endswith('.dot') and os.path.isfile(os.path.join(paths_dir, f))]
 
 if not files:

@@ -1,5 +1,6 @@
 import subprocess
 import os
+import time
 
 # Set your Android SDK path
 ANDROID_SDK_ROOT = "~/Android/Sdk"
@@ -72,6 +73,18 @@ def check_emulator_exists(sdk_version):
     
     return False
 
+def is_emulator_online():
+    """Checks if any emulator is online"""
+    try:
+        result = subprocess.run("adb devices", shell=True, capture_output=True, text=True, check=True)
+        lines = result.stdout.strip().split("\n")
+        for line in lines[1:]:  # Skip the first line: "List of devices attached"
+            if line.startswith("emulator-") and "\tdevice" in line:
+                return True
+    except subprocess.CalledProcessError as e:
+        print("Failed to check ADB devices:", e)
+    return False
+
 def emulator_initialiser(sdk_version):
     """Initializes and starts the emulator"""
     
@@ -93,6 +106,14 @@ def emulator_initialiser(sdk_version):
         create_avd(sdk_version, arch)
         print("\n--------------------\n")
     start_emulator(sdk_version)
+    
+    for _ in range(30):  # wait up to 30 * 2 = 60 seconds
+        if is_emulator_online():
+            print("Emulator is online.")
+            break
+        time.sleep(3)
+    else:
+        print("Emulator did not come online in time.")
     
     return f"emulator_{sdk_version}"
 
