@@ -303,7 +303,7 @@ def parse_intent_params(graph):
             var, ret_type = match.groups()
             var = var.lstrip('$')
             if var not in param_name_map:
-                # Here we set the parameter name to "action" (or any identifier you choose).
+                # Here we set the parameter name to "action".
                 param_name_map[var] = "action"
             if var not in intent_params:
                 # Typically, getAction() returns a String, so we create a String variable.
@@ -763,6 +763,13 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
         parse_intent_params(subgraphs[pathName])
         parse_if(subgraphs[pathName])
         parameters = if_parameters | intent_params | array_params
+        print(pathName)
+        print("custom_types: ", custom_types)
+        print("z3_contest: ", Z3_CONTEST)
+        print("Conditions: ", conditions)
+        print("Arrays: ", array_params)
+        print("Parameters: ", parameters)
+        print("Intent Parameters: ", intent_params)
 
         solver = Solver()
         # When evaluating conditions, we include our special null constants.
@@ -776,11 +783,11 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
                 sort_name = z3_var.sort().name()
                 type_str = TYPE_MAPPING.get(sort_name, sort_name)
                 value = model[z3_var]
-                if value is None or str(value) == "":
+                if value is None or value == "":
                     value_str = "[no lim]"
                 else:
                     if sort_name == "String":
-                        value_str = f'{value}'
+                        value_str = f'{value}' if str(value) != '"null"' else f'[{str(value).replace('"', "")}]'
                     else:
                         value_str = str(value)
                 if sort_name == "Serializable":
@@ -797,7 +804,8 @@ with open("analysis_results.txt", "w", encoding="utf-8") as output_file:
             if solution_line not in seen_lines:
                 seen_lines.add(solution_line)
                 output_file.write(f"{solution_line}\n")
-                print(solution_line)
+            
+            print(solution_line)
         else:
             print("No solution")
         
