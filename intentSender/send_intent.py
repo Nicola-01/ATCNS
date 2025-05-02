@@ -14,6 +14,12 @@ from emulator import emulator_initialiser
 logger.remove()
 logger.add(sys.stderr, level="WARNING")
 DROZER_APK = APK("drozer-agent.apk")
+DROZER_MIN_VERSION = 17
+
+global emulator_is_installed
+global use_drozer
+global pid
+emulator_is_installed = False
 
 #python3 send_intent.py ../Soot/z3/analysis_results.txt
 
@@ -67,29 +73,36 @@ def parse_file(file_path):
         'intents': intents
         }
     
-def generate_combinations(intent):
-    supported_types = ['string', 'integer', 'boolean'] # todo: add more types
+def generate_combinations(intents):
     
-    keys = [(p['name'], p['type']) for p in intent]
-    values = [p['values'] for p in intent]
+    supported_types = ['string', 'integer', 'boolean'] # todo: add more types
+    extras = []
+    
+    for intent in intents:
+        keys = [(p['name'], p['type']) for p in intent]
+        values = [p['values'] for p in intent]
 
-    combinations = []
-
-    for combination in product(*values):
-        parts = []
-        for (name, type_), value in zip(keys, combination):
-            if type_ not in supported_types:
-                print(f"Unsupported type: {type_}")
-                continue
-            if value == '[null]':
-                continue  # omit the extra entirely
-            # elif value == '':
-            #     parts.append(f'--extra {type_} {name} ""')
-            else:
-                parts.append(f'--extra {type_} {name} {value}')
-        combinations.append(" ".join(parts))
-
-    return combinations
+        
+        for combination in product(*values):
+            combinations = []
+            for (name, type_), value in zip(keys, combination):
+                if type_ not in supported_types:
+                    print(f"Unsupported type: {type_}")
+                    continue
+                if value == '[null]':
+                    continue  # omit the extra entirely
+                # elif value == '':
+                #     parts.append(f'--extra {type_} {name} ""')
+                else:
+                    combinations.append({
+                        'name': name,
+                        'type': type_,
+                        'value': value
+                    })
+            if len(combinations) > 0:
+                extras.append(combinations)
+                
+    return extras
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -151,6 +164,42 @@ def drozer_setup(sdkVersion):
     time.sleep(1)
     os.system("adb shell input tap 975 1800")
     
+def send_drozer_intent(package, activity, action, extra, pid):
+    drozer_in_foreground()
+    drozer_command = (
+        "drozer console connect --command 'run app.activity.start "
+        f"--component {package} {activity} "
+    )
+    if action:
+        drozer_command += f"--action {action} "
+    
+    for item in extra:
+        drozer_command += f"--extra {item['type']} {item['name']} {item['value']} "
+    
+    drozer_command += "'"
+
+    get_logs(drozer_command, pid)
+
+def send_adb_intent(package, activity, action, extra, pid):
+    
+    # adb_command = [
+    #     "adb", "shell", "am", "start",
+    #     "-n", "com.example.calculator/.Calculator",
+    #     "-a", "com.example.calculator.action.CALCULATE",
+    #     "--ei", "n1", "16",  # Passing integer for n1
+    #     "--ei", "n2", "5",   # Passing integer for n2
+    #     "--es", "Op", "+"    # Passing string for the operator
+    # ]
+    
+    adb_command = f"adb shell am start -n {package}/{activity}"
+    if action:
+        adb_command += f" -a {action}"
+        
+    for item in extra:
+        adb_command += f" --e {item['type'][0]} {item['name']} {item['value']}"
+
+    get_logs(adb_command, pid)
+    
 def send_intents(apk_path, file_path):
     result = parse_file(file_path)
 
@@ -160,79 +209,70 @@ def send_intents(apk_path, file_path):
     package = metadata['package']
     activity = metadata['activity']   
     action = metadata['action']
+    intents = result['intents']
     
     if not apk_path.endswith(".apk"):
         if not apk_path.endswith("/"):
             apk_path += "/"
         apk_path = apk_path + apkFile
     
-    print("Lauching the emulator")
-    emulator_initialiser(sdkVersion)
+    use_drozer = sdkVersion >= DROZER_MIN_VERSION
     
-    intents = result['intents']
-    # print(package, activity, action, intents)
-    
-    time.sleep(5)
-    
-    drozer_setup(sdkVersion) 
-    
-    time.sleep(1)
-    
-    apk = APK(apk_path)
-    # check_app_installed(apk)
-    uninstall(apk)
-    install(apk, sdkVersion)
-    launch_app(apk)
-    
-    time.sleep(5)
-    get_PID = f"adb shell pidof {package}"
-    pid = subprocess.run(get_PID, shell=True, check=True, text=True, capture_output=True).stdout.strip()
-    # print("PID:", pid)
-
-    # # Add extras if needed
-    # for key, value in params.items():
-    #     for param, val in value.items():
-    #         drozer_command += f" --extra {key} {param} {val}"
-            
-    drozer_command = (
-        "drozer console connect --command 'run app.activity.start "
-        f"--component {package} {activity} " )
-
-    if action != "":
-        drozer_command += f"--action {action} "   
-
-    for intent in intents:
-        extras = generate_combinations(intent)
+    global emulator_is_installed
+    global pid
+    if not emulator_is_installed:
+        emulator_is_installed = True
+        print("Lauching the emulator")
+        emulator_initialiser(sdkVersion)
+        time.sleep(3)
         
-        for extra in extras:
-            drozer_in_foreground()
-            drozer_command_cpy = drozer_command
-            drozer_command_cpy += extra
-            drozer_command_cpy += "'"
-                        
-            print("\n" + "-" * 30 + "\n")
-            print("Drozer command:", drozer_command_cpy, "\n")
-
-            # Execute the command
-            try:
-                subprocess.run("adb logcat -c", shell=True, check=True, text=True)
-                result = subprocess.run(drozer_command_cpy, shell=True, check=True, text=True, capture_output=True)
-                
-                # print("Command executed successfully.")
-                # print("Output:", result.stdout)
-
-                get_logs = f"adb logcat --pid={pid} -d"
-                time.sleep(2)
-                # print("Get logs command:", get_logs)
-                logs = subprocess.run(get_logs, shell=True, check=True, text=True, capture_output=True).stdout
-                print(logs)
-                    
-            except subprocess.CalledProcessError as e:
-                print("Error executing command:", e)
-                print("Error Output:", e.stderr)   
-                
-            time.sleep(1)        
+        if use_drozer:
+            drozer_setup(sdkVersion)
+            time.sleep(1)
+        time.sleep(3)
+              
+        apk = APK(apk_path)
+        uninstall(apk)
+        install(apk, sdkVersion)
+        launch_app(apk)
+        time.sleep(5)
+            
+        get_PID = f"adb shell pidof {package}"
+        pid = subprocess.run(get_PID, shell=True, check=True, text=True, capture_output=True).stdout.strip()
     
+    extras = generate_combinations(intents)
+        
+    if len(extras) == 0:
+        print("No compatible extras found in the analysis file.")
+        return
+    
+    file_name = os.path.basename(file_path)
+    print(f"\n===== Sending intents from: {file_name} =====")    
+    for extra in extras:
+        print("\n" + "-" * 30 + "\n")
+        
+        for item in extra:
+            print(f"Extra: {item['name']} ({item['type']}) = {item['value']}")
+        
+        if use_drozer:
+            send_drozer_intent(package, activity, action, extra, pid)
+        else:
+            send_adb_intent(package, activity, action, extra, pid)
+        time.sleep(1)     
+    
+def get_logs(command, pid):
+    
+    print("Intent command:", command)
+    
+    try:
+        subprocess.run("adb logcat -c", shell=True, check=True, text=True)
+        subprocess.run(command, shell=True, check=True, text=True, capture_output=True)
+        time.sleep(2)
+        logs = subprocess.run(f"adb logcat --pid={pid} -d", shell=True, check=True, text=True, capture_output=True).stdout
+        print("\nLOGS:\n", logs)
+    except subprocess.CalledProcessError as e:
+        print("Error executing command:", e)
+        print("Error Output:", e.stderr)
 
 def main(args):
     input_dir = args.analysis_path
@@ -243,11 +283,11 @@ def main(args):
             continue
         
         file_path = os.path.join(input_dir, fname)
-        print(f"\n===== Sending intents from: {file_path} =====")
-        # try:
-        send_intents(apk_path, file_path)
-        # except Exception as e:
-        #     print(f"[!] Error processing {fname}: {e}")
+        
+        try:
+            send_intents(apk_path, file_path)
+        except Exception as e:
+            print(f"[!] Error processing {fname}: {e}")
 
     
 

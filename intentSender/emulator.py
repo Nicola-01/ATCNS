@@ -125,6 +125,14 @@ def closeAllEmulators():
         time.sleep(5)
     except subprocess.CalledProcessError as e:
         print("Failed to close emulators:", e)
+        
+def unlock_emulator():
+    """Wake and unlock the emulator screen"""
+    print("Unlocking emulator screen...")
+    subprocess.run("adb shell input keyevent 224", shell=True)
+    time.sleep(1)
+    subprocess.run("adb shell input keyevent 82", shell=True)
+
 
 def emulator_initialiser(sdk_version):
     """Initializes and starts the emulator"""
@@ -158,6 +166,7 @@ def emulator_initialiser(sdk_version):
     for _ in range(30):  # wait up to 30 * 3 = 90 seconds
         if is_emulator_online():
             print("Emulator is online.")
+            unlock_emulator()
             break
         time.sleep(3)
     else:
