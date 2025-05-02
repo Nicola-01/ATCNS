@@ -1,4 +1,5 @@
 import argparse
+import json
 import time
 from androguard.core.apk import APK
 import os
@@ -9,6 +10,7 @@ import sys
 from loguru import logger
 
 from emulator import emulator_initialiser
+from LLMquery import query_groq
 
     
 logger.remove()
@@ -16,9 +18,10 @@ logger.add(sys.stderr, level="WARNING")
 DROZER_APK = APK("drozer-agent.apk")
 DROZER_MIN_VERSION = 17
 
-global emulator_is_installed
-global use_drozer
-global pid
+global metadata, apkFile, sdkVersion, package, activity, action, intents
+global emulator_is_installed, use_drozer, pid, json_responses
+
+json_responses = []
 emulator_is_installed = False
 
 #python3 send_intent.py ../Soot/z3/analysis_results.txt
@@ -164,7 +167,7 @@ def drozer_setup(sdkVersion):
     time.sleep(1)
     os.system("adb shell input tap 975 1800")
     
-def send_drozer_intent(package, activity, action, extra, pid):
+def send_drozer_intent(package, sdk_version, activity, action, extra, pid):
     drozer_in_foreground()
     drozer_command = (
         "drozer console connect --command 'run app.activity.start "
@@ -178,9 +181,9 @@ def send_drozer_intent(package, activity, action, extra, pid):
     
     drozer_command += "'"
 
-    get_logs(drozer_command, pid)
+    get_logs(drozer_command)
 
-def send_adb_intent(package, activity, action, extra, pid):
+def send_adb_intent(package, sdk_version, activity, action, extra, pid):
     
     # adb_command = [
     #     "adb", "shell", "am", "start",
@@ -196,11 +199,41 @@ def send_adb_intent(package, activity, action, extra, pid):
         adb_command += f" -a {action}"
         
     for item in extra:
-        adb_command += f" --e {item['type'][0]} {item['name']} {item['value']}"
+        intentType = ''
+        if item['type'] == 'string':
+            intentType = 's'
+        elif item['type'] == 'integer':
+            intentType = 'i'
+        elif item['type'] == 'boolean':
+            intentType = 'z'
+        adb_command += f" --e{intentType} {item['name']} {item['value']}"
 
-    get_logs(adb_command, pid)
+    get_logs(adb_command)
+    
+    
+def get_pid(package, sdk_version):
+    if int(sdk_version) >= 21:
+        cmd = f"adb shell pidof {package}"
+    else:
+        cmd = f"adb shell ps | grep {package}"
+
+    result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+
+    if result.returncode != 0 or not result.stdout.strip():
+        return None
+
+    if int(sdk_version) >= 21:
+        return result.stdout.strip()
+    else:
+        # assume ps output: user pid ppid ... name
+        parts = result.stdout.strip().split()
+        if len(parts) >= 2:
+            return parts[1]  # PID is usually the second column
+        else:
+            return None
     
 def send_intents(apk_path, file_path):
+    global metadata, apkFile, sdkVersion, package, activity, action, intents
     result = parse_file(file_path)
 
     metadata = result['metadata']
@@ -237,8 +270,7 @@ def send_intents(apk_path, file_path):
         launch_app(apk)
         time.sleep(5)
             
-        get_PID = f"adb shell pidof {package}"
-        pid = subprocess.run(get_PID, shell=True, check=True, text=True, capture_output=True).stdout.strip()
+        pid = get_pid(package, sdkVersion)
     
     extras = generate_combinations(intents)
         
@@ -255,12 +287,12 @@ def send_intents(apk_path, file_path):
             print(f"Extra: {item['name']} ({item['type']}) = {item['value']}")
         
         if use_drozer:
-            send_drozer_intent(package, activity, action, extra, pid)
+            send_drozer_intent(package, sdkVersion, activity, action, extra, pid)
         else:
-            send_adb_intent(package, activity, action, extra, pid)
+            send_adb_intent(package, sdkVersion, activity, action, extra, pid)
         time.sleep(1)     
     
-def get_logs(command, pid):
+def get_logs(command):
     
     print("Intent command:", command)
     
@@ -268,11 +300,30 @@ def get_logs(command, pid):
         subprocess.run("adb logcat -c", shell=True, check=True, text=True)
         subprocess.run(command, shell=True, check=True, text=True, capture_output=True)
         time.sleep(2)
-        logs = subprocess.run(f"adb logcat --pid={pid} -d", shell=True, check=True, text=True, capture_output=True).stdout
-        print("\nLOGS:\n", logs)
+        result = subprocess.run("adb logcat -d", shell=True, check=True, text=True, capture_output=True)
+        lines = result.stdout.splitlines()
+        # logs = [line for line in lines if any(tag in line for tag in ["AndroidRuntime", "ActivityManager", package])]
+        # logs = [line for line in lines if any(tag in line for tag in [package])]
+        logs = [line for line in lines if any(tag in line for tag in [pid, package])]
+        logs = "\n".join(logs)
+        # print("\nLOGS:\n", logs)
+        
+        response = query_groq(package, command, logs)
+        
+        try:
+            parsed = json.loads(response)
+            json_responses.append(parsed)
+            print("Was an error: ", parsed.get("error", "Invalid JSON: missing 'error'"))
+        except json.JSONDecodeError:
+            print("Invalid JSON returned by LLM:")
+            print(response)
+            
+        # print("\nRESPONSE:\n", response)
+        
+        
     except subprocess.CalledProcessError as e:
-        print("Error executing command:", e)
-        print("Error Output:", e.stderr)
+        print("Error getting crash logs:", e)
+
 
 def main(args):
     input_dir = args.analysis_path
@@ -284,11 +335,13 @@ def main(args):
         
         file_path = os.path.join(input_dir, fname)
         
-        try:
-            send_intents(apk_path, file_path)
-        except Exception as e:
-            print(f"[!] Error processing {fname}: {e}")
+        # try:
+        send_intents(apk_path, file_path)
+        # except Exception as e:
+        #     print(f"[!] Error processing {fname}: {e}")
 
+    with open("intent_results.json", "w", encoding="utf-8") as f:
+        json.dump(json_responses, f, indent=2)
     
 
 if __name__ == "__main__":
