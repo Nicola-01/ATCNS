@@ -27,3 +27,11 @@ Soot/Applications_to_analise/
 Apps/ComplexCalculator/.idea/
 
 Soot/sootOutput/
+
+intentSender/__pycache__/
+
+Soot/z3/analysis_results.txt
+
+Soot/z3/analysis_results/
+
+Soot/globalVariables.txt

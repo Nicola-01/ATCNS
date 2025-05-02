@@ -6,10 +6,13 @@ import subprocess
 import re
 from itertools import product
 import sys
+from loguru import logger
 
 from emulator import emulator_initialiser
 
     
+logger.remove()
+logger.add(sys.stderr, level="WARNING")
 DROZER_APK = APK("drozer-agent.apk")
 
 #python3 send_intent.py ../Soot/z3/analysis_results.txt
@@ -42,9 +45,9 @@ def parse_file(file_path):
         
             if value == '[no lim]':
                 if type == 'string':
-                    values = ['""', '"abc"', '"123"', '"abc123"', '"abc 123"', '"abc@123"']
+                    values = ['""', '"abc"', '"!abc@ 123"']
                 elif type == 'integer':
-                    values = [0, 1, -1, 2147483647, -2147483648]
+                    values = [0, 2147483647, -2147483648]
                 elif type == 'boolean':
                     values = [True, False]
             else:
@@ -65,6 +68,8 @@ def parse_file(file_path):
         }
     
 def generate_combinations(intent):
+    supported_types = ['string', 'integer', 'boolean'] # todo: add more types
+    
     keys = [(p['name'], p['type']) for p in intent]
     values = [p['values'] for p in intent]
 
@@ -73,6 +78,9 @@ def generate_combinations(intent):
     for combination in product(*values):
         parts = []
         for (name, type_), value in zip(keys, combination):
+            if type_ not in supported_types:
+                print(f"Unsupported type: {type_}")
+                continue
             if value == '[null]':
                 continue  # omit the extra entirely
             # elif value == '':
@@ -85,10 +93,9 @@ def generate_combinations(intent):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("apk_path", help="path to app apk file")
-    parser.add_argument("values_path", help="path to relative apk intents values file")
-    args = parser.parse_args()
-    return args
+    parser.add_argument("apk_path", help="Path to app apk file")
+    parser.add_argument("analysis_path", help="Directory containing z3's analysis for the app")
+    return parser.parse_args()
 
 def check_app_installed(apk):
     if (os.system("adb shell pm list packages | grep {package}".format(package=apk.get_package())) == 0):
@@ -109,11 +116,17 @@ def uninstall(apk):
         print(f"Uninstalling the app {apk.get_filename()}")
         subprocess.call(["adb", "uninstall", apk.get_package()], stdout=subprocess.DEVNULL)
 
-def install(apk):
+def install(apk, sdk_version):
     print("Installing the app")
+    
+    install_cmd = f"adb install"
+    if sdk_version is not None and int(sdk_version) >= 23:
+        install_cmd += " -g"
+    install_cmd += f" {apk.get_filename()}"
+    
     while True:
         try:
-            os.system("adb install -g {apk}".format(apk=apk.get_filename()))
+            os.system(install_cmd)
             break
         except subprocess.CalledProcessError as err:
             print('[!] install failed')
@@ -126,10 +139,10 @@ def stop(apk):
 def drozer_in_foreground():
     launch_app(DROZER_APK, False)     
 
-def drozer_setup():
+def drozer_setup(sdkVersion):
    
     if not check_app_installed(DROZER_APK):
-        install(DROZER_APK)
+        install(DROZER_APK, sdkVersion)
     else:
         stop(DROZER_APK)
     
@@ -138,23 +151,20 @@ def drozer_setup():
     time.sleep(1)
     os.system("adb shell input tap 975 1800")
     
-
-def main(args):
-    
-    # os.system("~/Android/Sdk/emulator/emulator -avd mobiotsec -no-audio -no-boot-anim -accel on -gpu swiftshader_indirect &")
-
-    file_path = args.values_path
-        
-    # file_path = "../Soot/z3/analysis_results.txt"
-        
+def send_intents(apk_path, file_path):
     result = parse_file(file_path)
 
     metadata = result['metadata']
     apkFile = metadata['apkFile']
-    sdkVersion = metadata['sdkVersion']
+    sdkVersion = int(metadata['sdkVersion'])
     package = metadata['package']
     activity = metadata['activity']   
     action = metadata['action']
+    
+    if not apk_path.endswith(".apk"):
+        if not apk_path.endswith("/"):
+            apk_path += "/"
+        apk_path = apk_path + apkFile
     
     print("Lauching the emulator")
     emulator_initialiser(sdkVersion)
@@ -164,17 +174,17 @@ def main(args):
     
     time.sleep(5)
     
-    drozer_setup() 
+    drozer_setup(sdkVersion) 
     
     time.sleep(1)
     
-    apk = APK(args.apk_path)
-    check_app_installed(apk)
+    apk = APK(apk_path)
+    # check_app_installed(apk)
     uninstall(apk)
-    install(apk)
+    install(apk, sdkVersion)
     launch_app(apk)
     
-    time.sleep(1)
+    time.sleep(5)
     get_PID = f"adb shell pidof {package}"
     pid = subprocess.run(get_PID, shell=True, check=True, text=True, capture_output=True).stdout.strip()
     # print("PID:", pid)
@@ -201,7 +211,7 @@ def main(args):
             drozer_command_cpy += "'"
                         
             print("\n" + "-" * 30 + "\n")
-            print("Drozer command:", drozer_command_cpy)
+            print("Drozer command:", drozer_command_cpy, "\n")
 
             # Execute the command
             try:
@@ -212,6 +222,7 @@ def main(args):
                 # print("Output:", result.stdout)
 
                 get_logs = f"adb logcat --pid={pid} -d"
+                time.sleep(2)
                 # print("Get logs command:", get_logs)
                 logs = subprocess.run(get_logs, shell=True, check=True, text=True, capture_output=True).stdout
                 print(logs)
@@ -220,7 +231,25 @@ def main(args):
                 print("Error executing command:", e)
                 print("Error Output:", e.stderr)   
                 
-            time.sleep(3)        
+            time.sleep(1)        
+    
+
+def main(args):
+    input_dir = args.analysis_path
+    apk_path = args.apk_path
+    
+    for fname in sorted(os.listdir(input_dir)):
+        if not fname.endswith(".txt"):
+            continue
+        
+        file_path = os.path.join(input_dir, fname)
+        print(f"\n===== Sending intents from: {file_path} =====")
+        # try:
+        send_intents(apk_path, file_path)
+        # except Exception as e:
+        #     print(f"[!] Error processing {fname}: {e}")
+
+    
 
 if __name__ == "__main__":
     main(parse_args())

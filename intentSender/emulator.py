@@ -1,3 +1,4 @@
+import re
 import subprocess
 import os
 import time
@@ -23,6 +24,38 @@ def run_command(command, wait_end=True, print_output=True):
     
     if wait_end:
         process.wait()  # Ensure the process completes
+        
+
+def get_available_sdk_images():
+    """
+    Returns a dict mapping SDK version to system image path, e.g.:
+    {
+        10: "system-images;android-10;google_apis;x86",
+        33: "system-images;android-33;google_apis;x86_64"
+    }
+    """
+    
+    cmd = "sdkmanager --list | grep 'system-images;android-[0-9]\\+;google_apis;'"
+    result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    
+    if result.returncode != 0:
+        print("Failed to list SDK images")
+        return {}
+
+    sdk_map = {}
+    pattern = re.compile(r"system-images;android-(\d+);google_apis;(x86_64|x86)")
+    
+    for line in result.stdout.splitlines():
+        match = pattern.search(line)
+        if match:
+            sdk_version = int(match.group(1))
+            arch = match.group(2)
+            sdk_key = f"system-images;android-{sdk_version};google_apis;{arch}"
+            # Always prefer x86_64 if multiple entries exist
+            if sdk_version not in sdk_map or arch == "x86_64":
+                sdk_map[sdk_version] = sdk_key
+
+    return sdk_map
 
 def get_system_image_arch(sdk_version):
     """Check available system image architecture (x86_64 or x86)"""
@@ -34,15 +67,15 @@ def get_system_image_arch(sdk_version):
             return "x86"
     return None
 
-def install_system_image(sdk_version, arch):
+def install_system_image(sdk_image,):
     """Installs the Android system image"""
-    print(f"Installing Android {sdk_version} system image ({arch})...")
-    run_command(f"sudo sdkmanager \"system-images;android-{sdk_version};google_apis;{arch}\"")
+    print(f"Installing Android {sdk_image} system image...")
+    run_command(f"sudo sdkmanager \"{sdk_image}\"")
 
-def create_avd(sdk_version, arch):
+def create_avd(sdk_version, sdk_image):
     """Creates a new AVD"""
     print(f"Creating AVD emulator_{sdk_version}...")
-    run_command(f"avdmanager create avd -n emulator_{sdk_version} -k \"system-images;android-{sdk_version};google_apis;{arch}\" -d pixel")
+    run_command(f"avdmanager create avd -n emulator_{sdk_version} -k \"{sdk_image}\" -d pixel")
     
     USER_HOME = os.path.expanduser("~")
     print(f"Moving AVD to {USER_HOME}/Android/Sdk/system-images/android-{sdk_version}...")
@@ -85,8 +118,29 @@ def is_emulator_online():
         print("Failed to check ADB devices:", e)
     return False
 
+def closeAllEmulators():
+    """Closes all running emulators"""
+    try:
+        result = subprocess.run("adb devices | grep emulator | cut -f1 | while read line; do adb -s $line emu kill; done", shell=True, capture_output=True, text=True, check=True)
+        time.sleep(5)
+    except subprocess.CalledProcessError as e:
+        print("Failed to close emulators:", e)
+
 def emulator_initialiser(sdk_version):
     """Initializes and starts the emulator"""
+    
+    # Close all running emulators
+    closeAllEmulators()
+    
+
+    sdk_map = get_available_sdk_images()
+    max_sdk_version = max(sdk_map.keys())
+    while sdk_version not in sdk_map:
+        print(f"System image not found for Android SDK {sdk_version}. Trying next version...")
+        sdk_version += 1
+        if sdk_version > max_sdk_version:
+            print(f"No available system image found for Android SDK {sdk_version}. Aborting...")
+            return
     
     # First, check if the emulator already exists
     already_exists = check_emulator_exists(sdk_version)
@@ -94,20 +148,14 @@ def emulator_initialiser(sdk_version):
         print(f"Emulator emulator_{sdk_version} already exists.")
         
     # Proceed with installation, AVD creation, and starting the emulator
-    if not already_exists:
-        # Check the system image architecture (x86_64 or x86)
-        arch = get_system_image_arch(sdk_version)
-        if arch is None:
-            print(f"System image not found for Android {sdk_version}. Aborting...")
-            return
-        
-        install_system_image(sdk_version, arch)
+    if not already_exists:         
+        install_system_image(sdk_map[sdk_version])
         print("\n--------------------\n")
-        create_avd(sdk_version, arch)
+        create_avd(sdk_version, sdk_map[sdk_version])
         print("\n--------------------\n")
     start_emulator(sdk_version)
     
-    for _ in range(30):  # wait up to 30 * 2 = 60 seconds
+    for _ in range(30):  # wait up to 30 * 3 = 90 seconds
         if is_emulator_online():
             print("Emulator is online.")
             break
@@ -118,4 +166,4 @@ def emulator_initialiser(sdk_version):
     return f"emulator_{sdk_version}"
 
 # Example usage
-# emulator_initialiser(16) # versions: 10, 15 - 19, 21 - 36
+# emulator_initialiser(4) # versions: 10, 15 - 19, 21 - 36
