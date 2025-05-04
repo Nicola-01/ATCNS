@@ -1,0 +1,3013 @@
+[
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash was reported in the logcat output. The ActivityCollectionActivity was paused, but this is a normal part of the Android activity lifecycle."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      }
+    ],
+    "error": false,
+    "reason": "The intent started the ArticleCollectionActivity, but it seems to have immediately paused, possibly indicating that the activity handled the intent but then moved to the background."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, the activity was started and resumed, then paused, indicating that the intent was processed without issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, the activity was started and paused, indicating the intent was processed"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The activity was started, resumed, and then paused, indicating normal activity lifecycle events."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash was observed in the provided logcat output. The activity was added, and the onResume and onPause methods were called, indicating that the intent was processed without any issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully processed by the ArticleCollectionActivity, and there is no indication of an error or crash in the logs."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "No explicit error or crash found in the logs, the activity was paused after being started, which could indicate that the intent was successfully received and processed."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash logs found, the intent seems to be handled by the ArticleCollectionActivity"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash found in the logs, the intent seems to have started the ArticleCollectionActivity and went through the lifecycle methods Resume, unfullscreen, and Pause without any issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully sent to the application and the activity was paused and resumed without any errors or crashes in the provided logs."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully processed by the application, as indicated by the log messages, and there is no evidence of an error or crash."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The log output does not indicate any crashes or errors related to the intent. The ArticleCollectionActivity is resumed, unfullscreen, and paused, suggesting the intent was processed without errors."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not show any error or crash messages. The activity lifecycle methods (Resume, Pause) are logged as expected, indicating the intent was handled by the application."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash based on the provided logcat output. The activity was paused and resumed, but no error messages were logged."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The activity was started, resumed, and then paused, indicating that the intent was successfully processed."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The activity was started and its lifecycle methods (onResume, onPause) were called, indicating that the intent was successfully processed."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The logs show the activity being paused and resumed, but no exceptions or errors were reported."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "No indication of error or crash in the logcat output, activity was paused after being started, suggesting the intent was processed successfully"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash found in the provided logs, the intent seems to have been processed and the activity was paused after resuming"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not indicate any error or crash. The activity was paused and resumed, suggesting that the intent was processed by the application."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The activity was started, resumed, and then paused, which suggests that the intent was handled successfully."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause a crash, the activity was paused after being resumed, indicating that the activity was launched and processed the intent successfully."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash is reported in the logs, the activity was paused after being started, which suggests the intent was processed without any issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause a crash, the activity was paused after being started, indicating the intent was processed successfully."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, it was processed and the activity was paused, which suggests the intent was handled by the application."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The logs show the activity being paused and resumed, but no exceptions or error messages were found."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent seems to have been processed by the application without any obvious errors or crashes, as indicated by the log messages from ArticleCollectionActivity."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully sent and processed by the ArticleCollectionActivity, as indicated by the log messages. There are no error messages or crash reports in the log output."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, as there are no error messages or stack traces in the logs. The intent seems to have been processed and the activity has gone through resume and pause states."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent seems to have been processed without error, as there are no crash or error messages in the logs, and the activity lifecycle methods are being called."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not indicate an error or crash. The activity was paused and resumed as expected, suggesting the intent was processed correctly."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, the activity was started and went through the lifecycle methods resume, unfullscreen and pause without any issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "Activity started and paused without crashing, indicating the intent was not ignored"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, it seems the activity was started and paused normally"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent seems to have been processed without any errors or crashes. The activity was started, resumed, and then paused, indicating a normal lifecycle."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause a crash, the activity was started and paused without any errors, the logs only show normal activity lifecycle events."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "No error messages or crashes found in the provided logcat output. The intent seems to have been processed by the ArticleCollectionActivity, which went through resume, unfullscreen, and pause states."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash was found in the given logcat output, the intent seems to have been processed without issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully received and processed by the ArticleCollectionActivity, with no indication of an error or crash in the provided logs."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash is indicated in the provided logs, the intent seems to have been processed without issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, as there are no error messages in the logcat output. The activity was paused, which is a normal part of the Android activity lifecycle."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was handled by the application, the activity was paused and no crash or error was reported in the logs"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "Activity lifecycle methods were called, indicating the intent was processed without errors"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The ActivityCollectionActivity was launched and went through the resume and pause lifecycle methods without any errors."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash message found in the log output, suggesting the intent was successfully processed by the application"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully received and processed by the ArticleCollectionActivity, as indicated by the log messages. There is no evidence of an error or crash."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "Activity was started and went through lifecycle methods (resume, pause) without any errors or crashes in the provided logs"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, the activity was paused and resumed successfully, suggesting the intent was processed by the application"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent appears to have been processed successfully, with no indication of an error or crash in the provided logcat output. The activity lifecycle methods (Resume, Pause) are being called as expected."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, as there are no error or fatal exception messages in the logcat output. The activity was paused after being started, which suggests that the intent was handled and the activity resumed and then paused, possibly due to the app's normal lifecycle."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "No crashes or errors reported in the logs, activity was paused after resume, indicating that the intent was processed"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not indicate any error or crash. The activity was successfully started, resumed, and then paused, suggesting that the intent was processed without issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash found in the logs. The intent seems to have started the ArticleCollectionActivity and the logs show the activity's lifecycle methods (onResume, onUnfullscreen, onPause) being called."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not indicate any error or crash, the intent seems to have been processed normally by the application"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully processed and caused the activity to pause and resume, but there are no indications of errors or crashes in the provided logs."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "No error messages in the log. The intent seems to have been processed by the ArticleCollectionActivity without any crashes or exceptions."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was processed successfully as ArticleCollectionActivity was started and went through resume, unfullscreen and pause states without any errors or crashes in the provided logs."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not indicate any crash or error. The activity was paused and resumed, which is a normal lifecycle event."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause a crash, the activity was paused after being started, indicating it was processed without fatal errors."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause a crash, and the activity was paused after being started, which suggests that the intent was processed successfully."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The logs show that the activity was added, resumed, unfullscreened, and then paused, but there are no error messages indicating a crash or exception."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully delivered to the Activity, and the Activity went through the lifecycle events (Resume, unfullscreen, Pause) without any error or crash reported in the log."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The ActivityCollectionActivity was started, resumed, and then paused, indicating that the intent was processed successfully."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not indicate an error or crash, and the intent seems to have been processed by the ArticleCollectionActivity."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not indicate any crashes or errors. The activity started and went through the lifecycle methods without any issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, and the activity lifecycle methods (onResume, onPause) were called as expected, indicating that the intent was processed by the application."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, as there are no error messages in the logcat output. The activity was paused, which suggests that the intent was processed and the activity was stopped, but no exceptions were thrown."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The logs indicate the Activity started and went through the lifecycle methods (resume, pause) without any indication of a crash or error."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, the activity was paused after being started, indicating the intent was handled by the application."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, the activity was paused after being started"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully received and processed by the application, with the activity being paused and resumed without any error messages in the log."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully received and handled by the application, as shown by the logs from ArticleCollectionActivity. There is no indication of an error or crash."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not indicate any errors or crashes, and the activity lifecycle methods (Resume, Pause) are called as expected, suggesting the intent was not ignored."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent seems to have been processed by the application without causing an error or crash. The logs show the activity being paused and resumed, but no exception or error messages are present."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not indicate any crashes or errors. The intent seems to have been processed by the ArticleCollectionActivity, which went through the lifecycle methods of Resume, unfullscreen, and Pause without any issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash found in the logs, the activity was started and paused as expected"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully received and processed by the application, as evidenced by the log entries from ArticleCollectionActivity"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash found in the provided log. The activity was paused after being started, which suggests that the intent was processed successfully."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, the activity was started and resumed but then paused, this suggests that the activity did not handle the intent or was not designed to handle the intent in the current state."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The ArticleCollectionActivity was started and went through the lifecycle methods (Resume, Pause), indicating that the intent was handled successfully."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash is reported in the provided logcat output. The activity is paused and resumed without any issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause a crash, as there are no error messages in the logcat output. The activity was paused, but this is a normal part of the Android lifecycle."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "No error messages or crashes found in the logcat output. The intent was successfully processed by the ArticleCollectionActivity."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent seems to have been processed by the application, and there are no crash or error messages in the provided logcat output. The ArticleCollectionActivity was paused and resumed, indicating that the intent was handled."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully delivered to the application and the activity was started, paused and resumed without any errors or crashes."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The logs indicate the intent was processed and the activity went through resume and pause, but there's no indication of a crash or error."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, and it was not ignored. The activity started and went through the lifecycle methods, but there were no visible errors."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully received by the activity, and the activity's lifecycle methods were called (onResume, onPause), but there is no indication of an error or crash in the provided logcat output."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause a crash, the activity lifecycle methods (onResume, onPause) were called and there are no error messages in the logs."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The logs show the activity was paused and resumed without any errors, indicating the intent was likely processed successfully."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The activity received the intent and went through a resume, unfullscreen, and pause life cycle, indicating that the intent was processed."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The logs show normal activity lifecycle methods such as Resume, unfullscreen, and Pause, which suggests that the intent was handled by the ArticleCollectionActivity without any issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The logs show the ArticleCollectionActivity being resumed, paused, and unfullscreened, indicating that the intent was handled without issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The activity was paused and resumed, and there are no error messages in the logcat output."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash was detected in the provided logcat output. The activity was resumed, then paused, but no exception or error message was logged."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      }
+    ],
+    "error": false,
+    "reason": "The intent appears to have been processed without errors, as the activity has been paused and resumed. There is no indication of a crash or error in the provided logs."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, the activity was started and paused without issues"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "The intent was processed and the activity was paused after being resumed, there is no indication of a crash or error in the provided logcat output"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, the activity was started and went through its lifecycle (resume, pause) without any issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully received and processed by the ArticleCollectionActivity, with the activity being paused after the intent was handled, indicating normal operation."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, the activity was paused after being started, indicating the intent was processed by the application."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully received and processed by the ArticleCollectionActivity, as indicated by the log messages. The activity went through the resume and pause states without any crash or error messages."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully received and processed by the ArticleCollectionActivity, as indicated by the log messages showing the activity being added, resuming, unfullsreening, and then pausing."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "Activity was paused and resumed without any indication of error or crash, but EXTRA_QUERY was empty."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash. The logs indicate the lifecycle methods of the ArticleCollectionActivity were executed without any exceptions."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully received by the ArticleCollectionActivity, as indicated by the log messages. The activity went through its lifecycle methods (Resume, unfullscreen, Pause), but there is no indication of an error or crash."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash was detected in the provided logs, the activity was started and went through resume, unfullscreen, and pause states without any issues"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "Activity lifecycle methods (Resume, Pause) were called without any error messages, suggesting the intent was handled successfully"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The provided logs do not indicate any error or crash caused by the intent. The activity seems to have gone through resume, unfullscreen, and pause states without any issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not indicate any error or crash, and the activity lifecycle methods (Resume, Pause) are being called, suggesting the intent was successfully processed."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, as there are no error messages in the logcat output. The activity was paused, which suggests that the intent was processed, but it did not result in an error or crash."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not indicate an error or crash. The activity was paused and resumed, suggesting the intent was received and processed."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not indicate any error or crash. The activity was started and went through the resume and pause lifecycle methods without issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, but the activity was paused shortly after being started, indicating that the intent was processed but the activity was not kept in the foreground."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully processed by the ArticleCollectionActivity, with no indication of an error or crash in the provided log output."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "No error message or exception was found in the logs, the activity was paused after being resumed which might indicate that the intent was handled but no actual processing was done"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully delivered and the activity was started and paused without any error messages in the log"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash found in the log. The activity paused and resumed without any issues."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "-2147483648"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash is indicated in the provided logcat output. The activity lifecycle methods (Resume, Pause) are logged, suggesting the intent was processed and did not cause the application to crash."
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, the activity was paused and resumed as expected, no exceptions were thrown in the logcat output"
+  },
+  {
+    "apk_package": "itkach.aard2",
+    "action": "aard2.lookup",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.PROCESS_TEXT"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "EXTRA_QUERY",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.PROCESS_TEXT",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash was detected, the intent seems to have triggered a pause in ArticleCollectionActivity, but no exception or failure was logged"
+  }
+]

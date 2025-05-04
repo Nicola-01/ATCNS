@@ -1,0 +1,59 @@
+[
+  {
+    "apk_package": "jp.sblo.pandora.aGrep",
+    "action": "android.intent.action.SEARCH",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": true,
+    "reason": "No explicit log info about crash or error but the 'action' string extra is empty, possibly causing unexpected behavior"
+  },
+  {
+    "apk_package": "jp.sblo.pandora.aGrep",
+    "action": "android.intent.action.SEARCH",
+    "extras": [
+      {
+        "key": "query",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.SEARCH"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash found in the provided logs, but the actual outcome depends on the app's implementation and the content of the logcat output which is not provided"
+  },
+  {
+    "apk_package": "jp.sblo.pandora.aGrep",
+    "action": "android.intent.action.SEARCH",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.SEARCH"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash reported in the provided logs, the intent seems to have been handled by the Search activity of the aGrep application"
+  },
+  {
+    "apk_package": "jp.sblo.pandora.aGrep",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "filepath",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash found in the given logs, the intent seems to have been handled successfully"
+  }
+]

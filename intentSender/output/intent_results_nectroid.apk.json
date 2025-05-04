@@ -1,0 +1,38 @@
+[
+  {
+    "apk_package": "com.kvance.Nectroid",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "com.kvance.Nectroid.Stream.id",
+        "type": "int",
+        "value": "0"
+      },
+      {
+        "key": "com.kvance.Nectroid.Stream.bitrate",
+        "type": "int",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash message was found in the provided logcat output. The output indicates a new Host Connection was established, which is a normal process."
+  },
+  {
+    "apk_package": "com.kvance.Nectroid",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "com.kvance.Nectroid.Stream.id",
+        "type": "integer",
+        "value": "0"
+      },
+      {
+        "key": "com.kvance.Nectroid.Stream.bitrate",
+        "type": "integer",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "The logs do not indicate any error or crash. The given output appears to be related to graphics rendering, not directly to the intent."
+  }
+]

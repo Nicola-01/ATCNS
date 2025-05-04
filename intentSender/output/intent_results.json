@@ -1,0 +1,71 @@
+[
+  {
+    "apk_package": "com.example.complexcalculator",
+    "action": "com.example.calculator.action.CALCULATE",
+    "extras": [
+      {
+        "key": "n1",
+        "type": "integer",
+        "value": "0"
+      },
+      {
+        "key": "n2",
+        "type": "integer",
+        "value": "0"
+      },
+      {
+        "key": "Op",
+        "type": "string",
+        "value": "-"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully received and processed by the application, as indicated by the log messages showing the calculator starting and displaying a result."
+  },
+  {
+    "apk_package": "com.example.complexcalculator",
+    "action": "com.example.calculator.action.CALCULATE",
+    "extras": [
+      {
+        "key": "n1",
+        "type": "integer",
+        "value": "0"
+      },
+      {
+        "key": "n2",
+        "type": "integer",
+        "value": "2147483647"
+      },
+      {
+        "key": "Op",
+        "type": "string",
+        "value": "-"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully received and processed by the application, with the result being calculated and logged."
+  },
+  {
+    "apk_package": "com.example.complexcalculator",
+    "action": "com.example.calculator.action.CALCULATE",
+    "extras": [
+      {
+        "key": "n1",
+        "type": "integer",
+        "value": "0"
+      },
+      {
+        "key": "n2",
+        "type": "integer",
+        "value": "-2147483648"
+      },
+      {
+        "key": "Op",
+        "type": "string",
+        "value": "-"
+      }
+    ],
+    "error": false,
+    "reason": "The calculator activity started and logged the result without any indication of an error or crash."
+  }
+]

@@ -131,12 +131,25 @@ public class IntentAnalysis {
 
             FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), methodName, attributes, graphs, globalVariables);
             if (filteredControlFlowGraph.haveExtras()) {
-                System.out.println(methodName + "\n\n" + filteredControlFlowGraph);
+                System.out.println("Save method '" + methodName + "' as dot file");
 
-                String fileName = "paths/" + apkName + "/" + filteredControlFlowGraph.getCompleteMethod() + "_paths.dot";
-                CFGPathFinder pathFinder = new CFGPathFinder(filteredControlFlowGraph);
+                String PATH = "paths/" + apkName + "/";
 
-                pathFinder.generateDotFile(fileName, apkName, SDK_Version, packageName, activityName, action);
+                try {
+                    Files.createDirectories(Paths.get(PATH + "complete/"));
+                    FileWriter writer = new FileWriter(PATH + "complete/" + filteredControlFlowGraph.getCompleteMethod() + ".dot");
+                    writer.write(filteredControlFlowGraph.toString());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                try {
+                    String fileName = PATH + filteredControlFlowGraph.getCompleteMethod() + "_paths.dot";
+                    CFGPathFinder pathFinder = new CFGPathFinder(filteredControlFlowGraph);
+                    pathFinder.generateDotFile(fileName, apkName, SDK_Version, packageName, activityName, action);
+                } catch (OutOfMemoryError e) {
+                    System.err.println("Out of memory error. Try increase the heap size.");
+                }
             }
         }
 

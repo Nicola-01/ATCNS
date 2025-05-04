@@ -1,0 +1,378 @@
+[
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "No explicit error or crash message found in the logs. The intent was successfully delivered and processed by the activity."
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "abc"
+      }
+    ],
+    "error": false,
+    "reason": "No signs of errors or crashes. The intent was handled by the application, which performed various database operations and did not report any issues."
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "!abc@ 123"
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, the activity was started and the logs indicate normal database operations and EGL emulation, no exceptions or errors were thrown"
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "The intent did not cause an error or crash, it seems the activity was started and the logs show database operations, but there is a warning about handleWindowVisibility."
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "abc"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash observed in the logs, intent seems to have been processed and activity started"
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "!abc@ 123"
+      }
+    ],
+    "error": false,
+    "reason": "The logs show that the intent was processed without any indication of an error or crash, and the database operations were performed successfully."
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "No crash or error messages found in the logs. The intent seems to have been processed and the activity started without issues. There are some warnings and info messages related to database connection and window visibility, but they do not indicate a critical error."
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "abc"
+      }
+    ],
+    "error": true,
+    "reason": "Activity not started, no activity for token"
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "!abc@ 123"
+      }
+    ],
+    "error": false,
+    "reason": "No apparent errors or crashes in the logs. The intent seems to have triggered some database operations, but no exceptions or warnings indicate a problem with the intent itself."
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.SEND",
+    "extras": [
+      {
+        "key": "result_path",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": true,
+    "reason": "No activity for token android.os.BinderProxy"
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.SEND",
+    "extras": [
+      {
+        "key": "result_path",
+        "type": "string",
+        "value": "abc"
+      }
+    ],
+    "error": true,
+    "reason": "No activity found for the given token"
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.SEND",
+    "extras": [
+      {
+        "key": "result_path",
+        "type": "string",
+        "value": "!abc@ 123"
+      }
+    ],
+    "error": false,
+    "reason": "No explicit error or crash message in the log. The warning 'handleWindowVisibility: no activity for token android.os.BinderProxy@2212a00' does not necessarily indicate a failure related to the intent. The intent may have been ignored or handled by the application without any issues."
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.SEND",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": true,
+    "reason": "No activity found to handle the intent"
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.SEND",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.SEND"
+      },
+      {
+        "key": "android.intent.extra.SUBJECT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": true,
+    "reason": "No activity found for the given token, possible activity not started or not registered properly"
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.SEND",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.SEND"
+      },
+      {
+        "key": "android.intent.extra.SUBJECT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      }
+    ],
+    "error": true,
+    "reason": "The intent caused an error, as indicated by the 'W/ActivityThread' log message, which suggests that the activity could not be started due to a window visibility issue."
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.SEND",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.SEND"
+      },
+      {
+        "key": "android.intent.extra.SUBJECT",
+        "type": "string",
+        "value": ""
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      }
+    ],
+    "error": true,
+    "reason": "The intent likely caused an error, as the logs show a warning from the ActivityThread about handling window visibility with no activity for the given token."
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.SEND",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.SEND"
+      },
+      {
+        "key": "android.intent.extra.SUBJECT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": true,
+    "reason": "The intent likely caused an error, as indicated by the 'no activity for token' warning in the logcat output."
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.SEND",
+    "extras": [
+      {
+        "key": "android.intent.extra.SUBJECT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.SEND"
+      }
+    ],
+    "error": true,
+    "reason": "No activity found for the given token, indicating the intent may have been ignored or not properly handled"
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.SEND",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.SEND"
+      },
+      {
+        "key": "android.intent.extra.SUBJECT",
+        "type": "string",
+        "value": "abc"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      }
+    ],
+    "error": true,
+    "reason": "The log output indicates a warning with 'no activity for token' which suggests that the intent was not handled by the application and resulted in an error."
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.SEND",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.SEND"
+      },
+      {
+        "key": "android.intent.extra.SUBJECT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": true,
+    "reason": "The intent did not seem to cause a crash, but there was a warning with handleWindowVisibility: no activity for token. This indicates the intent was likely ignored by the application."
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.SEND",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.SEND"
+      },
+      {
+        "key": "android.intent.extra.SUBJECT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "abc"
+      }
+    ],
+    "error": true,
+    "reason": "The log contains a warning 'handleWindowVisibility: no activity for token' which suggests that the intent may not have been handled correctly, possibly due to the activity not being registered or not being able to handle the intent."
+  },
+  {
+    "apk_package": "org.liberty.android.fantastischmemo",
+    "action": "android.intent.action.SEND",
+    "extras": [
+      {
+        "key": "action",
+        "type": "string",
+        "value": "android.intent.action.SEND"
+      },
+      {
+        "key": "android.intent.extra.SUBJECT",
+        "type": "string",
+        "value": "!abc@ 123"
+      },
+      {
+        "key": "android.intent.extra.TEXT",
+        "type": "string",
+        "value": "!abc@ 123"
+      }
+    ],
+    "error": true,
+    "reason": "No activity found to handle the intent"
+  }
+]

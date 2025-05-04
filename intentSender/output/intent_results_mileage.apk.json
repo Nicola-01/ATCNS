@@ -1,0 +1,15 @@
+[
+  {
+    "apk_package": "com.evancharlton.mileage",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "visible_tab",
+        "type": "String",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash found in the logcat output. The intent was successfully handled by the application."
+  }
+]

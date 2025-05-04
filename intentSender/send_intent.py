@@ -9,7 +9,7 @@ from itertools import product
 import sys
 from loguru import logger
 
-from emulator import emulator_initialiser
+from emulator import closeAllEmulators, emulator_initialiser
 from LLMquery import query_groq
 
 # Configure logger
@@ -272,12 +272,13 @@ def send_intents(apk_path, file_path):
         emulator_is_installed = True
         print("[~] Launching emulator")
         emulator_initialiser(sdkVersion)
-        time.sleep(3)
 
         if use_drozer:
             print("[~] Drozer agent setup")
             drozer_setup(sdkVersion)
             time.sleep(1)
+            input("[!] On the Drozer app on the device, set 'Embedded Server' to 'ON', then press Enter to continue...")
+
         time.sleep(3)
 
         print("[~] Installing the app")
@@ -369,9 +370,13 @@ def main(args):
             send_intents(apk_path, file_path)
         except Exception as e:
             print(f"[!] Error processing {fname}: {e}")
+            
+    # Close all emulators
+    print("\n[~] Closing all emulators")
+    closeAllEmulators()
 
     # Save all LLM responses into a single results file
-    with open("intent_results.json", "w", encoding="utf-8") as f:
+    with open(f"intent_results_{apkFile}.json", "w", encoding="utf-8") as f:
         json.dump(json_responses, f, indent=2)
 
     # Compute and print metrics

@@ -216,8 +216,10 @@ def emulator_initialiser(sdk_version):
 
     for _ in range(30):  # Wait up to 90 seconds
         if is_emulator_online():
-            print("Emulator is online.")
-            unlock_emulator()
+            print("Emulator is online.\nWait 15 seconds...")
+            time.sleep(15)
+            if sdk_version <= 10:
+                unlock_emulator()
             break
         time.sleep(3)
     else:

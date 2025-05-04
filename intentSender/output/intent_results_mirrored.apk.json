@@ -1,0 +1,41 @@
+[
+  {
+    "apk_package": "de.homac.Mirrored",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "category",
+        "type": "string",
+        "value": ""
+      }
+    ],
+    "error": false,
+    "reason": "The log output provided does not indicate any error or crash. The repeated 'eglMakeCurrent' messages are related to the emulator's graphics rendering and do not suggest any issue with the intent or the application."
+  },
+  {
+    "apk_package": "de.homac.Mirrored",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "category",
+        "type": "string",
+        "value": "abc"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash logs found, intent was likely ignored as the logs only contain eglMakeCurrent messages which are related to OpenGL ES context creation and do not indicate any issues with the intent."
+  },
+  {
+    "apk_package": "de.homac.Mirrored",
+    "action": "android.intent.action.MAIN",
+    "extras": [
+      {
+        "key": "category",
+        "type": "string",
+        "value": "!abc@ 123"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash messages found in the logs, only EGL emulation messages which are not related to the intent"
+  }
+]

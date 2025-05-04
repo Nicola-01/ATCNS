@@ -253,7 +253,7 @@ public class CFGPathFinder {
 
             int pathNumber = 1;
             writer.write(String.format("digraph paths {\n"));
-            System.out.println("         " + renamedAllPaths.size());
+//            System.out.println("         " + renamedAllPaths.size());
             StringBuilder sb = new StringBuilder();
 
             int count = 0;
@@ -306,7 +306,7 @@ public class CFGPathFinder {
             sb.append("}\n");
 
             writer.write(sb.toString());
-            System.out.println("  End New allPaths generation, path number: " + count);
+//            System.out.println("  End New allPaths generation, path number: " + count);
         } catch (IOException e) {
             System.err.println("Error writing DOT file: " + e.getMessage());
         }

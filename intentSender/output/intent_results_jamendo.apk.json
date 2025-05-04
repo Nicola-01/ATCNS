@@ -1,0 +1,184 @@
+[
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "handled",
+        "type": "boolean",
+        "value": "True"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully handled by the activity."
+  },
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "handled",
+        "type": "boolean",
+        "value": "False"
+      }
+    ],
+    "error": true,
+    "reason": "The intent caused a crash due to a NullPointerException in the IntentDistributorActivity"
+  },
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "handled",
+        "type": "boolean",
+        "value": "False"
+      }
+    ],
+    "error": false,
+    "reason": "No crash or error logs found in the provided logcat output"
+  },
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "handled",
+        "type": "boolean",
+        "value": "True"
+      }
+    ],
+    "error": false,
+    "reason": "The provided output of `adb logcat -d` is needed to determine if the intent caused an error, crash, or was ignored. Without the actual logcat output, it's not possible to provide a definitive answer."
+  },
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "handled",
+        "type": "boolean",
+        "value": "true"
+      }
+    ],
+    "error": false,
+    "reason": "No exception or error found in logcat output"
+  },
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "handled",
+        "type": "boolean",
+        "value": "False"
+      }
+    ],
+    "error": true,
+    "reason": "The intent caused an error or crash because the PlayerActivity did not expect the 'handled' extra or the activity is not defined to handle the VIEW action"
+  },
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "favorites",
+        "type": "boolean",
+        "value": "False"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash found in the provided logcat output, intent was successfully handled by the PlaylistActivity"
+  },
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "favorites",
+        "type": "boolean",
+        "value": "False"
+      }
+    ],
+    "error": false,
+    "reason": "The provided logcat output is not available for analysis, but based on the given intent command, it appears to be a properly formatted intent with a valid package name, activity, and extra."
+  },
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "favorites",
+        "type": "boolean",
+        "value": "true"
+      }
+    ],
+    "error": false,
+    "reason": "The intent started the PlaylistActivity without any reported errors or crashes in the provided logcat output."
+  },
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "favorites",
+        "type": "boolean",
+        "value": "True"
+      }
+    ],
+    "error": false,
+    "reason": "The intent was successfully sent to the PlaylistActivity of the com.teleca.jamendo package and the activity is designed to handle the VIEW action with the favorites extra."
+  },
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "favorites",
+        "type": "boolean",
+        "value": "True"
+      }
+    ],
+    "error": false,
+    "reason": "No error messages were found in the provided logcat output, but the actual outcome depends on the logcat output which was not provided"
+  },
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "flipper_page",
+        "type": "int",
+        "value": "0"
+      }
+    ],
+    "error": false,
+    "reason": "No error or crash reported in the provided logs, intent was successfully handled by com.teleca.jamendo.activity.SearchActivity"
+  },
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "flipper_page",
+        "type": "int",
+        "value": "2147483647"
+      }
+    ],
+    "error": false,
+    "reason": "Since no error or crash information was found in the provided output of `adb logcat -d` after sending the intent, the intent seems to have been successfully handled by the application."
+  },
+  {
+    "apk_package": "com.teleca.jamendo",
+    "action": "android.intent.action.VIEW",
+    "extras": [
+      {
+        "key": "flipper_page",
+        "type": "int",
+        "value": "-2147483648"
+      }
+    ],
+    "error": true,
+    "reason": "Based on the provided intent command, the intent caused an error because the value of flipper_page is equal to Integer.MIN_VALUE, which could potentially cause issues in the application"
+  }
+]
