@@ -25,7 +25,7 @@ json_responses = []
 emulator_is_installed = False
 
 # These will be assigned per analysis file
-global metadata, apkFile, sdkVersion, package, activity, action, intents
+global metadata, apkFile, sdkVersion, package, activity, action, intents, start
 
 
 def parse_file(file_path):  
@@ -289,6 +289,8 @@ def send_intents(apk_path, file_path):
         time.sleep(5)
 
         pid = get_pid(package, sdkVersion)
+        global start
+        start = time.time()
 
     extras = generate_combinations(intents)
 
@@ -372,6 +374,9 @@ def main(args):
             print(f"[!] Error processing {fname}: {e}")
             
     # Close all emulators
+
+    execution_time = time.time() - start
+    
     print("\n[~] Closing all emulators")
     closeAllEmulators()
 
@@ -385,6 +390,7 @@ def main(args):
     percentage = (errors / total) * 100 if total > 0 else 0
 
     print("\n=== INTENT TEST SUMMARY ===")
+    print(f"Total execution time: {execution_time:.2f} seconds")
     print(f"Total intents sent: {total}")
     print(f"Errors detected: {errors} ({percentage:.2f}%)")
 

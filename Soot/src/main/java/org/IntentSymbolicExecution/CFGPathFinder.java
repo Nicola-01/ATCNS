@@ -306,9 +306,9 @@ public class CFGPathFinder {
             sb.append("}\n");
 
             writer.write(sb.toString());
-//            System.out.println("  End New allPaths generation, path number: " + count);
+            System.out.print("Number of paths: " + renamedAllPaths.size() +".");
         } catch (IOException e) {
-            System.err.println("Error writing DOT file: " + e.getMessage());
+            System.err.print("Error writing DOT file: " + e.getMessage());
         }
     }
 

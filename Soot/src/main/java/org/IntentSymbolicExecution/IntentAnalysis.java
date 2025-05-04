@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.IntentSymbolicExecution.ControlFlowGraph.GraphNode;
@@ -94,6 +95,8 @@ public class IntentAnalysis {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println();
+        System.out.println("Global variables founded: " + globalVariables.size());
 
         // Compute the Control Flow Graph (CFG) for exported activities
         Map<String, ExceptionalUnitGraph> graphs = getCFGs(exportedActivities, packageName);
@@ -102,18 +105,19 @@ public class IntentAnalysis {
 
         Path path = Paths.get("paths/" + apkName);  
 
-        if (Files.exists(path)) {
-            System.out.println("Directory already exists.");
-        } else {
+        if (! Files.exists(path)) {
             try {
                 Files.createDirectory(path);
-                System.out.println("Directory created successfully.");
+//                System.out.println("Directory created successfully.");
             } catch (IOException e) {
                 System.out.println("Failed to create directory: " + e.getMessage());
             }
         }
 
         // Analyze each CFG to extract Intent-related paths
+        System.out.println("Found " + graphs.size() + " exported activities in the APK. Analyzing...");
+        long totalStartTime = System.currentTimeMillis();
+        int activityExtraCount = 0;
         for (Map.Entry<String, ExceptionalUnitGraph> entry : graphs.entrySet()) {
 
             String methodName = entry.getKey().substring(0, entry.getKey().lastIndexOf("-"));
@@ -131,7 +135,8 @@ public class IntentAnalysis {
 
             FilteredControlFlowGraph filteredControlFlowGraph = new FilteredControlFlowGraph(entry.getValue(), methodName, attributes, graphs, globalVariables);
             if (filteredControlFlowGraph.haveExtras()) {
-                System.out.println("Save method '" + methodName + "' as dot file");
+                activityExtraCount++;
+                System.out.println(" - The method " + methodName + " has extras. Saving as dot file. ");
 
                 String PATH = "paths/" + apkName + "/";
 
@@ -143,15 +148,23 @@ public class IntentAnalysis {
                     throw new RuntimeException(e);
                 }
 
+                long startTime = System.currentTimeMillis();
+
+                System.out.print("    Saving paths as dot files. ");
                 try {
                     String fileName = PATH + filteredControlFlowGraph.getCompleteMethod() + "_paths.dot";
                     CFGPathFinder pathFinder = new CFGPathFinder(filteredControlFlowGraph);
                     pathFinder.generateDotFile(fileName, apkName, SDK_Version, packageName, activityName, action);
+                    long executionTime = System.currentTimeMillis() - startTime;
+                    System.out.println(" Done in " + executionTime + " ms.");
                 } catch (OutOfMemoryError e) {
-                    System.err.println("Out of memory error. Try increase the heap size.");
+                    System.err.println(" Out of memory error. Try increase the heap size.");
                 }
             }
         }
+        long totalExecutionTime = System.currentTimeMillis() - totalStartTime;
+        System.out.println("\nDone analyzing of " + graphs.size() + " exported activities. " + activityExtraCount + " activities have extras.");
+        System.out.println("Completed in " + totalExecutionTime + " ms.");
 
         try {
             FileUtils.deleteDirectory(new File("sootOutput"));
