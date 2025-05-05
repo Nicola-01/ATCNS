@@ -1,3 +1,4 @@
+import time
 import re
 import os
 import networkx as nx
@@ -718,9 +719,9 @@ def find_array_element_assignation(nodes, array_name, array_type, array_length):
 
 
 # Base directory containing APK subdirectories
-base_dir = "./paths"
+base_dir = "Soot/paths"
 # Directory for all analysis results
-results_dir = "./"
+results_dir = "z3/"
 results_base = os.path.join(results_dir, "analysis_results")
 
 def list_subdirs(dir_path):
@@ -770,6 +771,9 @@ def main():
         print(f"No .dot files found in '{apk_dir}'.")
         return
 
+    start = time.perf_counter()
+    total_paths = 0
+
     # 4. Process each .dot file individually
     for dot_filename in dot_files:
         dot_path = os.path.join(apk_dir, dot_filename)
@@ -801,6 +805,7 @@ def main():
 
             # Analyze each path subgraph
             for idx, path_name in enumerate(subgraphs, start=1):
+                total_paths += 1
                 parse_intent_params(subgraphs[path_name])
                 parse_if(subgraphs[path_name])
                 parameters = intent_params | if_parameters | array_params
@@ -850,6 +855,10 @@ def main():
                 reset_globals()
 
         print(f"Completed: results saved to '{output_path}'\n")
+
+    end = time.perf_counter()
+    print(f"Total paths analyzed: {total_paths}")
+    print(f"Time: {end - start:.3f} sec")
 
 if __name__ == "__main__":
     main()

@@ -1,8 +1,0 @@
-apkFile: passwordmaker.apk
-sdkVersion: 28
-package: org.passwordmaker.android
-activity: org.passwordmaker.android.MainActivity
-action: android.intent.action.MAIN
-
-action (string) : "android.intent.action.SEND" | android.intent.extra.TEXT (string) : [no lim]
-action (string) : "android.intent.action.SEND"

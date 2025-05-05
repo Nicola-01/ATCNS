@@ -37,3 +37,5 @@ Soot/z3/analysis_results/
 Soot/globalVariables.txt
 
 *.key
+
+z3/analysis_results
