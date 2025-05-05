@@ -118,6 +118,7 @@ public class IntentAnalysis {
         System.out.println("Found " + graphs.size() + " exported activities in the APK. Analyzing...");
         long totalStartTime = System.currentTimeMillis();
         int activityExtraCount = 0;
+        String PATH = "paths/" + apkName + "/";
         for (Map.Entry<String, ExceptionalUnitGraph> entry : graphs.entrySet()) {
 
             String methodName = entry.getKey().substring(0, entry.getKey().lastIndexOf("-"));
@@ -138,12 +139,11 @@ public class IntentAnalysis {
                 activityExtraCount++;
                 System.out.println(" - The method " + methodName + " has extras. Saving as dot file. ");
 
-                String PATH = "paths/" + apkName + "/";
-
                 try {
                     Files.createDirectories(Paths.get(PATH + "complete/"));
                     FileWriter writer = new FileWriter(PATH + "complete/" + filteredControlFlowGraph.getCompleteMethod() + ".dot");
                     writer.write(filteredControlFlowGraph.toString());
+                    writer.close();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -165,6 +165,7 @@ public class IntentAnalysis {
         long totalExecutionTime = System.currentTimeMillis() - totalStartTime;
         System.out.println("\nDone analyzing of " + graphs.size() + " exported activities. " + activityExtraCount + " activities have extras.");
         System.out.println("Completed in " + totalExecutionTime + " ms.");
+        System.out.println("All .dot files can be found in directory " + PATH);
 
         try {
             FileUtils.deleteDirectory(new File("sootOutput"));

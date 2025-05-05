@@ -306,6 +306,7 @@ public class CFGPathFinder {
             sb.append("}\n");
 
             writer.write(sb.toString());
+            writer.close();
             System.out.print("Number of paths: " + renamedAllPaths.size() +".");
         } catch (IOException e) {
             System.err.print("Error writing DOT file: " + e.getMessage());
