@@ -74,6 +74,8 @@ public class IntentAnalysis {
         // Retrieve necessary data from the manifest
         int SDK_Version = manifest.getSDK_Version();
         List<ManifestParsing.Activity> exportedActivities = manifest.getExportedActivities();
+        int numTotalActivities = manifest.getActivities().size();
+        int numExportedActivities = exportedActivities.size();
         String packageName = manifest.getPackageName();
 
         // Download the corresponding Android SDK JAR and get its path
@@ -115,7 +117,7 @@ public class IntentAnalysis {
         }
 
         // Analyze each CFG to extract Intent-related paths
-        System.out.println("Found " + graphs.size() + " exported activities in the APK. Analyzing...");
+        System.out.println("Found " + numTotalActivities + " activities in the APK, " + numExportedActivities + " are exported . Analyzing...");
         long totalStartTime = System.currentTimeMillis();
         int activityExtraCount = 0;
         String PATH = "paths/" + apkName + "/";
@@ -163,7 +165,7 @@ public class IntentAnalysis {
             }
         }
         long totalExecutionTime = System.currentTimeMillis() - totalStartTime;
-        System.out.println("\nDone analyzing of " + graphs.size() + " exported activities. " + activityExtraCount + " activities have extras.");
+        System.out.println("\nDone analyzing of " + numExportedActivities + " exported activities. " + activityExtraCount + " methods utilise extras from the intents.");
         System.out.println("Completed in " + totalExecutionTime + " ms.");
         System.out.println("All .dot files can be found in directory " + PATH);
 
