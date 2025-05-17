@@ -68,7 +68,12 @@ public class IntentAnalysis {
      */
     public IntentAnalysis(String apkPath, String androidJarPath) {
         // Parse the APK's AndroidManifest.xml to retrieve metadata
+
+        long startManifestParsingTime = System.currentTimeMillis();
         ManifestParsing manifest = new ManifestParsing(apkPath);
+        long ManifestParsingExecutionTime = System.currentTimeMillis() - startManifestParsingTime;
+        System.out.println("Manifest parsing completed in " + ManifestParsingExecutionTime + " ms.");
+
         String apkName = apkPath.substring(apkPath.lastIndexOf("/")+1);
 
         // Retrieve necessary data from the manifest

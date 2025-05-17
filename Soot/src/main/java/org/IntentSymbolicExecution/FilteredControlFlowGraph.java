@@ -84,7 +84,7 @@ public class FilteredControlFlowGraph {
         replaceGlobalVariables(globalVariables);
 
         // Simplify the graph structure.
-        graphSimplifier();
+        lableRenameGraphNodes();
 
         // Extract nodes that are relevant to Intent-related operations.
         filteredCFG = extractIntentRelatedNodes();
@@ -744,7 +744,7 @@ public class FilteredControlFlowGraph {
      * This method processes nodes to transform method call representations into a simpler, more readable form,
      * and then updates all node labels accordingly.
      */
-    private void graphSimplifier() {
+    private void lableRenameGraphNodes() {
         List<Map.Entry<String, String>> nodesRelabeled = new ArrayList<>();
 
         // Iterate over each node to build a mapping of original labels to simplified labels.
