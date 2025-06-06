@@ -14,6 +14,8 @@ client = OpenAI(
     api_key=api_key,
 )
 
+model="llama-3.3-70b-versatile"
+
 def query_groq(apk_package, intent_command, logs):
     """
     Query the Groq LLM with a structured prompt including intent command and adb log output.
@@ -41,7 +43,7 @@ def query_groq(apk_package, intent_command, logs):
 
     # Send the prompt to Groq's LLM, requesting a JSON-only structured response
     response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
+        model=model,
         messages=[
             {
                 "role": "system",

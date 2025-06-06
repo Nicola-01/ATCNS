@@ -721,7 +721,7 @@ def find_array_element_assignation(nodes, array_name, array_type, array_length):
 # Base directory containing APK subdirectories
 base_dir = "Soot/paths"
 # Directory for all analysis results
-results_dir = "z3/"
+results_dir = "Z3Solver/"
 results_base = os.path.join(results_dir, "analysis_results")
 
 def list_subdirs(dir_path):
