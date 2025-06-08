@@ -5,7 +5,7 @@ This project was developed as part of the **Advanced Topics in Computer and Netw
 
 ## Report and Presentation
 
-[Report](https://github.com/Nicola-01/ATCNS/blob/master/Report%26Presentation/Intent_Symbolic_Execution.pdf)
+[Report](./Report%26Presentation/Intent_Symbolic_Execution.pdf) <br>
 [Presentation](https://www.canva.com/design/DAGpMDtDMY0/3JR3Iip4Q4d2L6ByZu67rw/edit?utm_content=DAGpMDtDMY0&utm_campaign=designshare&utm_medium=link2)
 
 ## Prerequisites
