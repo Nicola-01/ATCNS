@@ -144,7 +144,7 @@ This allows switching between different models or endpoints depending on the pro
 ├── Z3Solver/                                                       # Python symbolic executor
 │ └── analysis_results/<apkName>/<appMethod>_analysis_results.txt   # Z3 constraint solving output 
 ├── IntentSender/                                                   # Python dynamic tester
-│ └── intent_results<apkName>.json                                  # JSON logs of sent intents and outcomes
+│ └── outputs/intent_results<apkName>.json                          # JSON logs of sent intents and outcomes
 ├── dot/                                                            # Examples of .dot files
 ├── Apps/                                                           # Synthetic test apps used during development
 └── README.md
