@@ -3,6 +3,19 @@
 Intent Symbolic Execution is a semi-automated analysis pipeline for Android applications that statically extracts control-flow paths influenced by `Intent` extras, symbolically solves path constraints with an SMT solver, and dynamically validates the generated Intents in an emulated environment.  
 This project was developed as part of the **Advanced Topics in Computer and Network Security** course in the Master's Degree in Cybersecurity at the **University of Padua**.
 
+## Table of Contents
+
+- [Intent Symbolic Execution](#intent-symbolic-execution)
+- [Report and Presentation](#report-and-presentation)
+- [Prerequisites](#prerequisites)
+- [Build Instructions](#build-instructions)
+- [Project Structure](#project-structure)
+  - [1. Static Analysis (Java + Soot)](#1-static-analysis-java--soot)
+  - [2. Constraint Solving (Python + Z3)](#2-constraint-solving-python--z3)
+  - [3. Dynamic Testing & Log Analysis (Python + ADB + LLM)](#3-dynamic-testing--log-analysis-python--adb--llm)
+- [Repository Layout](#repository-layout)
+- [Authors](#authors)
+
 ## Report and Presentation
 
 [Report](./Report%26Presentation/Intent_Symbolic_Execution.pdf) <br>
@@ -37,21 +50,20 @@ pip install z3-solver androguard openai
 
 ### Android SDK Tools
 
-Install the Android command-line tools (assumes Android SDK is set up):
+Install the Android command-line tools:
 
+- `avdmanager` & `sdkmanager`
+- Android Emulator system images (auto-downloaded on first use)
+
+Install android emulator
 ```bash
 sdkmanager "emulator"
 ```
 
-You may be prompted to accept licenses by pressing `y`.
+> Note: When running `send_intents.py` or launching the emulator programmatically, the license agreement prompt **may appear silently** — that is, **no visible "Accept (y/n)" message is shown in the terminal**, but the process will be waiting for input.  <br>
+> You must still press `y` and then `Enter` to proceed, even if nothing is visibly printed.
 
-> Note: When running `send_intents.py` or launching the emulator programmatically, the license agreement prompt **may appear silently** — that is, **no visible "Accept (y/n)" message is shown in the terminal**, but the process will be waiting for input.  
-You must still press `y` and then `Enter` to proceed, even if nothing is visibly printed.
 
-Required components:
-
-- `avdmanager` & `sdkmanager` (part of Android SDK tools)
-- Android Emulator system images (auto-downloaded on first use)
 
 ## Build Instructions
 
