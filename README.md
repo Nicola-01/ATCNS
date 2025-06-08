@@ -3,9 +3,10 @@
 Intent Symbolic Execution is a semi-automated analysis pipeline for Android applications that statically extracts control-flow paths influenced by `Intent` extras, symbolically solves path constraints with an SMT solver, and dynamically validates the generated Intents in an emulated environment.  
 This project was developed as part of the **Advanced Topics in Computer and Network Security** course in the Master's Degree in Cybersecurity at the **University of Padua**.
 
-## Presentation
+## Report and Presentation
 
-[project presentation](https://www.canva.com/design/DAGpMDtDMY0/3JR3Iip4Q4d2L6ByZu67rw/edit?utm_content=DAGpMDtDMY0&utm_campaign=designshare&utm_medium=link2)
+[Report](https://github.com/Nicola-01/ATCNS/blob/master/Report%26Presentation/Intent_Symbolic_Execution.pdf)
+[Presentation](https://www.canva.com/design/DAGpMDtDMY0/3JR3Iip4Q4d2L6ByZu67rw/edit?utm_content=DAGpMDtDMY0&utm_campaign=designshare&utm_medium=link2)
 
 ## Prerequisites
 
