@@ -11,12 +11,46 @@ This project was developed as part of the **Advanced Topics in Computer and Netw
 
 To run the tool, make sure you have the following components installed:
 
-- Java 21+
-- Python 3.13+
-- Z3 SMT solver (`pip install z3-solver`)
-- `adb` and `apktool`
-- `avdmanager` & `sdkmanager` (part of the Android SDK)
-- Android platform SDKs (automatically downloaded if missing)
+### Core Requirements
+
+- **Java 21+** – Required to run the static analysis tool.
+- **Maven** – Used to build the Java project and manage dependencies.
+- **Python 3.13+** – Used for symbolic execution and dynamic analysis.
+- **Z3 SMT Solver** – Install via `pip install z3-solver`.
+
+### System Dependencies
+
+Install these via `apt`:
+
+```bash
+sudo apt install adb apktool graphviz graphviz-dev
+```
+
+### Python Dependencies
+
+Install these via `pip`:
+
+```bash
+pip install z3-solver androguard openai
+```
+
+### Android SDK Tools
+
+Install the Android command-line tools (assumes Android SDK is set up):
+
+```bash
+sdkmanager "emulator"
+```
+
+You may be prompted to accept licenses by pressing `y`.
+
+> Note: When running `send_intents.py` or launching the emulator programmatically, the license agreement prompt **may appear silently** — that is, **no visible "Accept (y/n)" message is shown in the terminal**, but the process will be waiting for input.  
+You must still press `y` and then `Enter` to proceed, even if nothing is visibly printed.
+
+Required components:
+
+- `avdmanager` & `sdkmanager` (part of Android SDK tools)
+- Android Emulator system images (auto-downloaded on first use)
 
 ## Build Instructions
 
@@ -29,7 +63,7 @@ mvn clean package
 ```
 This will generate the executable JAR file at:
 ```bash
-target/Soot-1.0-SNAPSHOT.jar
+java -jar target/Soot-1.0-SNAPSHOT.jar
 ```
 
 ## Project Structure
@@ -52,9 +86,8 @@ java -jar target/Soot-1.0-SNAPSHOT.jar path/to/app.apk
 java -jar target/Soot-1.0-SNAPSHOT.jar
 ```
 
-In _Direct mode_, the user specifies an APK located anywhere in the filesystem. This mode is intended for quick, one-off analyses and supports arbitrary APK locations.
-
-In _Interactive mode_, the system lists all APKs in the predefined Applications_to_analise/ directory. The user selects the target app from this list. This mode simplifies repeated testing and supports reproducible experiments by relying on a fixed input location.
+> In _Direct mode_, the user specifies an APK located anywhere in the filesystem. This mode is intended for quick, one-off analyses and supports arbitrary APK locations. <br>
+> In _Interactive mode_, the system lists all APKs in the predefined Applications_to_analise/ directory. The user selects the target app from this list. This mode simplifies repeated testing and supports reproducible experiments by relying on a fixed input location.
 
 ### 2. Constraint Solving (Python + Z3)
 
@@ -65,9 +98,9 @@ In _Interactive mode_, the system lists all APKs in the predefined Applications_
 **Usage**:
 
 ```bash
-python3 z3_autosolver.py
+python3 Z3Solver/z3_autosolver.py
 ```
-The script provides an interactive menu to select the APK directory containing the `.dot` files generated in Phase 1, similar to the interactive mode used in the static analysis phase.
+> The script provides an interactive menu to select the APK directory containing the `.dot` files generated in Phase 1, similar to the interactive mode used in the static analysis phase.
 
 ### 3. Dynamic Testing & Log Analysis (Python + ADB + LLM)
 
@@ -78,11 +111,11 @@ The script provides an interactive menu to select the APK directory containing t
 
 **Usage**:
 ```bash
-python3 run_dynamic_tester.py path/to/app.apk path/to/z3_results/
+python3 IntentSender/send_intent.py Soot/Applications_to_analise/<app.apk> Z3Solver/analysis_results/<app.apk>
 ```
-Positional arguments:
-    `apk_path`: Path to the APK file (installed on the emulator)
-    `analysis_path`: Directory containing `.txt` output files from Z3 (`Z3Solver/analysis_results/<apkName>/`)
+> Positional arguments: <br>
+>   `apk_path`: Path to the APK file (installed on the emulator)<br>
+>   `analysis_path`: Directory containing `.txt` output files from Z3 (`Z3Solver/analysis_results/<apkName>/`)
 
 **Authentication**:
 
@@ -105,15 +138,15 @@ This allows switching between different models or endpoints depending on the pro
 ## Repository Layout
 
 ```
-├── Soot/                                         # Java static analyzer
-│ ├── Applications_to_analise/                    # APKs to analyse
-│ └── paths/<apkName>/                            # Full CFGs and execution paths exported as .dot
-├── Z3Solver/                                     # Python symbolic executor
-│ └── <apkName>_<appMethod>analysis_results.txt   # Z3 constraint solving output
-├── IntentSender/                                 # Python dynamic tester
-│ └── intent_results<apkName>.json                # JSON logs of sent intents and outcomes
-├── dot/                                          # Examples of .dot files
-├── Apps/                                         # Synthetic test apps used during development
+├── Soot/                                                           # Java static analyzer
+│ ├── Applications_to_analise/                                      # APKs to analyse
+│ └── paths/<apkName>/                                              # Full CFGs and execution paths exported as .dot
+├── Z3Solver/                                                       # Python symbolic executor
+│ └── analysis_results/<apkName>/<appMethod>_analysis_results.txt   # Z3 constraint solving output 
+├── IntentSender/                                                   # Python dynamic tester
+│ └── intent_results<apkName>.json                                  # JSON logs of sent intents and outcomes
+├── dot/                                                            # Examples of .dot files
+├── Apps/                                                           # Synthetic test apps used during development
 └── README.md
 ```
   
