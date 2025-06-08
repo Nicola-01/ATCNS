@@ -17,7 +17,7 @@ logger.remove()
 logger.add(sys.stderr, level="WARNING")
 
 # Constants
-DROZER_APK = APK("drozer-agent.apk")
+DROZER_APK = APK("IntentSender/drozer-agent.apk")
 DROZER_MIN_VERSION = 17
 
 # Global state
@@ -271,7 +271,9 @@ def send_intents(apk_path, file_path):
     if not emulator_is_installed:
         emulator_is_installed = True
         print("[~] Launching emulator")
-        emulator_initialiser(sdkVersion)
+        if emulator_initialiser(sdkVersion) is None:
+            print("[!] Failed to initialize emulator. Exiting.")
+            sys.exit(1)
 
         if use_drozer:
             print("[~] Drozer agent setup")
@@ -381,7 +383,10 @@ def main(args):
     closeAllEmulators()
 
     # Save all LLM responses into a single results file
-    with open(f"intent_results_{apkFile}.json", "w", encoding="utf-8") as f:
+    output_dir = "IntentSender/outputs"
+    os.makedirs(output_dir, exist_ok=True)
+
+    with open(f"{output_dir}/intent_results_{apkFile}.json", "w", encoding="utf-8") as f:
         json.dump(json_responses, f, indent=2)
 
     # Compute and print metrics
